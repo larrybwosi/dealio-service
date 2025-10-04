@@ -1,0 +1,317 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap')
+layer(base);
+
+@import 'tailwindcss';
+
+@plugin 'tailwindcss-animate';
+
+@custom-variant dark (&:is(.dark *));
+
+@utility container {
+  margin-inline: auto;
+  padding-inline: 2rem;
+  @media (width >= --theme(--breakpoint-sm)) {
+    max-width: none;
+  }
+  @media (width >= 1400px) {
+    max-width: 1400px;
+  }
+}
+
+@theme {
+  --font-display: Playfair Display, serif;
+  --font-body: Inter, sans-serif;
+
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+
+  --color-hero: hsl(var(--hero));
+  --color-hero-foreground: hsl(var(--hero-foreground));
+
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+
+  --color-sidebar: hsl(var(--sidebar-background));
+  --color-sidebar-foreground: hsl(var(--sidebar-foreground));
+  --color-sidebar-primary: hsl(var(--sidebar-primary));
+  --color-sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground));
+  --color-sidebar-accent: hsl(var(--sidebar-accent));
+  --color-sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
+  --color-sidebar-border: hsl(var(--sidebar-border));
+  --color-sidebar-ring: hsl(var(--sidebar-ring));
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
+
+@utility bakery-gradient {
+  /* Custom bakery components */
+  background: var(--gradient-warm);
+
+  /* Native-feeling mobile interactions */
+}
+
+@utility hero-gradient {
+  background: var(--gradient-hero);
+
+  /* Native-feeling mobile interactions */
+}
+
+@utility shadow-warm {
+  box-shadow: var(--shadow-warm);
+
+  /* Native-feeling mobile interactions */
+}
+
+@utility shadow-soft {
+  box-shadow: var(--shadow-soft);
+
+  /* Native-feeling mobile interactions */
+}
+
+@utility transition-smooth {
+  transition: var(--transition-smooth);
+
+  /* Native-feeling mobile interactions */
+}
+
+@utility hover-lift {
+  /* Hover effects for bakery elements */
+  @apply transition-smooth;
+
+  &:hover {
+    @apply -translate-y-1 shadow-warm;
+  }
+
+  /* Native-feeling mobile interactions */
+}
+
+@utility bakery-card {
+  @apply bg-card rounded-xl p-6 shadow-soft hover-lift;
+
+  /* Native-feeling mobile interactions */
+  @media (max-width: 768px) {
+    @apply active:scale-95 transition-transform duration-150;
+  }
+}
+
+@utility touch-target {
+  /* Mobile-native touch interactions */
+  @apply min-h-[44px] min-w-[44px] flex items-center justify-center;
+
+  /* Native-feeling mobile interactions */
+}
+
+@utility container {
+  /* Native-feeling mobile interactions */
+  @media (max-width: 768px) {
+    /* Better mobile spacing */
+    @apply px-4;
+  }
+}
+
+/* Bakery Design System - Warm, artisanal, and inviting */
+
+@layer base {
+  :root {
+    /* Bakery Color Palette */
+    --background: 42 78% 95%;           /* Warm cream */
+    --foreground: 25 20% 20%;           /* Rich brown */
+
+    --card: 43 74% 97%;                 /* Light cream */
+    --card-foreground: 25 20% 20%;
+
+    --popover: 43 74% 97%;
+    --popover-foreground: 25 20% 20%;
+
+    /* Primary - Golden brown for CTAs and highlights */
+    --primary: 35 45% 65%;              /* Golden brown */
+    --primary-foreground: 43 74% 97%;
+
+    /* Secondary - Soft orange for accents */
+    --secondary: 24 85% 70%;            /* Warm orange */
+    --secondary-foreground: 25 20% 20%;
+
+    /* Muted tones for subtle elements */
+    --muted: 42 45% 92%;                /* Soft cream */
+    --muted-foreground: 25 15% 45%;
+
+    /* Accent - Deep bakery brown */
+    --accent: 25 35% 35%;               /* Deep brown */
+    --accent-foreground: 43 74% 97%;
+
+    /* Hero variant for standout elements */
+    --hero: 35 55% 55%;                 /* Rich golden */
+    --hero-foreground: 43 74% 97%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 43 74% 97%;
+
+    --border: 42 35% 85%;
+    --input: 42 35% 88%;
+    --ring: 35 45% 65%;
+
+    --radius: 0.75rem;
+
+    /* Bakery gradients */
+    --gradient-warm: linear-gradient(135deg, hsl(42 78% 95%), hsl(35 45% 75%));
+    --gradient-hero: linear-gradient(135deg, hsl(35 55% 55%), hsl(24 85% 70%));
+    --gradient-subtle: linear-gradient(180deg, hsl(43 74% 97%), hsl(42 45% 92%));
+
+    /* Shadows with warm tones */
+    --shadow-warm: 0 4px 20px -2px hsl(35 45% 65% / 0.15);
+    --shadow-soft: 0 2px 10px -1px hsl(25 20% 20% / 0.08);
+
+    /* Transitions */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    /* Dark mode with warm undertones for evening bakery ambiance */
+    --background: 25 15% 8%;             /* Dark warm brown */
+    --foreground: 43 74% 97%;            /* Cream text */
+
+    --card: 25 20% 12%;
+    --card-foreground: 43 74% 97%;
+
+    --popover: 25 20% 12%;
+    --popover-foreground: 43 74% 97%;
+
+    --primary: 35 55% 65%;               /* Golden brown stays prominent */
+    --primary-foreground: 25 15% 8%;
+
+    --secondary: 24 75% 65%;             /* Softer orange for dark mode */
+    --secondary-foreground: 25 15% 8%;
+
+    --muted: 25 15% 15%;
+    --muted-foreground: 42 25% 65%;
+
+    --accent: 35 45% 75%;                /* Lighter golden for dark mode */
+    --accent-foreground: 25 15% 8%;
+
+    --hero: 35 65% 70%;                  /* Brighter hero for dark mode */
+    --hero-foreground: 25 15% 8%;
+
+    --destructive: 0 75% 55%;
+    --destructive-foreground: 43 74% 97%;
+
+    --border: 25 15% 20%;
+    --input: 25 15% 18%;
+    --ring: 35 55% 65%;
+
+    /* Dark mode gradients */
+    --gradient-warm: linear-gradient(135deg, hsl(25 15% 8%), hsl(25 20% 15%));
+    --gradient-hero: linear-gradient(135deg, hsl(35 65% 70%), hsl(24 75% 65%));
+    --gradient-subtle: linear-gradient(180deg, hsl(25 20% 12%), hsl(25 15% 15%));
+
+    /* Dark shadows */
+    --shadow-warm: 0 4px 20px -2px hsl(0 0% 0% / 0.4);
+    --shadow-soft: 0 2px 10px -1px hsl(0 0% 0% / 0.2);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-body;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display;
+  }
+}
+
+@layer components {
+
+  /* Smooth mobile scrolling */
+  html {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+  @media (max-width: 768px) {
+    
+    button {
+      @apply active:scale-95 transition-transform duration-150;
+    }
+  }
+}
