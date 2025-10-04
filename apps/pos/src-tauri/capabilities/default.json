@@ -1,0 +1,87 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "enables the default permissions",
+  "windows": ["main"],
+  "permissions": [
+    "core:default",
+    "autostart:allow-enable",
+    "autostart:allow-disable",
+    "autostart:allow-is-enabled",
+    "store:default",
+    "dialog:allow-save",
+    "fs:default",
+    "fs:allow-write-file",
+    "fs:allow-read-file",
+    "fs:allow-exists",
+    "core:window:default",
+    "core:window:allow-start-dragging",
+    "opener:default",
+    "hid:default",
+    "deep-link:default",
+    "upload:default",
+    "updater:default",
+    "dialog:allow-message",
+    "dialog:allow-open",
+    "notification:default",
+    "notification:allow-check-permissions",
+    "notification:allow-cancel",
+    "notification:allow-permission-state",
+    "notification:allow-request-permission",
+    "notification:allow-notify",
+    "clipboard-manager:allow-write-text",
+    "printer:allow-get-printers",
+    "printer:allow-print-pdf",
+    "printer:allow-print-html",
+    "printer:allow-ping",
+    "printer:allow-get-printers-by-name",
+    "printer:allow-get-jobs",
+    "printer:allow-restart-job",
+    "printer:allow-pause-job",
+    "printer:allow-resume-job",
+    "printer:allow-remove-job",
+    "printer:default",
+    "http:allow-fetch-read-body",
+    "fs:allow-remove",
+    "sentry:default",
+    "hid:allow-open",
+    "hid:allow-read",
+    "hid:allow-write",
+    {
+      "identifier": "opener:allow-open-path",
+      "allow": [
+        { "path": "$DOWNLOAD/*" },
+        { "path": "$DOCUMENT/*" },
+        { "path": "$APPDATA/*" },
+        { "path": "$DOWNLOAD/Dealio" },
+        { "path": "$DOWNLOAD/Dealio/*" },
+        { "path": "$DOCUMENT/Dealio" },
+        { "path": "$DOCUMENT/Dealio/*" }
+      ]
+    },
+    {
+      "identifier": "fs:scope",
+      "allow": [
+        { "path": "$DOWNLOAD" },
+        { "path": "$DOWNLOAD/*" },
+        { "path": "$DOWNLOAD/Dealio" },
+        { "path": "$DOWNLOAD/Dealio/*" },
+        { "path": "$DOCUMENT" },
+        { "path": "$DOCUMENT/*" },
+        { "path": "$DOCUMENT/Dealio" },
+        { "path": "$DOCUMENT/Dealio/*" },
+        { "path": "$APPDATA" },
+        { "path": "$APPDATA/*" }
+      ]
+    },
+    {
+      "identifier": "http:default",
+      "allow": [
+        { "url": "https://*.tauri.app" },
+        { "url": "https://*:*" },
+        { "url": "https://dealioerp.vercel.app" },
+        { "url": "http://localhost:3000" }
+      ]
+    }
+  ]
+}

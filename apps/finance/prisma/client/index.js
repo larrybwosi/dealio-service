@@ -35,12 +35,12 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 6.15.0
- * Query Engine version: 85179d7826409ee107a6ba334b5e305ae3fba9fb
+ * Prisma Client JS version: 6.16.3
+ * Query Engine version: bb420e667c1820a8c05a38023385f6cc7ef8e83a
  */
 Prisma.prismaVersion = {
-  client: "6.15.0",
-  engine: "85179d7826409ee107a6ba334b5e305ae3fba9fb"
+  client: "6.16.3",
+  engine: "bb420e667c1820a8c05a38023385f6cc7ef8e83a"
 }
 
 Prisma.PrismaClientKnownRequestError = PrismaClientKnownRequestError;
@@ -2074,7 +2074,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\code\\dealio-monorepo\\apps\\fianance\\prisma\\client",
+      "value": "C:\\code\\dl-mn\\apps\\finance\\prisma\\client",
       "fromEnvVar": null
     },
     "config": {
@@ -2090,7 +2090,7 @@ const config = {
     "previewFeatures": [
       "driverAdapters"
     ],
-    "sourceFilePath": "C:\\code\\dealio-monorepo\\apps\\fianance\\prisma\\schema.prisma",
+    "sourceFilePath": "C:\\code\\dl-mn\\apps\\finance\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -2098,8 +2098,8 @@ const config = {
     "schemaEnvPath": "../../.env"
   },
   "relativePath": "..",
-  "clientVersion": "6.15.0",
-  "engineVersion": "85179d7826409ee107a6ba334b5e305ae3fba9fb",
+  "clientVersion": "6.16.3",
+  "engineVersion": "bb420e667c1820a8c05a38023385f6cc7ef8e83a",
   "datasourceNames": [
     "db"
   ],

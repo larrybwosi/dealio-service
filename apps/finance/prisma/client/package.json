@@ -125,6 +125,12 @@
       "import": "./runtime/react-native.js",
       "default": "./runtime/react-native.js"
     },
+    "./runtime/index-browser": {
+      "types": "./runtime/index-browser.d.ts",
+      "require": "./runtime/index-browser.js",
+      "import": "./runtime/index-browser.mjs",
+      "default": "./runtime/index-browser.mjs"
+    },
     "./generator-build": {
       "require": "./generator-build/index.js",
       "import": "./generator-build/index.js",
@@ -145,7 +151,7 @@
     },
     "./*": "./*"
   },
-  "version": "6.15.0",
+  "version": "6.16.3",
   "sideEffects": false,
   "imports": {
     "#wasm-engine-loader": {
