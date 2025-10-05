@@ -1,9 +1,9 @@
 import { Order, OrderQueue } from '@/types';
 import { cn } from '@/lib/utils';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@workspace/ui/componentsdialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@workspace/ui/components/dialog';
 import { RadioGroup, RadioGroupItem } from '@workspace/ui/componentsradio-group';
-import { Label } from '@workspace/ui/componentslabel';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@workspace/ui/componentstabs';
+import { Label } from '@workspace/ui/components/label';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@workspace/ui/components/tabs';
 import { FileCheck, FileEdit, MapPin, Clock, User, CreditCard } from 'lucide-react';
 import { Button } from '@workspace/ui/components/button';
 import { BusinessConfig } from '@/types/business-config';

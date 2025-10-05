@@ -13,13 +13,12 @@ import {
   ChefHat,
   Leaf,
 } from "lucide-react";
-import { Button } from "@workspace/ui/components/button";
+import { Button } from "@workspace/ui/components/button-custom";
 import { Badge } from "@workspace/ui/components/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@workspace/ui/componentscard";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@workspace/ui/componentstabs";
-import { Separator } from "@workspace/ui/componentsseparator";
+import { Card, CardContent, CardHeader, CardTitle } from "@workspace/ui/components/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@workspace/ui/components/tabs";
+import { Separator } from "@workspace/ui/components/separator";
 import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import { AddOnsSelector } from "@/components/AddOnsSelector";
 import { ProductReviews } from "@/components/ProductReviews";
 import { useCart, CartAddOn } from "@/hooks/useCart";
@@ -1073,8 +1072,6 @@ For best results:
           </div>
         </section>
       </main>
-
-      <Footer />
     </div>
   );
 };

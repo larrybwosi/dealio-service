@@ -5,7 +5,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from "@workspace/ui/componentsdialog";
+} from "@workspace/ui/components/dialog";
 import {
   Table,
   TableBody,
@@ -14,7 +14,7 @@ import {
   TableHeader,
   TableRow,
 } from "@workspace/ui/componentstable";
-import { Input } from "@workspace/ui/componentsinput";
+import { Input } from "@workspace/ui/components/input";
 import { Button } from "@workspace/ui/components/button";
 import { Skeleton } from "@workspace/ui/componentsskeleton";
 import { Alert, AlertDescription } from "@workspace/ui/componentsalert";

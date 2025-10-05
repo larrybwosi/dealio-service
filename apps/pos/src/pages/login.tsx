@@ -2,10 +2,10 @@
 
 import { useState } from 'react';
 import { Button } from '@workspace/ui/components/button';
-import { Input } from '@workspace/ui/componentsinput';
-import { Label } from '@workspace/ui/componentslabel';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@workspace/ui/componentscard';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@workspace/ui/componentstabs';
+import { Input } from '@workspace/ui/components/input';
+import { Label } from '@workspace/ui/components/label';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@workspace/ui/components/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@workspace/ui/components/tabs';
 import { Badge } from '@workspace/ui/components/badge';
 import {
   Eye,

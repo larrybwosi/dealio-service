@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import { Star, Plus, ThumbsUp, MessageSquare } from "lucide-react";
 import { Button } from "@workspace/ui/components/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@workspace/ui/componentscard";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@workspace/ui/componentsdialog";
-import { Textarea } from "@workspace/ui/componentstextarea";
-import { Input } from "@workspace/ui/componentsinput";
-import { Label } from "@workspace/ui/componentslabel";
+import { Card, CardContent, CardHeader, CardTitle } from "@workspace/ui/components/card";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@workspace/ui/components/dialog";
+import { Textarea } from "@workspace/ui/components/textarea";
+import { Input } from "@workspace/ui/components/input";
+import { Label } from "@workspace/ui/components/label";
 import { Badge } from "@workspace/ui/components/badge";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";

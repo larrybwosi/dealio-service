@@ -3,11 +3,11 @@
 import { useState, useEffect } from "react";
 import { Eye, EyeOff, Mail, Lock, User } from "lucide-react";
 import { Button } from "@workspace/ui/components/button.tsx";
-import { Input } from "@workspace/ui/componentsinput.tsx";
-import { Label } from "@workspace/ui/componentslabel.tsx";
-import { Card, CardContent, CardHeader, CardTitle } from "@workspace/ui/componentscard.tsx";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@workspace/ui/componentstabs.tsx";
-import { Separator } from "@workspace/ui/componentsseparator.tsx";
+import { Input } from "@workspace/ui/components/input.tsx";
+import { Label } from "@workspace/ui/components/label.tsx";
+import { Card, CardContent, CardHeader, CardTitle } from "@workspace/ui/components/card.tsx";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@workspace/ui/components/tabs.tsx";
+import { Separator } from "@workspace/ui/components/separator.tsx";
 import { supabase } from "@/integrations/supabase/client.ts";
 import { useToast } from "@/hooks/use-toast.ts";
 import Header from "@/components/Header.tsx";

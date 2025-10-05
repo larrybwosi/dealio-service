@@ -1,9 +1,9 @@
 import { useState, useEffect, useCallback, useMemo, useRef, memo } from 'react';
 import { listen } from '@tauri-apps/api/event';
 import { toast } from 'sonner';
-import { Input } from '@workspace/ui/componentsinput';
+import { Input } from '@workspace/ui/components/input';
 import { Button } from '@workspace/ui/components/button';
-import { Tabs, TabsList, TabsTrigger } from '@workspace/ui/componentstabs';
+import { Tabs, TabsList, TabsTrigger } from '@workspace/ui/components/tabs';
 import { Badge } from '@workspace/ui/components/badge';
 import { ScrollArea } from '@workspace/ui/componentsscroll-area';
 import { ProductCard } from './product-card';

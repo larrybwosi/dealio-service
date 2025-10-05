@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@workspace/ui/componentscard';
-import { Label } from '@workspace/ui/componentslabel';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@workspace/ui/components/card';
+import { Label } from '@workspace/ui/components/label';
 import { Switch } from '@workspace/ui/componentsswitch';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@workspace/ui/componentsselect';
 import { Building2, Package, PlusCircle } from 'lucide-react';
@@ -8,7 +8,7 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { useListLocations } from '@/lib/services/locations';
 import { useOrgStore } from '@/lib/tanstack-axios';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@workspace/ui/componentsdialog';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@workspace/ui/components/dialog';
 import { Skeleton } from '@workspace/ui/componentsskeleton';
 
 interface LocationSettingsProps {

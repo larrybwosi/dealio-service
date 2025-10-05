@@ -8,7 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@workspace/ui/componentsdialog';
+} from '@workspace/ui/components/dialog';
 import { ScanLine } from 'lucide-react';
 
 // import { requestDevice, openDevice, closeDevice } from '@redfernelec/tauri-plugin-hid-api';

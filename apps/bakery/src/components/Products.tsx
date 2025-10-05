@@ -1,7 +1,7 @@
 'use client'
 
 import { Star } from "lucide-react";
-import { Button } from "@workspace/ui/components/button";
+import { Button } from "@workspace/ui/components/button-custom";
 import { useRouter } from 'next/navigation';
 import Image from "next/image";
 

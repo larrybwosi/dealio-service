@@ -2,9 +2,9 @@
 import { useState } from "react";
 import { Calendar, Users, Clock, MapPin, Phone, Mail, Star, CheckCircle } from "lucide-react";
 import { Button } from "@workspace/ui/components/button";
-import { Input } from "@workspace/ui/componentsinput";
-import { Textarea } from "@workspace/ui/componentstextarea";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@workspace/ui/componentscard";
+import { Input } from "@workspace/ui/components/input";
+import { Textarea } from "@workspace/ui/components/textarea";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@workspace/ui/components/card";
 import { Badge } from "@workspace/ui/components/badge";
 import { useToast } from "@/hooks/use-toast";
 import Header from "@/components/Header";

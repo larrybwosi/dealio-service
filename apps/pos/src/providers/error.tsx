@@ -1,7 +1,7 @@
 import { Component, ReactNode, useEffect } from 'react';
 import { Alert, AlertDescription, AlertTitle } from '@workspace/ui/componentsalert';
 import { Button } from '@workspace/ui/components/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@workspace/ui/componentscard';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@workspace/ui/components/card';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@workspace/ui/componentscollapsible';
 import { AlertTriangle, RefreshCw, ChevronDown, Bug, Info } from 'lucide-react';
 

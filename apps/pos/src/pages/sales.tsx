@@ -32,14 +32,14 @@ import {
 } from 'lucide-react';
 
 // UI Components
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@workspace/ui/componentscard';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@workspace/ui/components/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@workspace/ui/componentsselect';
 import { Badge } from '@workspace/ui/components/badge';
 import { Button } from '@workspace/ui/components/button';
-import { Input } from '@workspace/ui/componentsinput';
+import { Input } from '@workspace/ui/components/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@workspace/ui/componentstable';
 import { Skeleton } from '@workspace/ui/componentsskeleton';
-import { Separator } from '@workspace/ui/componentsseparator';
+import { Separator } from '@workspace/ui/components/separator';
 import { Alert, AlertDescription } from '@workspace/ui/componentsalert';
 
 // Store and utilities

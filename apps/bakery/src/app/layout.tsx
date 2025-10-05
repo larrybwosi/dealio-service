@@ -3,6 +3,7 @@ import { GoogleAnalytics } from '@next/third-parties/google';
 import './globals.css';
 import localFont from 'next/font/local';
 import Footer from '@/components/Footer';
+// import "@workspace/ui/globals.css";
 
 export const metadata: Metadata = {
   title: {

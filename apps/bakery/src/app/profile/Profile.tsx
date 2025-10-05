@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import { User, MapPin, Phone, Calendar, Save, Plus, Trash2, LogOut, Heart, Settings, Bell, Eye, EyeOff, Star, ShoppingBag, Gift, Share2, Copy, MessageCircle, Facebook, Instagram, Twitter, Mail, Truck, RotateCcw, CheckCircle, Clock, Package } from "lucide-react";
 import { Button } from "@workspace/ui/components/button";
-import { Input } from "@workspace/ui/componentsinput";
-import { Label } from "@workspace/ui/componentslabel";
-import { Card, CardContent, CardHeader, CardTitle } from "@workspace/ui/componentscard";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@workspace/ui/componentstabs";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@workspace/ui/componentsdialog";
-import { Textarea } from "@workspace/ui/componentstextarea";
+import { Input } from "@workspace/ui/components/input";
+import { Label } from "@workspace/ui/components/label";
+import { Card, CardContent, CardHeader, CardTitle } from "@workspace/ui/components/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@workspace/ui/components/tabs";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@workspace/ui/components/dialog";
+import { Textarea } from "@workspace/ui/components/textarea";
 import { Switch } from "@workspace/ui/componentsswitch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@workspace/ui/componentsselect";
 import { Badge } from "@workspace/ui/components/badge";

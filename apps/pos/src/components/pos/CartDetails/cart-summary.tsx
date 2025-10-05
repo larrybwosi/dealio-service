@@ -1,7 +1,7 @@
 import { memo, useState } from 'react';
 import { CreditCard } from 'lucide-react';
 import { Button } from '@workspace/ui/components/button';
-import { Input } from '@workspace/ui/componentsinput';
+import { Input } from '@workspace/ui/components/input';
 import { BusinessType, getBusinessConfig } from '@/types/business-config';
 import { useFormattedCurrency } from '@/lib/utils';
 

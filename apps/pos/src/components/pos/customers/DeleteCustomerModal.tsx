@@ -6,7 +6,7 @@ import {
   DialogTitle,
   DialogDescription,
   DialogFooter,
-} from "@workspace/ui/componentsdialog";
+} from "@workspace/ui/components/dialog";
 import { Button } from "@workspace/ui/components/button";
 import { Customer } from "@/types";
 import { useDeleteCustomer } from "@/lib/services/customers";

@@ -9,7 +9,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@workspace/ui/componentsdialog';
+} from '@workspace/ui/components/dialog';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -21,7 +21,7 @@ import {
   AlertDialogTitle,
 } from '@workspace/ui/componentsalert-dialog';
 import { Avatar, AvatarFallback, AvatarImage } from '@workspace/ui/componentsavatar';
-import { Separator } from '@workspace/ui/componentsseparator';
+import { Separator } from '@workspace/ui/components/separator';
 import {
   ChevronRight,
   LayoutDashboard,

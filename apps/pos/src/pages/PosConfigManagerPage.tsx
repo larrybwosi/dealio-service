@@ -1,12 +1,12 @@
 import { useState, useEffect, useRef, JSX } from 'react';
 import { toast } from 'sonner';
 import { Button } from '@workspace/ui/components/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@workspace/ui/componentscard';
-import { Input } from '@workspace/ui/componentsinput';
-import { Label } from '@workspace/ui/componentslabel';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@workspace/ui/components/card';
+import { Input } from '@workspace/ui/components/input';
+import { Label } from '@workspace/ui/components/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@workspace/ui/componentsselect';
 import { Switch } from '@workspace/ui/componentsswitch';
-import { Separator } from '@workspace/ui/componentsseparator';
+import { Separator } from '@workspace/ui/components/separator';
 import { Badge } from '@workspace/ui/components/badge';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@workspace/ui/componentstooltip';
 import {
@@ -28,7 +28,7 @@ import {
   DialogTitle,
   DialogTrigger,
   DialogFooter,
-} from '@workspace/ui/componentsdialog';
+} from '@workspace/ui/components/dialog';
 
 import {
   Save,
