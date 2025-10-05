@@ -1,6 +1,6 @@
 # Non-Commercial Source Available License
 
-Copyright (c) 2025 [Your Name]
+Copyright (c) 2025 Dealio
 
 ## Terms and Conditions
 
