@@ -13,11 +13,11 @@ import {
   ChefHat,
   Leaf,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Separator } from "@/components/ui/separator";
+import { Button } from "@workspace/ui/components/button";
+import { Badge } from "@workspace/ui/components/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@workspace/ui/componentscard";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@workspace/ui/componentstabs";
+import { Separator } from "@workspace/ui/componentsseparator";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { AddOnsSelector } from "@/components/AddOnsSelector";

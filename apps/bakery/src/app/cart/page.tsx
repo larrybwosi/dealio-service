@@ -2,10 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import { ArrowLeft, Minus, Plus, Trash2, Star, Gift } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
+import { Button } from '@workspace/ui/components/button';
+import { Badge } from '@workspace/ui/components/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@workspace/ui/componentscard';
+import { Separator } from '@workspace/ui/componentsseparator';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { useCart } from '@/hooks/useCart';

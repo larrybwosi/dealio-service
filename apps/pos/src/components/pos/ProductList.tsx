@@ -1,14 +1,14 @@
 import { useState, useEffect, useCallback, useMemo, useRef, memo } from 'react';
 import { listen } from '@tauri-apps/api/event';
 import { toast } from 'sonner';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Badge } from '@/components/ui/badge';
-import { ScrollArea } from '@/components/ui/scroll-area';
+import { Input } from '@workspace/ui/componentsinput';
+import { Button } from '@workspace/ui/components/button';
+import { Tabs, TabsList, TabsTrigger } from '@workspace/ui/componentstabs';
+import { Badge } from '@workspace/ui/components/badge';
+import { ScrollArea } from '@workspace/ui/componentsscroll-area';
 import { ProductCard } from './product-card';
 import { ProductListError } from './product-list-error';
-import { ProductSkeleton } from '@/components/ui/skeletons/ProductSkeleton';
+import { ProductSkeleton } from '@workspace/ui/componentsskeletons/ProductSkeleton';
 
 import { Search, RefreshCw, X, Package } from 'lucide-react';
 

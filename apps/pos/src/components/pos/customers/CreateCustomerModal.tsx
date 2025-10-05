@@ -7,11 +7,11 @@ import {
   DialogTitle,
   DialogDescription,
   DialogFooter,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+} from "@workspace/ui/componentsdialog";
+import { Input } from "@workspace/ui/componentsinput";
+import { Button } from "@workspace/ui/components/button";
+import { Label } from "@workspace/ui/componentslabel";
+import { Textarea } from "@workspace/ui/componentstextarea";
 import { Customer } from "@/types";
 import { useCreateCustomer } from "@/lib/services/customers";
 

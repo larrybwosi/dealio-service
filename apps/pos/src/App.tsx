@@ -1,4 +1,4 @@
-import { TooltipProvider } from '@/components/ui/tooltip';
+import { TooltipProvider } from '@workspace/ui/componentstooltip';
 import { BrowserRouter, Routes, Route } from 'react-router';
 import Index from './pages/Index';
 import NotFound from './pages/NotFound';

@@ -1,15 +1,15 @@
 "use client"
 
 import { useState } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@repo/ui/card"
-import { Button } from "@repo/ui/button"
-import { Input } from "@repo/ui/input"
-import { Label } from "@repo/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui/select"
-import { Switch } from "@repo/ui/switch"
-import { Badge } from "@repo/ui/badge"
-import { Avatar, AvatarFallback, AvatarImage } from "@repo/ui/avatar"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@repo/ui/table"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@workspace/ui/components/card"
+import { Button } from "@workspace/ui/components/button"
+import { Input } from "@workspace/ui/components/input"
+import { Label } from "@workspace/ui/components/label"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@workspace/ui/components/select"
+import { Switch } from "@workspace/ui/components/switch"
+import { Badge } from "@workspace/ui/components/badge"
+import { Avatar, AvatarFallback, AvatarImage } from "@workspace/ui/components/avatar"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table"
 import {
   Dialog,
   DialogContent,
@@ -17,7 +17,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@repo/ui/dialog"
+} from "@workspace/ui/components/dialog"
 import { Users, UserPlus, Search, Edit, Shield, Building, DollarSign, UserCheck, UserX, Crown, Key } from "lucide-react"
 import { useUsers, useUpdateUser } from "@/hooks/use-users"
 import { useAuth } from "@/hooks/use-auth"

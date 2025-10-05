@@ -1,6 +1,6 @@
 import { useState, useCallback, useMemo } from 'react';
 import { cn, formatDate } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
+import { Button } from '@workspace/ui/components/button';
 import {
   Dialog,
   DialogContent,
@@ -9,7 +9,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
+} from '@workspace/ui/componentsdialog';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -19,9 +19,9 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Separator } from '@/components/ui/separator';
+} from '@workspace/ui/componentsalert-dialog';
+import { Avatar, AvatarFallback, AvatarImage } from '@workspace/ui/componentsavatar';
+import { Separator } from '@workspace/ui/componentsseparator';
 import {
   ChevronRight,
   LayoutDashboard,

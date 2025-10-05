@@ -3,15 +3,15 @@
 import type React from "react"
 
 import { useState, useRef, useCallback, useEffect } from "react"
-import { Button } from "@repo/ui/button"
-import { Input } from "@repo/ui/input"
-import { Label } from "@repo/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui/select"
-import { Textarea } from "@repo/ui/textarea"
-import { Badge } from "@repo/ui/badge"
-import { ScrollArea } from "@repo/ui/scroll-area"
-import { Card } from "@repo/ui/card"
-import { Separator } from "@repo/ui/separator"
+import { Button } from "@workspace/ui/components/button"
+import { Input } from "@workspace/ui/components/input"
+import { Label } from "@workspace/ui/components/label"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@workspace/ui/components/select"
+import { Textarea } from "@workspace/ui/components/textarea"
+import { Badge } from "@workspace/ui/components/badge"
+import { ScrollArea } from "@workspace/ui/components/scroll-area"
+import { Card } from "@workspace/ui/components/card"
+import { Separator } from "@workspace/ui/components/separator"
 import {
   Play,
   Save,

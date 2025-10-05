@@ -32,15 +32,15 @@ import {
 } from 'lucide-react';
 
 // UI Components
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Separator } from '@/components/ui/separator';
-import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@workspace/ui/componentscard';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@workspace/ui/componentsselect';
+import { Badge } from '@workspace/ui/components/badge';
+import { Button } from '@workspace/ui/components/button';
+import { Input } from '@workspace/ui/componentsinput';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@workspace/ui/componentstable';
+import { Skeleton } from '@workspace/ui/componentsskeleton';
+import { Separator } from '@workspace/ui/componentsseparator';
+import { Alert, AlertDescription } from '@workspace/ui/componentsalert';
 
 // Store and utilities
 import { useOrgStore } from '@/lib/tanstack-axios';

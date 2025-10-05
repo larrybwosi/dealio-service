@@ -1,7 +1,7 @@
 import { useState, useMemo, useCallback } from 'react';
 import { Product, ProductVariant } from '@/types/product';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { Button } from '@workspace/ui/components/button';
+import { Badge } from '@workspace/ui/components/badge';
 import { MinusIcon, PlusIcon, ShoppingCart, Info, BookOpen, Pill } from 'lucide-react';
 import { useBusinessConfig } from '@/lib/business-config-manager';
 

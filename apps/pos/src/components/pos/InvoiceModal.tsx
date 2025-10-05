@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@workspace/ui/componentsdialog';
+import { Button } from '@workspace/ui/components/button';
 import { InvoiceData, Order } from '@/types';
 import { PDFViewer } from '@react-pdf/renderer';
 import { Printer, Download, Mail, Share2 } from 'lucide-react';

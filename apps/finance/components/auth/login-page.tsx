@@ -3,18 +3,18 @@
 import type React from "react";
 
 import { useState } from "react";
-import { Button } from "@repo/ui/button";
-import { Input } from "@repo/ui/input";
-import { Label } from "@repo/ui/label";
+import { Button } from "@workspace/ui/components/button";
+import { Input } from "@workspace/ui/components/input";
+import { Label } from "@workspace/ui/components/label";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@repo/ui/card";
-import { Alert, AlertDescription } from "@repo/ui/alert";
-import { Separator } from "@repo/ui/separator";
+} from "@workspace/ui/components/card";
+import { Alert, AlertDescription } from "@workspace/ui/components/alert";
+import { Separator } from "@workspace/ui/components/separator";
 import { Eye, EyeOff, Lock, Mail, Building2, Github } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { signIn } from "@/lib/authClient";

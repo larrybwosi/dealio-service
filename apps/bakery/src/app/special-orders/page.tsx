@@ -18,18 +18,18 @@ import {
   DollarSign,
   Image as ImageIcon,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@workspace/ui/components/button";
+import { Input } from "@workspace/ui/componentsinput";
+import { Textarea } from "@workspace/ui/componentstextarea";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+} from "@workspace/ui/componentscard";
+import { Badge } from "@workspace/ui/components/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@workspace/ui/componentstabs";
 import { toast } from "sonner";
 import {
   Select,
@@ -37,7 +37,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from "@workspace/ui/componentsselect";
 
 // Simulated auth state - replace with your actual auth solution
 const useAuth = () => {

@@ -1,6 +1,6 @@
 'use client'
 import { ChefHat, Clock, Award } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@workspace/ui/components/button";
 
 const Hero = () => {
   return (

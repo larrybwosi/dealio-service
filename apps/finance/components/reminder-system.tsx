@@ -1,16 +1,16 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Card, CardContent } from "@repo/ui/card"
-import { Button } from "@repo/ui/button"
-import { Input } from "@repo/ui/input"
-import { Label } from "@repo/ui/label"
-import { Textarea } from "@repo/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui/select"
-import { Badge } from "@repo/ui/badge"
-import { Switch } from "@repo/ui/switch"
-import { Calendar } from "@repo/ui/calendar"
-import { Popover, PopoverContent, PopoverTrigger } from "@repo/ui/popover"
+import { Card, CardContent } from "@workspace/ui/components/card"
+import { Button } from "@workspace/ui/components/button"
+import { Input } from "@workspace/ui/components/input"
+import { Label } from "@workspace/ui/components/label"
+import { Textarea } from "@workspace/ui/components/textarea"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@workspace/ui/components/select"
+import { Badge } from "@workspace/ui/components/badge"
+import { Switch } from "@workspace/ui/components/switch"
+import { Calendar } from "@workspace/ui/components/calendar"
+import { Popover, PopoverContent, PopoverTrigger } from "@workspace/ui/components/popover"
 import {
   Dialog,
   DialogContent,
@@ -18,10 +18,10 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@repo/ui/dialog"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@repo/ui/table"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui/tabs"
-import { Alert, AlertDescription } from "@repo/ui/alert"
+} from "@workspace/ui/components/dialog"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@workspace/ui/components/tabs"
+import { Alert, AlertDescription } from "@workspace/ui/components/alert"
 import {
   Bell,
   Plus,

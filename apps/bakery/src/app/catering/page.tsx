@@ -1,11 +1,11 @@
 'use client'
 import { useState } from "react";
 import { Calendar, Users, Clock, MapPin, Phone, Mail, Star, CheckCircle } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Button } from "@workspace/ui/components/button";
+import { Input } from "@workspace/ui/componentsinput";
+import { Textarea } from "@workspace/ui/componentstextarea";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@workspace/ui/componentscard";
+import { Badge } from "@workspace/ui/components/badge";
 import { useToast } from "@/hooks/use-toast";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";

@@ -1,14 +1,14 @@
 import { useState, useEffect, useRef, JSX } from 'react';
 import { toast } from 'sonner';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Switch } from '@/components/ui/switch';
-import { Separator } from '@/components/ui/separator';
-import { Badge } from '@/components/ui/badge';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { Button } from '@workspace/ui/components/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@workspace/ui/componentscard';
+import { Input } from '@workspace/ui/componentsinput';
+import { Label } from '@workspace/ui/componentslabel';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@workspace/ui/componentsselect';
+import { Switch } from '@workspace/ui/componentsswitch';
+import { Separator } from '@workspace/ui/componentsseparator';
+import { Badge } from '@workspace/ui/components/badge';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@workspace/ui/componentstooltip';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -19,7 +19,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
+} from '@workspace/ui/componentsalert-dialog';
 import {
   Dialog,
   DialogContent,
@@ -28,7 +28,7 @@ import {
   DialogTitle,
   DialogTrigger,
   DialogFooter,
-} from '@/components/ui/dialog';
+} from '@workspace/ui/componentsdialog';
 
 import {
   Save,

@@ -1,8 +1,8 @@
 "use client"
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@repo/ui/card"
-import { Badge } from "@repo/ui/badge"
-import { Button } from "@repo/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@workspace/ui/components/card"
+import { Badge } from "@workspace/ui/components/badge"
+import { Button } from "@workspace/ui/components/button"
 import { CheckCircle, MessageSquare, Users, Bell, Tag, DollarSign, TrendingUp, Calendar, FileText } from "lucide-react"
 
 export function FeatureIntegrationSummary() {

@@ -3,12 +3,12 @@
 import type React from "react"
 
 import { useState } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@repo/ui/card"
-import { Badge } from "@repo/ui/badge"
-import { Button } from "@repo/ui/button"
-import { Input } from "@repo/ui/input"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui/tabs"
-import { Separator } from "@repo/ui/separator"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@workspace/ui/components/card"
+import { Badge } from "@workspace/ui/components/badge"
+import { Button } from "@workspace/ui/components/button"
+import { Input } from "@workspace/ui/components/input"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@workspace/ui/components/tabs"
+import { Separator } from "@workspace/ui/components/separator"
 import {
   DollarSign,
   CheckCircle,

@@ -1,10 +1,10 @@
 import { useCallback, useMemo, useState } from 'react';
 import { ChevronDown, ChevronUp, Trash2, CreditCard, User, ShoppingCart } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Button } from '@workspace/ui/components/button';
+import { RadioGroup, RadioGroupItem } from '@workspace/ui/componentsradio-group';
+import { Label } from '@workspace/ui/componentslabel';
+import { Input } from '@workspace/ui/componentsinput';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@workspace/ui/componentsselect';
 import { CartItem, OrderType, Customer } from '@/types';
 import { BusinessType, getBusinessConfig, requiresLocationForOrderType } from '@/types/business-config';
 import { useOrgStore } from '@/lib/tanstack-axios';

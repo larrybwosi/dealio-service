@@ -1,10 +1,10 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "@workspace/ui/components/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@workspace/ui/componentsdropdown-menu";
 import { getCurrencySymbol } from "@/lib/currencyFormatter";
 import { useCurrencyState } from "@/store";
 import { CurrencyType } from "@/types";

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@workspace/ui/components/button';
 import {
   Dialog,
   DialogContent,
@@ -8,7 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
+} from '@workspace/ui/componentsdialog';
 import { ScanLine } from 'lucide-react';
 
 // import { requestDevice, openDevice, closeDevice } from '@redfernelec/tauri-plugin-hid-api';

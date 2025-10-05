@@ -1,12 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Badge } from '@/components/ui/badge';
+import { Button } from '@workspace/ui/components/button';
+import { Input } from '@workspace/ui/componentsinput';
+import { Label } from '@workspace/ui/componentslabel';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@workspace/ui/componentscard';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@workspace/ui/componentstabs';
+import { Badge } from '@workspace/ui/components/badge';
 import {
   Eye,
   EyeOff,

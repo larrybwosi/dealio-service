@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Badge } from '@/components/ui/badge';
+import { Checkbox } from "@workspace/ui/components/checkbox";
+import { Badge } from '@workspace/ui/components/badge';
 import { CartAddOn } from '@/hooks/useCart';
 
 interface AddOnsSelectorProps {

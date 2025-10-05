@@ -9,28 +9,28 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@repo/ui/card";
-import { Button } from "@repo/ui/button";
-import { Input } from "@repo/ui/input";
-import { Label } from "@repo/ui/label";
-import { Textarea } from "@repo/ui/textarea";
+} from "@workspace/ui/components/card";
+import { Button } from "@workspace/ui/components/button";
+import { Input } from "@workspace/ui/components/input";
+import { Label } from "@workspace/ui/components/label";
+import { Textarea } from "@workspace/ui/components/textarea";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@repo/ui/select";
-import { Badge } from "@repo/ui/badge";
-import { Checkbox } from "@repo/ui/checkbox";
-import { Calendar } from "@repo/ui/calendar";
+} from "@workspace/ui/components/select";
+import { Badge } from "@workspace/ui/components/badge";
+import { Checkbox } from "@workspace/ui/components/checkbox";
+import { Calendar } from "@workspace/ui/components/calendar";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@repo/ui/popover";
-import { Progress } from "@repo/ui/progress";
-import { Alert, AlertDescription } from "@repo/ui/alert";
+} from "@workspace/ui/components/popover";
+import { Progress } from "@workspace/ui/components/progress";
+import { Alert, AlertDescription } from "@workspace/ui/components/alert";
 import { format } from "date-fns";
 import {
   CalendarIcon,

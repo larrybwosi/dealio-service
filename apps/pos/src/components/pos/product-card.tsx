@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button';
+import { Button } from '@workspace/ui/components/button';
 import { MinusIcon, PlusIcon, ShoppingCart } from 'lucide-react';
 
 interface ProductCardProps {

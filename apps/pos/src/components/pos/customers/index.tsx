@@ -5,7 +5,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
+} from "@workspace/ui/componentsdialog";
 import {
   Table,
   TableBody,
@@ -13,11 +13,11 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Alert, AlertDescription } from "@/components/ui/alert";
+} from "@workspace/ui/componentstable";
+import { Input } from "@workspace/ui/componentsinput";
+import { Button } from "@workspace/ui/components/button";
+import { Skeleton } from "@workspace/ui/componentsskeleton";
+import { Alert, AlertDescription } from "@workspace/ui/componentsalert";
 import { Customer } from "@/types";
 import {
   PlusCircle,

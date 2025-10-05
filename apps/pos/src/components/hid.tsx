@@ -7,11 +7,11 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
+} from '@workspace/ui/componentsdialog';
+import { Button } from '@workspace/ui/components/button';
+import { Card, CardContent } from '@workspace/ui/componentscard';
+import { Badge } from '@workspace/ui/components/badge';
+import { Separator } from '@workspace/ui/componentsseparator';
 import { CreditCard, CheckCircle, AlertCircle, Scan } from 'lucide-react';
 
 interface CardData {

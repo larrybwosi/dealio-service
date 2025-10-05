@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Button } from "@/components/ui/button"
+import { Button } from "@workspace/ui/components/button"
 import { FileDown, Loader2 } from "lucide-react"
 import type { ReceiptConfig, CartItem, PaymentData, OrganizationData } from "@/types"
 import { toast } from "sonner"

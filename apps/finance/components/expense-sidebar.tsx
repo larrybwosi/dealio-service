@@ -1,9 +1,9 @@
 "use client"
 
 import { useState } from "react"
-import { Button } from "@repo/ui/button"
-import { Badge } from "@repo/ui/badge"
-import { Separator } from "@repo/ui/separator"
+import { Button } from "@workspace/ui/components/button"
+import { Badge } from "@workspace/ui/components/badge"
+import { Separator } from "@workspace/ui/components/separator"
 import {
   LayoutDashboard,
   Plus,

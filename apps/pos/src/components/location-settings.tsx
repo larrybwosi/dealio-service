@@ -1,15 +1,15 @@
 import { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
-import { Switch } from '@/components/ui/switch';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@workspace/ui/componentscard';
+import { Label } from '@workspace/ui/componentslabel';
+import { Switch } from '@workspace/ui/componentsswitch';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@workspace/ui/componentsselect';
 import { Building2, Package, PlusCircle } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { useListLocations } from '@/lib/services/locations';
 import { useOrgStore } from '@/lib/tanstack-axios';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Skeleton } from '@/components/ui/skeleton';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@workspace/ui/componentsdialog';
+import { Skeleton } from '@workspace/ui/componentsskeleton';
 
 interface LocationSettingsProps {
   enableStockTaking: boolean;

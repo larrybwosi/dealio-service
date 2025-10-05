@@ -1,6 +1,6 @@
 'use client'
 import { MapPin, Clock, Phone, Mail, Navigation } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@workspace/ui/components/button";
 
 const Contact = () => {
   const hours = [

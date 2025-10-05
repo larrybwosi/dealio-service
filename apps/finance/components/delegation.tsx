@@ -7,27 +7,27 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@repo/ui/card";
-import { Button } from "@repo/ui/button";
-import { Input } from "@repo/ui/input";
-import { Label } from "@repo/ui/label";
-import { Textarea } from "@repo/ui/textarea";
+} from "@workspace/ui/components/card";
+import { Button } from "@workspace/ui/components/button";
+import { Input } from "@workspace/ui/components/input";
+import { Label } from "@workspace/ui/components/label";
+import { Textarea } from "@workspace/ui/components/textarea";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@repo/ui/select";
-import { Calendar } from "@repo/ui/calendar";
+} from "@workspace/ui/components/select";
+import { Calendar } from "@workspace/ui/components/calendar";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@repo/ui/popover";
-import { Switch } from "@repo/ui/switch";
-import { Badge } from "@repo/ui/badge";
-import { Avatar, AvatarFallback, AvatarImage } from "@repo/ui/avatar";
+} from "@workspace/ui/components/popover";
+import { Switch } from "@workspace/ui/components/switch";
+import { Badge } from "@workspace/ui/components/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@workspace/ui/components/avatar";
 import {
   Table,
   TableBody,
@@ -35,7 +35,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@repo/ui/table";
+} from "@workspace/ui/components/table";
 import {
   Dialog,
   DialogContent,
@@ -43,7 +43,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@repo/ui/dialog";
+} from "@workspace/ui/components/dialog";
 import { format } from "date-fns";
 import {
   CalendarIcon,
