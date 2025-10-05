@@ -1,0 +1,16 @@
+{
+  "name": "@org/store",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "zustand": "^4.5.7"
+  },
+  "devDependencies": {
+    "typescript": "latest"
+  }
+}
