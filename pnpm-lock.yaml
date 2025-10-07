@@ -982,6 +982,12 @@ importers:
       '@org/store':
         specifier: workspace:*
         version: link:../store
+      '@tanstack/react-query':
+        specifier: ^5.90.2
+        version: 5.90.2(react@19.2.0)
+      axios:
+        specifier: ^1.12.2
+        version: 1.12.2
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -17471,6 +17477,11 @@ snapshots:
     dependencies:
       '@tanstack/query-core': 5.90.2
       react: 19.1.1
+
+  '@tanstack/react-query@5.90.2(react@19.2.0)':
+    dependencies:
+      '@tanstack/query-core': 5.90.2
+      react: 19.2.0
 
   '@tanstack/react-table@8.21.3(react-dom@19.1.1(react@19.1.1))(react@19.1.1)':
     dependencies:
