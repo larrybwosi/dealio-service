@@ -11,8 +11,9 @@ import {
   SheetTrigger,
 } from "@workspace/ui/components/sheet";
 import { Separator } from "@workspace/ui/components/separator";
-import { useCart } from "@/contexts/CartContext";
+import { useCart } from "@/contexts/cart";
 import { ShoppingCart, Plus, Minus, Trash2, CreditCard } from "lucide-react";
+import Link from "next/link";
 
 export default function Cart() {
   const { items, total, itemCount, updateQuantity, removeFromCart } = useCart();
@@ -54,7 +55,7 @@ export default function Cart() {
               <ShoppingCart className="h-16 w-16 text-slate-300 mx-auto mb-4" />
               <p className="text-slate-500 text-lg mb-4">Your cart is empty</p>
               <Button onClick={() => setIsOpen(false)}>
-                <Link to="/products">Continue Shopping</Link>
+                <Link href="/products">Continue Shopping</Link>
               </Button>
             </div>
           ) : (
@@ -131,7 +132,7 @@ export default function Cart() {
                     onClick={() => setIsOpen(false)}
                   >
                     <Link
-                      to="/checkout"
+                      href="/checkout"
                       className="flex items-center w-full justify-center"
                     >
                       <CreditCard className="h-4 w-4 mr-2" />
@@ -144,7 +145,7 @@ export default function Cart() {
                     className="w-full"
                     onClick={() => setIsOpen(false)}
                   >
-                    <Link to="/products">Continue Shopping</Link>
+                    <Link href="/products">Continue Shopping</Link>
                   </Button>
                 </div>
               </div>

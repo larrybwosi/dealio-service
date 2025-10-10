@@ -232,7 +232,7 @@ export default function BookHubHomepage() {
           className="absolute inset-0 bg-cover bg-center opacity-30"
           style={{
             backgroundImage:
-              "url('https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=1920&h=1080&fit=crop')",
+              "https://www.istockphoto.com/photo/bookstore-full-of-books-makes-for-better-everyday-life-gm1389125849-446527206?utm_campaign=srp_photos_bottom&utm_content=https%3A%2F%2Funsplash.com%2Fs%2Fphotos%2Fbookshop&utm_medium=affiliate&utm_source=unsplash&utm_term=bookshop%3A%3A%3A",
           }}
         ></div>
 
@@ -402,7 +402,7 @@ export default function BookHubHomepage() {
             <div className="relative">
               <div className="aspect-square rounded-3xl overflow-hidden shadow-2xl">
                 <img
-                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=600&fit=crop"
+                  src="https://media.istockphoto.com/id/1092141430/photo/young-girl-student.webp?a=1&b=1&s=612x612&w=0&k=20&c=045CqQp2MbWI8c8nl90Uu-UBDterams_bVVO0JNlTpg="
                   alt="BookHub Store Interior"
                   className="w-full h-full object-cover"
                 />

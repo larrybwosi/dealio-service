@@ -1,3 +1,4 @@
+'use client'
 import { useState } from "react";
 import { Button } from "@workspace/ui/components/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@workspace/ui/components/card";
@@ -39,8 +40,8 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 
 export default function ProductDetail() {
-  const { id } = useParams<{ id: string }>();
-  const product = id ? getProductById(id) : null;
+  const { slug } = useParams<{ slug: string }>();
+  const product = slug ? getProductById(slug) : null;
   const { addToCart } = useCart();
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);

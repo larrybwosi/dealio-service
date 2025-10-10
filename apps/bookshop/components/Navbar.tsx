@@ -1,15 +1,16 @@
+'use client';
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
 import { Button } from "@workspace/ui/components/button";
 import { Input } from "@workspace/ui/components/input";
 import { Sheet, SheetContent, SheetTrigger } from "@workspace/ui/components/sheet";
 import { Badge } from "@workspace/ui/components/badge";
 import { Menu, Search, BookOpen, ShoppingCart, User } from "lucide-react";
 import Cart from "./Cart";
+import Link from "next/link";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const location = useLocation();
+  // const location = useLocation();
 
   const navItems = [
     { name: "Home", path: "/" },
@@ -20,10 +21,10 @@ export default function Navbar() {
   ];
 
   const isActive = (path: string) => {
-    if (path === "/") return location.pathname === "/";
-    if (path.startsWith("/#"))
-      return location.pathname === "/" && location.hash === path.substring(1);
-    return location.pathname.startsWith(path);
+    // if (path === "/") return location.pathname === "/";
+    // if (path.startsWith("/#"))
+    //   return location.pathname === "/" && location.hash === path.substring(1);
+    return false;
   };
 
   return (
@@ -31,7 +32,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
+          <Link href="/" className="flex items-center space-x-2">
             <div className="w-10 h-10 bg-gradient-to-br from-amber-600 to-orange-600 rounded-xl flex items-center justify-center">
               <BookOpen className="h-6 w-6 text-white" />
             </div>
@@ -43,7 +44,7 @@ export default function Navbar() {
             {navItems.map((item) => (
               <Link
                 key={item.name}
-                to={item.path}
+                href={item.path}
                 className={`font-medium transition-colors hover:text-amber-600 ${
                   isActive(item.path)
                     ? "text-amber-600 border-b-2 border-amber-600 pb-1"
@@ -106,7 +107,7 @@ export default function Navbar() {
                     {navItems.map((item) => (
                       <Link
                         key={item.name}
-                        to={item.path}
+                        href={item.path}
                         onClick={() => setIsOpen(false)}
                         className={`px-4 py-3 rounded-lg font-medium transition-colors hover:bg-amber-50 hover:text-amber-600 ${
                           isActive(item.path)

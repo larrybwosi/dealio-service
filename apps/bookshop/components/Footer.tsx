@@ -8,7 +8,7 @@ import {
   MapPin,
   Clock,
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 
 export default function Footer() {
   return (
@@ -38,13 +38,13 @@ export default function Footer() {
             <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2 text-slate-400 text-sm">
               <li>
-                <Link to="/" className="hover:text-amber-400 transition-colors">
+                <Link href="/" className="hover:text-amber-400 transition-colors">
                   Home
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/products"
+                  href="/products"
                   className="hover:text-amber-400 transition-colors"
                 >
                   Products
@@ -83,7 +83,7 @@ export default function Footer() {
             <ul className="space-y-2 text-slate-400 text-sm">
               <li>
                 <Link
-                  to="/products?category=books"
+                  href="/products?category=books"
                   className="hover:text-amber-400 transition-colors"
                 >
                   Books
@@ -91,7 +91,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  to="/products?category=office"
+                  href="/products?category=office"
                   className="hover:text-amber-400 transition-colors"
                 >
                   Office Supplies
@@ -99,7 +99,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  to="/products?category=technology"
+                  href="/products?category=technology"
                   className="hover:text-amber-400 transition-colors"
                 >
                   Technology
@@ -107,7 +107,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  to="/products?category=stationery"
+                  href="/products?category=stationery"
                   className="hover:text-amber-400 transition-colors"
                 >
                   Stationery
@@ -115,7 +115,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  to="/products?category=student"
+                  href="/products?category=student"
                   className="hover:text-amber-400 transition-colors"
                 >
                   Student Essentials

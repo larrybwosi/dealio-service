@@ -8,7 +8,8 @@ import {
 import { Badge } from "@workspace/ui/components/badge";
 import { Star, ShoppingCart, Eye } from "lucide-react";
 import { Product } from "@/data/products";
-import { useCart } from "@/contexts/CartContext";
+import { useCart } from "@/contexts/cart";
+import Link from "next/link";
 
 interface ProductCardProps {
   product: Product;
@@ -44,7 +45,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 
   return (
     <Card className="group hover:shadow-xl transition-all duration-300 cursor-pointer border-0 shadow-lg overflow-hidden bg-white">
-      <Link to={`/product/${product.id}`}>
+      <Link href={`/products/${product.id}`}>
         <CardHeader className="p-0 relative">
           <div className="aspect-square overflow-hidden">
             <img
@@ -145,7 +146,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           </Button>
 
           <Button variant="outline" className="w-full" asChild>
-            <Link to={`/product/${product.id}`}>View Details</Link>
+            <Link href={`/products/${product.id}`}>View Details</Link>
           </Button>
         </div>
       </CardFooter>
