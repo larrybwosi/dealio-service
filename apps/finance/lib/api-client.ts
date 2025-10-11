@@ -41,13 +41,17 @@ interface RoleFilters {
   hierarchy?: number
 }
 
+interface ApiClientProps {
+  baseURL?: string;
+}
 class ApiClient {
   private client: AxiosInstance;
 
-  constructor(baseURL = "/api") {
+  constructor({ baseURL = "/api" }: ApiClientProps = {}) {
     this.client = axios.create({
       baseURL,
       timeout: 10000,
+      withCredentials: true,
       headers: {
         "Content-Type": "application/json",
       },
@@ -151,7 +155,7 @@ class ApiClient {
 
   // Categories API
   async getCategories(): Promise<ApiResponse> {
-    return this.request("GET", "/categories");
+    return this.request("GET", "/finance/expenses/categories");
   }
 
   async createCategory(data: any): Promise<ApiResponse> {
@@ -306,4 +310,11 @@ class ApiClient {
   }
 }
 
-export const apiClient = new ApiClient()
+
+const createApiClient = (baseURL?: string) => {
+  return new ApiClient({ baseURL });
+};
+
+export const apiClient = createApiClient(
+  `${process.env.NEXT_PUBLIC_BASE_URL}/api`
+);

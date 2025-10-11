@@ -26,6 +26,7 @@ import { UserManagement } from "@/components/user-management";
 import { DepartmentManagement } from "@/components/department-management";
 import { RoleManagement } from "@/components/role-management";
 import { MemberOperations } from "@/components/member-operations";
+import { OrgProvider } from "@/lib/providers/org";
 
 export default function ExpenseManagementSystem() {
   const [view, setView] = useQueryState("view", {
@@ -102,7 +103,9 @@ export default function ExpenseManagementSystem() {
   return (
     <div className="flex h-screen bg-gray-50">
       <Sidebar activeView={activeView} onViewChange={handleViewChange} />
-      <main className="flex-1 overflow-auto">{renderContent()}</main>
+      <main className="flex-1 overflow-auto">
+        <OrgProvider>{renderContent()}</OrgProvider>
+      </main>
     </div>
   );
 }

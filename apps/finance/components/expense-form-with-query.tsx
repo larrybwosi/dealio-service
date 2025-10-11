@@ -45,6 +45,7 @@ import {
   Clock,
   Info,
 } from "lucide-react";
+import { useCategories } from "@/hooks/use-categories";
 
 const PaymentMethod = {
   CREDIT_CARD: "CREDIT_CARD",
@@ -70,9 +71,10 @@ export default function ExpenseFormWithQuery() {
   });
 
   const [newTag, setNewTag] = useState("");
-  const [uploadProgress, setUploadProgress] = useState(0);
   const [validationErrors, setValidationErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const  { data:cats} = useCategories()
+  console.log(cats)
 
   const categories = [
     { id: "1", name: "Travel" },
