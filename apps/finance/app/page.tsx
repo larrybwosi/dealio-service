@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useQueryState } from "nuqs";
 import { Sidebar } from "@/components/expense-sidebar";
 import { ExpenseDashboard } from "@/components/expense-dashboard";
-import { ExpenseFormWithQuery } from "@/components/expense-form-with-query";
+import ExpenseFormWithQuery from "@/components/expense-form-with-query";
 import { ExpenseListWithQuery } from "@/components/expense-list-with-query";
 import { BudgetOverview } from "@/components/budget-overview";
 import { ApprovalWorkflow } from "@/components/approval-workflow";

@@ -9,17 +9,20 @@ import {
 import { auth } from './auth';
 import { dodopaymentsClient } from '@dodopayments/better-auth';
 
+// const headers = new Headers();
+// headers.append('Content-Type', 'application/json');
+// headers.append('Access-Control-Allow-Credentials', 'true');
+
 export const {
   signIn,
   signUp,
   useSession,
   signOut,
-  admin,
   changePassword,
   organization,
   apiKey,
 } = createAuthClient({
-  baseURL: process.env.BETTER_AUTH_URL,
+  baseURL: process.env.NEXT_PUBLIC_BASE_URL,
   plugins: [
     customSessionClient<typeof auth>(),
     apiKeyClient(),
@@ -27,4 +30,8 @@ export const {
     usernameClient(),
     organizationClient(),
   ],
+  fetchOptions:{
+    credentials:'include',
+    // headers
+  }
 });

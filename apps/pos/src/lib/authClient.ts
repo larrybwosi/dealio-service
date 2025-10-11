@@ -163,11 +163,7 @@ export const authClient = createAuthClient({
   baseURL: API_ENDPOINT,
   plugins: [customSessionClient(), apiKeyClient(), usernameClient(), organizationClient()],
   fetchOptions: {
-    auth: {
-      type: 'Bearer',
-      token: () => localStorage.getItem(BEARER_TOKEN_KEY),
-    },
-    mode:'same-origin'
+    credentials:'same-origin',
   },
   disableDefaultFetchPlugins: true,
 });

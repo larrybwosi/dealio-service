@@ -169,7 +169,7 @@ export const reviews: Review[] = [
     rating: 5,
     title: "Excellent art supplies",
     content:
-      "The colored pencils are vibrant and blend well. The sketchbooks have good paper weight. Everything I needed to start my art journey. Denvis's packaging was also very careful.",
+      "The colored pencils are vibrant and blend well. The sketchbooks have good paper weight. Everything I needed to start my art journey. Denvis' packaging was also very careful.",
     date: "2024-01-07",
     verified: true,
     helpful: 21,

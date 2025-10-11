@@ -2,7 +2,8 @@
 
 import type React from "react";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@workspace/ui/components/button";
 import { Input } from "@workspace/ui/components/input";
 import { Label } from "@workspace/ui/components/label";
@@ -15,9 +16,9 @@ import {
 } from "@workspace/ui/components/card";
 import { Alert, AlertDescription } from "@workspace/ui/components/alert";
 import { Separator } from "@workspace/ui/components/separator";
-import { Eye, EyeOff, Lock, Mail, Building2, Github } from "lucide-react";
-import { useAuth } from "@/hooks/use-auth";
+import { Eye, EyeOff, Lock, Mail, Github } from "lucide-react";
 import { signIn } from "@/lib/authClient";
+import Image from "next/image";
 
 // Google icon component
 const GoogleIcon = ({ className }: { className?: string }) => (
@@ -48,6 +49,21 @@ export function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [socialLoading, setSocialLoading] = useState<string | null>(null);
   const [error, setError] = useState("");
+  const router = useRouter();
+
+  // Check if user is already authenticated and redirect
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        // You might want to check for an existing session here
+        // For now, we'll rely on the auth callback to handle redirection
+      } catch (error) {
+        // User is not authenticated, stay on login page
+      }
+    };
+
+    checkAuth();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -55,7 +71,18 @@ export function LoginPage() {
     setIsLoading(true);
 
     try {
-      await signIn.email({ email, password });
+      const { data, error } = await signIn.email({ email, password });
+
+      if (error) {
+        setError(error.message || "Login failed. Please check your credentials.");
+        return;
+      }
+
+      if (data) {
+        // Successful login - redirect to homepage
+        console.log("Login successful:", data);
+        router.push("/");
+      }
     } catch (err: any) {
       setError(err.message || "Login failed. Please check your credentials.");
     } finally {
@@ -68,16 +95,28 @@ export function LoginPage() {
     setSocialLoading(provider);
 
     try {
-      if (provider === "google") {
-        await signIn.social({ provider: "google" });
-      } else {
-        await signIn.social({ provider: "github" });
+      const { error } = await signIn.social({ provider });
+
+      if (error) {
+        setError(error.message || `${provider} login failed. Please try again.`);
+        return;
       }
+
+      // Social login will redirect to provider, then callback will handle the rest
+      // The auth callback should redirect to homepage after successful authentication
+
     } catch (err: any) {
       setError(err.message || `${provider} login failed. Please try again.`);
-    } finally {
       setSocialLoading(null);
     }
+  };
+
+  const handleSignUp = () => {
+    router.push("/signup");
+  };
+
+  const handleForgotPassword = () => {
+    router.push("/forgot-password");
   };
 
   return (
@@ -85,8 +124,15 @@ export function LoginPage() {
       <div className="w-full max-w-md">
         {/* Logo/Brand section */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-2xl shadow-lg mb-4">
-            <Building2 className="h-8 w-8 text-white" />
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-white rounded-2xl shadow-lg mb-4 border border-gray-200">
+            <Image
+              src="/logo.jpeg"
+              alt="Dealio Logo"
+              width={48}
+              height={48}
+              className="rounded-lg"
+              priority
+            />
           </div>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Dealio</h1>
           <p className="text-gray-600">Manage your expenses with ease</p>
@@ -178,6 +224,7 @@ export function LoginPage() {
                     onChange={(e) => setEmail(e.target.value)}
                     className="pl-10 h-11 border-gray-200 focus:border-blue-500 focus:ring-blue-500"
                     required
+                    disabled={isLoading || socialLoading !== null}
                   />
                 </div>
               </div>
@@ -192,10 +239,9 @@ export function LoginPage() {
                   </Label>
                   <button
                     type="button"
-                    className="text-sm text-blue-600 hover:text-blue-500 font-medium"
-                    onClick={() => {
-                      /* Handle forgot password */
-                    }}
+                    className="text-sm text-blue-600 hover:text-blue-500 font-medium disabled:text-gray-400 disabled:cursor-not-allowed"
+                    onClick={handleForgotPassword}
+                    disabled={isLoading || socialLoading !== null}
                   >
                     Forgot password?
                   </button>
@@ -210,11 +256,13 @@ export function LoginPage() {
                     onChange={(e) => setPassword(e.target.value)}
                     className="pl-10 pr-10 h-11 border-gray-200 focus:border-blue-500 focus:ring-blue-500"
                     required
+                    disabled={isLoading || socialLoading !== null}
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors disabled:text-gray-300 disabled:cursor-not-allowed"
+                    disabled={isLoading || socialLoading !== null}
                   >
                     {showPassword ? (
                       <EyeOff className="h-4 w-4" />
@@ -247,10 +295,9 @@ export function LoginPage() {
                 Don't have an account?{" "}
                 <button
                   type="button"
-                  className="font-medium text-blue-600 hover:text-blue-500 transition-colors"
-                  onClick={() => {
-                    /* Handle sign up navigation */
-                  }}
+                  className="font-medium text-blue-600 hover:text-blue-500 transition-colors disabled:text-gray-400 disabled:cursor-not-allowed"
+                  onClick={handleSignUp}
+                  disabled={isLoading || socialLoading !== null}
                 >
                   Sign up for free
                 </button>

@@ -32,6 +32,23 @@ import {
   CheckSquare,
   ArrowRight,
   Info,
+  HelpCircle,
+  Sparkles,
+  Keyboard,
+  LifeBuoy,
+  FileText,
+  Mail,
+  MessageSquare,
+  Video,
+  Download,
+  ExternalLink,
+  ChevronDown,
+  ChevronUp,
+  Bookmark,
+  Lightbulb,
+  Shield,
+  Cpu,
+  Workflow,
 } from "lucide-react"
 
 interface Feature {
@@ -64,6 +81,7 @@ export default function DocumentationPage({ onNavigate }: { onNavigate: (view: s
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedCategory, setSelectedCategory] = useState("all")
   const [expandedFeature, setExpandedFeature] = useState<string | null>(null)
+  const [bookmarkedFeatures, setBookmarkedFeatures] = useState<Set<string>>(new Set())
 
   const features: Feature[] = [
     {
@@ -211,7 +229,7 @@ export default function DocumentationPage({ onNavigate }: { onNavigate: (view: s
       title: "Approval Workflows",
       description: "Advanced approval system with visual workflow builder, bulk operations, and comment system.",
       category: "Workflow Management",
-      icon: <CheckCircle className="h-5 w-5" />,
+      icon: <Workflow className="h-5 w-5" />,
       actions: [
         {
           name: "Approval Queue",
@@ -632,464 +650,918 @@ export default function DocumentationPage({ onNavigate }: { onNavigate: (view: s
   const getStatusColor = (status: string) => {
     switch (status) {
       case "active":
-        return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300"
+        return "bg-green-100 text-green-800 border-green-200 dark:bg-green-900/30 dark:text-green-300 dark:border-green-800"
       case "beta":
-        return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300"
+        return "bg-yellow-100 text-yellow-800 border-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-300 dark:border-yellow-800"
       case "coming-soon":
-        return "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300"
+        return "bg-gray-100 text-gray-800 border-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-700"
       default:
         return "bg-gray-100 text-gray-800"
     }
   }
 
+  const toggleBookmark = (featureId: string) => {
+    const newBookmarks = new Set(bookmarkedFeatures)
+    if (newBookmarks.has(featureId)) {
+      newBookmarks.delete(featureId)
+    } else {
+      newBookmarks.add(featureId)
+    }
+    setBookmarkedFeatures(newBookmarks)
+  }
+
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Documentation</h1>
-          <p className="text-muted-foreground">Comprehensive guide to all features and functionality in ExpenseFlow</p>
-        </div>
-        <Badge variant="outline" className="text-sm">
-          {features.length} Features Available
-        </Badge>
-      </div>
-
-      <Card className="border-2 border-primary/20">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <PlayCircle className="h-5 w-5 text-primary" />
-            Getting Started Guide
-          </CardTitle>
-          <CardDescription>
-            New to ExpenseFlow? Follow this step-by-step guide to get up and running quickly.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Tabs defaultValue="submitter" className="w-full">
-            <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="submitter">Expense Submitter</TabsTrigger>
-              <TabsTrigger value="approver">Approver</TabsTrigger>
-              <TabsTrigger value="admin">Administrator</TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="submitter" className="space-y-4">
-              <div className="space-y-4">
-                <div className="flex items-start gap-3 p-4 bg-blue-50 dark:bg-blue-950/20 rounded-lg">
-                  <div className="bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-semibold">
-                    1
-                  </div>
-                  <div>
-                    <h4 className="font-semibold">Create Your First Expense</h4>
-                    <p className="text-sm text-muted-foreground mb-2">Start by submitting your first expense report</p>
-                    <ul className="text-sm space-y-1 text-muted-foreground">
-                      <li>• Click "Create Expense" from the dashboard</li>
-                      <li>• Fill in amount, date, and select appropriate category</li>
-                      <li>• Upload a clear photo of your receipt</li>
-                      <li>• Add a detailed description of the business purpose</li>
-                    </ul>
-                    <Button size="sm" className="mt-2" onClick={() => onNavigate("create-expense")}>
-                      Create Expense <ArrowRight className="h-4 w-4 ml-1" />
-                    </Button>
-                  </div>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50/30 dark:from-slate-950 dark:to-blue-950/20">
+      <div className="container mx-auto px-6 py-8 max-w-7xl">
+        {/* Header */}
+        <div className="flex flex-col space-y-6 mb-8">
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+            <div className="space-y-2">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-blue-600 rounded-lg">
+                  <BookOpen className="h-6 w-6 text-white" />
                 </div>
-
-                <div className="flex items-start gap-3 p-4 bg-green-50 dark:bg-green-950/20 rounded-lg">
-                  <div className="bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-semibold">
-                    2
-                  </div>
-                  <div>
-                    <h4 className="font-semibold">Track Your Submissions</h4>
-                    <p className="text-sm text-muted-foreground mb-2">Monitor the status of your expense reports</p>
-                    <ul className="text-sm space-y-1 text-muted-foreground">
-                      <li>• View all your expenses in "My Expenses"</li>
-                      <li>• Check approval status and any comments from approvers</li>
-                      <li>• Respond to requests for additional information</li>
-                      <li>• Set up notifications for status changes</li>
-                    </ul>
-                    <Button size="sm" className="mt-2" onClick={() => onNavigate("my-expenses")}>
-                      View My Expenses <ArrowRight className="h-4 w-4 ml-1" />
-                    </Button>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3 p-4 bg-purple-50 dark:bg-purple-950/20 rounded-lg">
-                  <div className="bg-purple-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-semibold">
-                    3
-                  </div>
-                  <div>
-                    <h4 className="font-semibold">Set Up Recurring Expenses</h4>
-                    <p className="text-sm text-muted-foreground mb-2">Automate regular expenses like subscriptions</p>
-                    <ul className="text-sm space-y-1 text-muted-foreground">
-                      <li>• Create templates for monthly/quarterly expenses</li>
-                      <li>• Set up automatic submission schedules</li>
-                      <li>• Review and approve recurring submissions</li>
-                    </ul>
-                    <Button size="sm" className="mt-2" onClick={() => onNavigate("recurring")}>
-                      Manage Recurring <ArrowRight className="h-4 w-4 ml-1" />
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            </TabsContent>
-
-            <TabsContent value="approver" className="space-y-4">
-              <div className="space-y-4">
-                <div className="flex items-start gap-3 p-4 bg-orange-50 dark:bg-orange-950/20 rounded-lg">
-                  <div className="bg-orange-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-semibold">
-                    1
-                  </div>
-                  <div>
-                    <h4 className="font-semibold">Review Pending Approvals</h4>
-                    <p className="text-sm text-muted-foreground mb-2">Start processing expense approvals efficiently</p>
-                    <ul className="text-sm space-y-1 text-muted-foreground">
-                      <li>• Access your approval queue from the dashboard</li>
-                      <li>• Review expense details and attached receipts</li>
-                      <li>• Verify amounts match receipts and business purpose</li>
-                      <li>• Approve, reject, or request more information</li>
-                    </ul>
-                    <Button size="sm" className="mt-2" onClick={() => onNavigate("approvals")}>
-                      View Approval Queue <ArrowRight className="h-4 w-4 ml-1" />
-                    </Button>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3 p-4 bg-teal-50 dark:bg-teal-950/20 rounded-lg">
-                  <div className="bg-teal-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-semibold">
-                    2
-                  </div>
-                  <div>
-                    <h4 className="font-semibold">Use Bulk Operations</h4>
-                    <p className="text-sm text-muted-foreground mb-2">Process multiple expenses efficiently</p>
-                    <ul className="text-sm space-y-1 text-muted-foreground">
-                      <li>• Select multiple similar expenses for bulk approval</li>
-                      <li>• Filter by amount, category, or submitter</li>
-                      <li>• Add comments for bulk rejections</li>
-                      <li>• Review summary before confirming bulk actions</li>
-                    </ul>
-                    <Button size="sm" className="mt-2" onClick={() => onNavigate("bulk-approval")}>
-                      Bulk Operations <ArrowRight className="h-4 w-4 ml-1" />
-                    </Button>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3 p-4 bg-indigo-50 dark:bg-indigo-950/20 rounded-lg">
-                  <div className="bg-indigo-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-semibold">
-                    3
-                  </div>
-                  <div>
-                    <h4 className="font-semibold">Set Up Delegations</h4>
-                    <p className="text-sm text-muted-foreground mb-2">Ensure coverage during your absence</p>
-                    <ul className="text-sm space-y-1 text-muted-foreground">
-                      <li>• Create delegation rules before planned absences</li>
-                      <li>• Set amount limits and date ranges</li>
-                      <li>• Choose experienced delegates</li>
-                      <li>• Monitor delegated approvals upon return</li>
-                    </ul>
-                    <Button size="sm" className="mt-2" onClick={() => onNavigate("delegations")}>
-                      Manage Delegations <ArrowRight className="h-4 w-4 ml-1" />
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            </TabsContent>
-
-            <TabsContent value="admin" className="space-y-4">
-              <div className="space-y-4">
-                <div className="flex items-start gap-3 p-4 bg-red-50 dark:bg-red-950/20 rounded-lg">
-                  <div className="bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-semibold">
-                    1
-                  </div>
-                  <div>
-                    <h4 className="font-semibold">Configure System Settings</h4>
-                    <p className="text-sm text-muted-foreground mb-2">Set up the system for your organization</p>
-                    <ul className="text-sm space-y-1 text-muted-foreground">
-                      <li>• Configure currency, date formats, and business rules</li>
-                      <li>• Set up user roles and permissions</li>
-                      <li>• Configure approval workflows and limits</li>
-                      <li>• Set up integrations and notifications</li>
-                    </ul>
-                    <Button size="sm" className="mt-2" onClick={() => onNavigate("settings")}>
-                      System Settings <ArrowRight className="h-4 w-4 ml-1" />
-                    </Button>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3 p-4 bg-cyan-50 dark:bg-cyan-950/20 rounded-lg">
-                  <div className="bg-cyan-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-semibold">
-                    2
-                  </div>
-                  <div>
-                    <h4 className="font-semibold">Manage Categories & Budgets</h4>
-                    <p className="text-sm text-muted-foreground mb-2">Organize expenses and control spending</p>
-                    <ul className="text-sm space-y-1 text-muted-foreground">
-                      <li>• Create expense categories and subcategories</li>
-                      <li>• Set up budget limits by department or category</li>
-                      <li>• Configure auto-categorization rules</li>
-                      <li>• Monitor budget utilization and alerts</li>
-                    </ul>
-                    <Button size="sm" className="mt-2" onClick={() => onNavigate("categories")}>
-                      Manage Categories <ArrowRight className="h-4 w-4 ml-1" />
-                    </Button>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3 p-4 bg-pink-50 dark:bg-pink-950/20 rounded-lg">
-                  <div className="bg-pink-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-semibold">
-                    3
-                  </div>
-                  <div>
-                    <h4 className="font-semibold">Design Custom Workflows</h4>
-                    <p className="text-sm text-muted-foreground mb-2">
-                      Create approval processes that match your business
-                    </p>
-                    <ul className="text-sm space-y-1 text-muted-foreground">
-                      <li>• Use the visual workflow builder</li>
-                      <li>• Set up conditional approvals based on amount or category</li>
-                      <li>• Configure multi-level approval chains</li>
-                      <li>• Test workflows before deployment</li>
-                    </ul>
-                    <Button size="sm" className="mt-2" onClick={() => onNavigate("visual-workflow")}>
-                      Workflow Builder <ArrowRight className="h-4 w-4 ml-1" />
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            </TabsContent>
-          </Tabs>
-        </CardContent>
-      </Card>
-
-      {/* Search and Filter */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Search className="h-5 w-5" />
-            Search & Filter
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="flex gap-4">
-            <div className="flex-1">
-              <Input
-                placeholder="Search features..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full"
-              />
-            </div>
-            <div className="flex gap-2 flex-wrap">
-              {categories.map((category) => (
-                <Button
-                  key={category}
-                  variant={selectedCategory === category ? "default" : "outline-solid"}
-                  size="sm"
-                  onClick={() => setSelectedCategory(category)}
-                  className="capitalize"
-                >
-                  {category.replace("-", " ")}
-                </Button>
-              ))}
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* System Overview */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <BookOpen className="h-5 w-5" />
-            System Overview
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="text-center p-4 border rounded-lg">
-              <Database className="h-8 w-8 mx-auto mb-2 text-blue-600" />
-              <h3 className="font-semibold">Modern Architecture</h3>
-              <p className="text-sm text-muted-foreground">Next.js 14, React 18, TypeScript</p>
-            </div>
-            <div className="text-center p-4 border rounded-lg">
-              <Zap className="h-8 w-8 mx-auto mb-2 text-yellow-600" />
-              <h3 className="font-semibold">AI-Powered</h3>
-              <p className="text-sm text-muted-foreground">Groq integration for smart reports</p>
-            </div>
-            <div className="text-center p-4 border rounded-lg">
-              <Smartphone className="h-8 w-8 mx-auto mb-2 text-green-600" />
-              <h3 className="font-semibold">Responsive Design</h3>
-              <p className="text-sm text-muted-foreground">Works on all devices</p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Features Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {filteredFeatures.map((feature) => (
-          <Card key={feature.id} className="hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <div className="flex items-start justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-primary/10 rounded-lg">{feature.icon}</div>
-                  <div>
-                    <CardTitle className="text-lg">{feature.title}</CardTitle>
-                    <Badge variant="secondary" className="text-xs mt-1">
-                      {feature.category}
-                    </Badge>
-                  </div>
-                </div>
-                <Badge className={`text-xs ${getStatusColor(feature.status)}`}>
-                  {feature.status.replace("-", " ")}
-                </Badge>
-              </div>
-              <CardDescription className="mt-2">{feature.description}</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <h4 className="font-medium text-sm">Available Actions:</h4>
-                  <div className="space-y-2">
-                    {feature.actions.map((action, index) => (
-                      <div key={index} className="flex items-center justify-between p-2 bg-muted/50 rounded-lg">
-                        <div>
-                          <p className="font-medium text-sm">{action.name}</p>
-                          <p className="text-xs text-muted-foreground">{action.description}</p>
-                        </div>
-                        <Button size="sm" variant="outline" onClick={action.onClick} className="ml-2 bg-transparent">
-                          Go
-                        </Button>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <Separator />
                 <div>
+                  <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                    ExpenseFlow Documentation
+                  </h1>
+                  <p className="text-muted-foreground text-lg">
+                    Complete guide to all features and functionality in ExpenseFlow v2.4
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="flex items-center gap-4">
+              <Badge variant="secondary" className="text-sm px-3 py-1.5 border-2">
+                {features.length} Features
+              </Badge>
+              <Button variant="outline" size="sm" className="gap-2">
+                <Bookmark className="h-4 w-4" />
+                Bookmarks ({bookmarkedFeatures.size})
+              </Button>
+            </div>
+          </div>
+
+          {/* Welcome Banner */}
+          <div className="relative p-6 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm rounded-xl border border-blue-200/50 dark:border-blue-800/50 shadow-sm">
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-t-xl"></div>
+            <div className="flex items-start gap-4">
+              <div className="p-2 bg-blue-100 dark:bg-blue-900/50 rounded-lg shrink-0">
+                <Lightbulb className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+              </div>
+              <div className="space-y-3 flex-1">
+                <div className="flex items-center gap-3">
+                  <h3 className="font-semibold text-blue-800 dark:text-blue-300 text-lg">
+                    Welcome to ExpenseFlow Documentation
+                  </h3>
+                  <Badge variant="outline" className="bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">
+                    v2.4.0
+                  </Badge>
+                </div>
+                <p className="text-muted-foreground leading-relaxed">
+                  ExpenseFlow is a comprehensive expense management solution designed to streamline the entire expense
+                  lifecycle. This documentation provides detailed information about all features, step-by-step guides,
+                  and best practices.
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
                   <Button
-                    variant="ghost"
                     size="sm"
-                    onClick={() => setExpandedFeature(expandedFeature === feature.id ? null : feature.id)}
-                    className="w-full justify-between p-2"
+                    variant="outline"
+                    className="justify-start gap-2 bg-white/50 dark:bg-slate-800/50 hover:bg-blue-50 dark:hover:bg-blue-950/30"
+                    onClick={() => onNavigate("dashboard")}
                   >
-                    <span className="flex items-center gap-2">
-                      <Info className="h-4 w-4" />
-                      Detailed Instructions
-                    </span>
-                    <ArrowRight
-                      className={`h-4 w-4 transition-transform ${expandedFeature === feature.id ? "rotate-90" : ""}`}
-                    />
+                    <BarChart3 className="h-4 w-4" />
+                    Dashboard Guide
                   </Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="justify-start gap-2 bg-white/50 dark:bg-slate-800/50 hover:bg-green-50 dark:hover:bg-green-950/30"
+                    onClick={() => onNavigate("create-expense")}
+                  >
+                    <DollarSign className="h-4 w-4" />
+                    Create Expense
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="justify-start gap-2 bg-white/50 dark:bg-slate-800/50 hover:bg-purple-50 dark:hover:bg-purple-950/30"
+                    onClick={() => onNavigate("reports")}
+                  >
+                    <FileText className="h-4 w-4" />
+                    Reports & Analytics
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-                  {expandedFeature === feature.id && (
-                    <div className="mt-3 space-y-4 p-3 bg-muted/30 rounded-lg">
-                      <div>
-                        <h5 className="font-semibold text-sm mb-2">Overview</h5>
-                        <p className="text-sm text-muted-foreground">{feature.detailedInstructions.overview}</p>
-                      </div>
+        <div className="grid grid-cols-1 xl:grid-cols-4 gap-8">
+          {/* Sidebar */}
+          <div className="xl:col-span-1 space-y-6">
+            {/* Quick Start */}
+            <Card className="shadow-sm border-l-4 border-l-blue-500">
+              <CardHeader className="pb-3">
+                <CardTitle className="flex items-center gap-2 text-lg">
+                  <PlayCircle className="h-5 w-5 text-blue-500" />
+                  Quick Start
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <Button
+                  variant="outline"
+                  className="w-full justify-start gap-2 h-auto py-3"
+                  onClick={() => onNavigate("create-expense")}
+                >
+                  <div className="text-left">
+                    <p className="font-medium text-sm">First Expense</p>
+                    <p className="text-xs text-muted-foreground">Submit your first expense</p>
+                  </div>
+                </Button>
+                <Button
+                  variant="outline"
+                  className="w-full justify-start gap-2 h-auto py-3"
+                  onClick={() => onNavigate("approvals")}
+                >
+                  <div className="text-left">
+                    <p className="font-medium text-sm">Approval Process</p>
+                    <p className="text-xs text-muted-foreground">Learn approval workflows</p>
+                  </div>
+                </Button>
+                <Button
+                  variant="outline"
+                  className="w-full justify-start gap-2 h-auto py-3"
+                  onClick={() => onNavigate("reports")}
+                >
+                  <div className="text-left">
+                    <p className="font-medium text-sm">Reports</p>
+                    <p className="text-xs text-muted-foreground">Generate AI reports</p>
+                  </div>
+                </Button>
+              </CardContent>
+            </Card>
 
-                      <div>
-                        <h5 className="font-semibold text-sm mb-3">Step-by-Step Guide</h5>
-                        <div className="space-y-3">
-                          {feature.detailedInstructions.steps.map((step, index) => (
-                            <div key={index} className="border-l-2 border-primary/20 pl-3">
-                              <h6 className="font-medium text-sm">{step.title}</h6>
-                              <p className="text-sm text-muted-foreground mb-2">{step.description}</p>
-                              {step.tips && (
-                                <div className="space-y-1">
-                                  <p className="text-xs font-medium text-primary">Tips:</p>
-                                  <ul className="text-xs text-muted-foreground space-y-1">
-                                    {step.tips.map((tip, tipIndex) => (
-                                      <li key={tipIndex} className="flex items-start gap-1">
-                                        <CheckSquare className="h-3 w-3 mt-0.5 text-green-600 shrink-0" />
-                                        {tip}
-                                      </li>
-                                    ))}
-                                  </ul>
-                                </div>
-                              )}
-                            </div>
-                          ))}
+            {/* Categories Filter */}
+            <Card className="shadow-sm">
+              <CardHeader className="pb-3">
+                <CardTitle className="flex items-center gap-2 text-lg">
+                  <Filter className="h-5 w-5" />
+                  Categories
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                {categories.map((category) => (
+                  <button
+                    key={category}
+                    className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-all ${
+                      selectedCategory === category
+                        ? "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 font-medium"
+                        : "text-muted-foreground hover:bg-slate-100 dark:hover:bg-slate-800"
+                    }`}
+                    onClick={() => setSelectedCategory(category)}
+                  >
+                    <span className="capitalize">{category.replace("-", " ")}</span>
+                    {category !== "all" && (
+                      <span className="float-right text-xs bg-slate-200 dark:bg-slate-700 px-1.5 py-0.5 rounded-full">
+                        {features.filter((f) => f.category === category).length}
+                      </span>
+                    )}
+                  </button>
+                ))}
+              </CardContent>
+            </Card>
+
+            {/* System Status */}
+            <Card className="shadow-sm">
+              <CardHeader className="pb-3">
+                <CardTitle className="flex items-center gap-2 text-lg">
+                  <Zap className="h-5 w-5 text-yellow-500" />
+                  System Status
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm">Active Features</span>
+                  <Badge variant="outline" className="bg-green-50 text-green-700 dark:bg-green-900/30">
+                    {features.filter((f) => f.status === "active").length}
+                  </Badge>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm">Beta Testing</span>
+                  <Badge variant="outline" className="bg-yellow-50 text-yellow-700 dark:bg-yellow-900/30">
+                    {features.filter((f) => f.status === "beta").length}
+                  </Badge>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm">Coming Soon</span>
+                  <Badge variant="outline" className="bg-gray-50 text-gray-700 dark:bg-gray-800">
+                    {features.filter((f) => f.status === "coming-soon").length}
+                  </Badge>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Main Content */}
+          <div className="xl:col-span-3 space-y-8">
+            {/* Getting Started Guide */}
+            <Card className="shadow-lg border-0 bg-gradient-to-br from-white to-blue-50/50 dark:from-slate-900 dark:to-blue-950/20">
+              <CardHeader className="pb-4">
+                <CardTitle className="flex items-center gap-2 text-xl">
+                  <PlayCircle className="h-5 w-5 text-blue-500" />
+                  Getting Started Guide
+                </CardTitle>
+                <CardDescription>
+                  New to ExpenseFlow? Follow this step-by-step guide to get up and running quickly.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Tabs defaultValue="submitter" className="w-full">
+                  <TabsList className="grid w-full grid-cols-3 bg-slate-100 dark:bg-slate-800 p-1">
+                    <TabsTrigger
+                      value="submitter"
+                      className="data-[state=active]:bg-white data-[state=active]:shadow-sm dark:data-[state=active]:bg-slate-700"
+                    >
+                      Expense Submitter
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="approver"
+                      className="data-[state=active]:bg-white data-[state=active]:shadow-sm dark:data-[state=active]:bg-slate-700"
+                    >
+                      Approver
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="admin"
+                      className="data-[state=active]:bg-white data-[state=active]:shadow-sm dark:data-[state=active]:bg-slate-700"
+                    >
+                      Administrator
+                    </TabsTrigger>
+                  </TabsList>
+
+                  <TabsContent value="submitter" className="space-y-4 mt-4">
+                    <div className="space-y-4">
+                      <div className="flex items-start gap-3 p-4 bg-blue-50 dark:bg-blue-950/20 rounded-lg">
+                        <div className="bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-semibold">
+                          1
+                        </div>
+                        <div>
+                          <h4 className="font-semibold">Create Your First Expense</h4>
+                          <p className="text-sm text-muted-foreground mb-2">Start by submitting your first expense report</p>
+                          <ul className="text-sm space-y-1 text-muted-foreground">
+                            <li>• Click "Create Expense" from the dashboard</li>
+                            <li>• Fill in amount, date, and select appropriate category</li>
+                            <li>• Upload a clear photo of your receipt</li>
+                            <li>• Add a detailed description of the business purpose</li>
+                          </ul>
+                          <Button size="sm" className="mt-2" onClick={() => onNavigate("create-expense")}>
+                            Create Expense <ArrowRight className="h-4 w-4 ml-1" />
+                          </Button>
                         </div>
                       </div>
 
-                      {feature.detailedInstructions.commonIssues && (
+                      <div className="flex items-start gap-3 p-4 bg-green-50 dark:bg-green-950/20 rounded-lg">
+                        <div className="bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-semibold">
+                          2
+                        </div>
                         <div>
-                          <h5 className="font-semibold text-sm mb-3 flex items-center gap-2">
-                            <AlertCircle className="h-4 w-4 text-amber-600" />
-                            Common Issues & Solutions
-                          </h5>
+                          <h4 className="font-semibold">Track Your Submissions</h4>
+                          <p className="text-sm text-muted-foreground mb-2">Monitor the status of your expense reports</p>
+                          <ul className="text-sm space-y-1 text-muted-foreground">
+                            <li>• View all your expenses in "My Expenses"</li>
+                            <li>• Check approval status and any comments from approvers</li>
+                            <li>• Respond to requests for additional information</li>
+                            <li>• Set up notifications for status changes</li>
+                          </ul>
+                          <Button size="sm" className="mt-2" onClick={() => onNavigate("my-expenses")}>
+                            View My Expenses <ArrowRight className="h-4 w-4 ml-1" />
+                          </Button>
+                        </div>
+                      </div>
+
+                      <div className="flex items-start gap-3 p-4 bg-purple-50 dark:bg-purple-950/20 rounded-lg">
+                        <div className="bg-purple-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-semibold">
+                          3
+                        </div>
+                        <div>
+                          <h4 className="font-semibold">Set Up Recurring Expenses</h4>
+                          <p className="text-sm text-muted-foreground mb-2">Automate regular expenses like subscriptions</p>
+                          <ul className="text-sm space-y-1 text-muted-foreground">
+                            <li>• Create templates for monthly/quarterly expenses</li>
+                            <li>• Set up automatic submission schedules</li>
+                            <li>• Review and approve recurring submissions</li>
+                          </ul>
+                          <Button size="sm" className="mt-2" onClick={() => onNavigate("recurring")}>
+                            Manage Recurring <ArrowRight className="h-4 w-4 ml-1" />
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="approver" className="space-y-4 mt-4">
+                    <div className="space-y-4">
+                      <div className="flex items-start gap-3 p-4 bg-orange-50 dark:bg-orange-950/20 rounded-lg">
+                        <div className="bg-orange-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-semibold">
+                          1
+                        </div>
+                        <div>
+                          <h4 className="font-semibold">Review Pending Approvals</h4>
+                          <p className="text-sm text-muted-foreground mb-2">Start processing expense approvals efficiently</p>
+                          <ul className="text-sm space-y-1 text-muted-foreground">
+                            <li>• Access your approval queue from the dashboard</li>
+                            <li>• Review expense details and attached receipts</li>
+                            <li>• Verify amounts match receipts and business purpose</li>
+                            <li>• Approve, reject, or request more information</li>
+                          </ul>
+                          <Button size="sm" className="mt-2" onClick={() => onNavigate("approvals")}>
+                            View Approval Queue <ArrowRight className="h-4 w-4 ml-1" />
+                          </Button>
+                        </div>
+                      </div>
+
+                      <div className="flex items-start gap-3 p-4 bg-teal-50 dark:bg-teal-950/20 rounded-lg">
+                        <div className="bg-teal-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-semibold">
+                          2
+                        </div>
+                        <div>
+                          <h4 className="font-semibold">Use Bulk Operations</h4>
+                          <p className="text-sm text-muted-foreground mb-2">Process multiple expenses efficiently</p>
+                          <ul className="text-sm space-y-1 text-muted-foreground">
+                            <li>• Select multiple similar expenses for bulk approval</li>
+                            <li>• Filter by amount, category, or submitter</li>
+                            <li>• Add comments for bulk rejections</li>
+                            <li>• Review summary before confirming bulk actions</li>
+                          </ul>
+                          <Button size="sm" className="mt-2" onClick={() => onNavigate("bulk-approval")}>
+                            Bulk Operations <ArrowRight className="h-4 w-4 ml-1" />
+                          </Button>
+                        </div>
+                      </div>
+
+                      <div className="flex items-start gap-3 p-4 bg-indigo-50 dark:bg-indigo-950/20 rounded-lg">
+                        <div className="bg-indigo-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-semibold">
+                          3
+                        </div>
+                        <div>
+                          <h4 className="font-semibold">Set Up Delegations</h4>
+                          <p className="text-sm text-muted-foreground mb-2">Ensure coverage during your absence</p>
+                          <ul className="text-sm space-y-1 text-muted-foreground">
+                            <li>• Create delegation rules before planned absences</li>
+                            <li>• Set amount limits and date ranges</li>
+                            <li>• Choose experienced delegates</li>
+                            <li>• Monitor delegated approvals upon return</li>
+                          </ul>
+                          <Button size="sm" className="mt-2" onClick={() => onNavigate("delegations")}>
+                            Manage Delegations <ArrowRight className="h-4 w-4 ml-1" />
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="admin" className="space-y-4 mt-4">
+                    <div className="space-y-4">
+                      <div className="flex items-start gap-3 p-4 bg-red-50 dark:bg-red-950/20 rounded-lg">
+                        <div className="bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-semibold">
+                          1
+                        </div>
+                        <div>
+                          <h4 className="font-semibold">Configure System Settings</h4>
+                          <p className="text-sm text-muted-foreground mb-2">Set up the system for your organization</p>
+                          <ul className="text-sm space-y-1 text-muted-foreground">
+                            <li>• Configure currency, date formats, and business rules</li>
+                            <li>• Set up user roles and permissions</li>
+                            <li>• Configure approval workflows and limits</li>
+                            <li>• Set up integrations and notifications</li>
+                          </ul>
+                          <Button size="sm" className="mt-2" onClick={() => onNavigate("settings")}>
+                            System Settings <ArrowRight className="h-4 w-4 ml-1" />
+                          </Button>
+                        </div>
+                      </div>
+
+                      <div className="flex items-start gap-3 p-4 bg-cyan-50 dark:bg-cyan-950/20 rounded-lg">
+                        <div className="bg-cyan-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-semibold">
+                          2
+                        </div>
+                        <div>
+                          <h4 className="font-semibold">Manage Categories & Budgets</h4>
+                          <p className="text-sm text-muted-foreground mb-2">Organize expenses and control spending</p>
+                          <ul className="text-sm space-y-1 text-muted-foreground">
+                            <li>• Create expense categories and subcategories</li>
+                            <li>• Set up budget limits by department or category</li>
+                            <li>• Configure auto-categorization rules</li>
+                            <li>• Monitor budget utilization and alerts</li>
+                          </ul>
+                          <Button size="sm" className="mt-2" onClick={() => onNavigate("categories")}>
+                            Manage Categories <ArrowRight className="h-4 w-4 ml-1" />
+                          </Button>
+                        </div>
+                      </div>
+
+                      <div className="flex items-start gap-3 p-4 bg-pink-50 dark:bg-pink-950/20 rounded-lg">
+                        <div className="bg-pink-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-semibold">
+                          3
+                        </div>
+                        <div>
+                          <h4 className="font-semibold">Design Custom Workflows</h4>
+                          <p className="text-sm text-muted-foreground mb-2">
+                            Create approval processes that match your business
+                          </p>
+                          <ul className="text-sm space-y-1 text-muted-foreground">
+                            <li>• Use the visual workflow builder</li>
+                            <li>• Set up conditional approvals based on amount or category</li>
+                            <li>• Configure multi-level approval chains</li>
+                            <li>• Test workflows before deployment</li>
+                          </ul>
+                          <Button size="sm" className="mt-2" onClick={() => onNavigate("visual-workflow")}>
+                            Workflow Builder <ArrowRight className="h-4 w-4 ml-1" />
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  </TabsContent>
+                </Tabs>
+              </CardContent>
+            </Card>
+
+            {/* Search and Features Grid */}
+            <div className="space-y-6">
+              {/* Search Header */}
+              <Card className="shadow-sm border-0">
+                <CardHeader className="pb-4">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                    <CardTitle className="flex items-center gap-2 text-xl">
+                      <Search className="h-5 w-5" />
+                      Feature Documentation
+                    </CardTitle>
+                    <div className="flex-1 max-w-md">
+                      <div className="relative">
+                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                        <Input
+                          placeholder="Search features..."
+                          value={searchTerm}
+                          onChange={(e) => setSearchTerm(e.target.value)}
+                          className="w-full pl-10 bg-white/50 dark:bg-slate-800/50"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </CardHeader>
+              </Card>
+
+              {/* Features Grid */}
+              {filteredFeatures.length === 0 ? (
+                <Card className="text-center py-12 border-0 shadow-sm">
+                  <CardContent>
+                    <Search className="h-12 w-12 text-muted-foreground mx-auto mb-4 opacity-50" />
+                    <h3 className="font-semibold text-lg mb-2">No features found</h3>
+                    <p className="text-muted-foreground">
+                      Try adjusting your search or filter criteria to find what you're looking for.
+                    </p>
+                  </CardContent>
+                </Card>
+              ) : (
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  {filteredFeatures.map((feature) => (
+                    <Card
+                      key={feature.id}
+                      className="group hover:shadow-lg transition-all duration-300 border-0 bg-white/70 dark:bg-slate-900/70 backdrop-blur-sm hover:bg-white dark:hover:bg-slate-900"
+                    >
+                      <CardHeader className="pb-3">
+                        <div className="flex items-start justify-between">
+                          <div className="flex items-start gap-3 flex-1">
+                            <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg group-hover:scale-110 transition-transform">
+                              {feature.icon}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center gap-2 mb-1">
+                                <CardTitle className="text-lg truncate">{feature.title}</CardTitle>
+                                <button
+                                  onClick={() => toggleBookmark(feature.id)}
+                                  className="opacity-0 group-hover:opacity-100 transition-opacity"
+                                >
+                                  <Bookmark
+                                    className={`h-4 w-4 ${
+                                      bookmarkedFeatures.has(feature.id)
+                                        ? "fill-yellow-400 text-yellow-400"
+                                        : "text-muted-foreground"
+                                    }`}
+                                  />
+                                </button>
+                              </div>
+                              <div className="flex items-center gap-2 flex-wrap">
+                                <Badge
+                                  variant="secondary"
+                                  className="text-xs bg-slate-100 dark:bg-slate-800"
+                                >
+                                  {feature.category}
+                                </Badge>
+                                <Badge
+                                  variant="outline"
+                                  className={`text-xs border ${getStatusColor(feature.status)}`}
+                                >
+                                  {feature.status.replace("-", " ")}
+                                </Badge>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <CardDescription className="mt-2 line-clamp-2">
+                          {feature.description}
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        <div className="space-y-2">
+                          <h4 className="font-medium text-sm text-slate-700 dark:text-slate-300">
+                            Quick Actions
+                          </h4>
                           <div className="space-y-2">
-                            {feature.detailedInstructions.commonIssues.map((issue, index) => (
+                            {feature.actions.map((action, index) => (
                               <div
                                 key={index}
-                                className="p-2 bg-amber-50 dark:bg-amber-950/20 rounded border-l-2 border-amber-400"
+                                className="flex items-center justify-between p-2 bg-slate-50/50 dark:bg-slate-800/30 rounded-lg group/action hover:bg-slate-100 dark:hover:bg-slate-800/50 transition-colors"
                               >
-                                <p className="text-sm font-medium text-amber-800 dark:text-amber-200">{issue.issue}</p>
-                                <p className="text-sm text-amber-700 dark:text-amber-300">{issue.solution}</p>
+                                <div className="min-w-0 flex-1">
+                                  <p className="font-medium text-sm truncate">{action.name}</p>
+                                  <p className="text-xs text-muted-foreground truncate">
+                                    {action.description}
+                                  </p>
+                                </div>
+                                <Button
+                                  size="sm"
+                                  variant="ghost"
+                                  onClick={action.onClick}
+                                  className="ml-2 shrink-0 opacity-0 group-hover/action:opacity-100 transition-opacity"
+                                >
+                                  Go
+                                </Button>
                               </div>
                             ))}
                           </div>
                         </div>
-                      )}
-                    </div>
-                  )}
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
 
-      {/* Technical Information */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Globe className="h-5 w-5" />
-            Technical Stack
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-            <div>
-              <h4 className="font-semibold mb-2">Frontend</h4>
-              <ul className="space-y-1 text-muted-foreground">
-                <li>Next.js 14</li>
-                <li>React 18</li>
-                <li>TypeScript</li>
-                <li>Tailwind CSS</li>
-              </ul>
+                        <Separator />
+
+                        <div>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() =>
+                              setExpandedFeature(expandedFeature === feature.id ? null : feature.id)
+                            }
+                            className="w-full justify-between p-2 hover:bg-slate-100 dark:hover:bg-slate-800"
+                          >
+                            <span className="flex items-center gap-2 text-sm">
+                              <Info className="h-4 w-4" />
+                              Detailed Instructions
+                            </span>
+                            {expandedFeature === feature.id ? (
+                              <ChevronUp className="h-4 w-4" />
+                            ) : (
+                              <ChevronDown className="h-4 w-4" />
+                            )}
+                          </Button>
+
+                          {expandedFeature === feature.id && (
+                            <div className="mt-3 space-y-4 p-4 bg-slate-50/50 dark:bg-slate-800/30 rounded-lg border">
+                              <div>
+                                <h5 className="font-semibold text-sm mb-2">Overview</h5>
+                                <p className="text-sm text-muted-foreground">{feature.detailedInstructions.overview}</p>
+                              </div>
+
+                              <div>
+                                <h5 className="font-semibold text-sm mb-3">Step-by-Step Guide</h5>
+                                <div className="space-y-3">
+                                  {feature.detailedInstructions.steps.map((step, index) => (
+                                    <div key={index} className="border-l-2 border-primary/20 pl-3">
+                                      <h6 className="font-medium text-sm">{step.title}</h6>
+                                      <p className="text-sm text-muted-foreground mb-2">{step.description}</p>
+                                      {step.tips && (
+                                        <div className="space-y-1">
+                                          <p className="text-xs font-medium text-primary">Tips:</p>
+                                          <ul className="text-xs text-muted-foreground space-y-1">
+                                            {step.tips.map((tip, tipIndex) => (
+                                              <li key={tipIndex} className="flex items-start gap-1">
+                                                <CheckSquare className="h-3 w-3 mt-0.5 text-green-600 shrink-0" />
+                                                {tip}
+                                              </li>
+                                            ))}
+                                          </ul>
+                                        </div>
+                                      )}
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+
+                              {feature.detailedInstructions.commonIssues && (
+                                <div>
+                                  <h5 className="font-semibold text-sm mb-3 flex items-center gap-2">
+                                    <AlertCircle className="h-4 w-4 text-amber-600" />
+                                    Common Issues & Solutions
+                                  </h5>
+                                  <div className="space-y-2">
+                                    {feature.detailedInstructions.commonIssues.map((issue, index) => (
+                                      <div
+                                        key={index}
+                                        className="p-2 bg-amber-50 dark:bg-amber-950/20 rounded border-l-2 border-amber-400"
+                                      >
+                                        <p className="text-sm font-medium text-amber-800 dark:text-amber-200">{issue.issue}</p>
+                                        <p className="text-sm text-amber-700 dark:text-amber-300">{issue.solution}</p>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              )}
             </div>
-            <div>
-              <h4 className="font-semibold mb-2">UI Components</h4>
-              <ul className="space-y-1 text-muted-foreground">
-                <li>Radix UI</li>
-                <li>Lucide Icons</li>
-                <li>Recharts</li>
-                <li>React Hook Form</li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-2">Data & State</h4>
-              <ul className="space-y-1 text-muted-foreground">
-                <li>TanStack Query</li>
-                <li>Zustand</li>
-                <li>React Hook Form</li>
-                <li>Zod Validation</li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-2">Integrations</h4>
-              <ul className="space-y-1 text-muted-foreground">
-                <li>Groq AI</li>
-                <li>React-PDF</li>
-                <li>ExcelJS</li>
-                <li>Date-fns</li>
-              </ul>
-            </div>
+
+            {/* What's New Section */}
+            <Card className="border-0 shadow-lg bg-gradient-to-br from-purple-50 to-pink-50/50 dark:from-purple-950/20 dark:to-pink-950/20">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-xl">
+                  <Sparkles className="h-5 w-5 text-purple-500" />
+                  What's New in ExpenseFlow
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="flex items-start gap-3 p-4 bg-white/50 dark:bg-slate-800/50 rounded-lg border border-purple-200 dark:border-purple-800">
+                    <Badge className="bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300">v2.4.0</Badge>
+                    <div>
+                      <h4 className="font-semibold">AI-Powered Analytics</h4>
+                      <p className="text-sm text-muted-foreground mb-2">Released: June 15, 2023</p>
+                      <ul className="text-sm space-y-1 text-muted-foreground">
+                        <li>• Advanced expense pattern detection using Groq AI</li>
+                        <li>• Automated spending insights with actionable recommendations</li>
+                        <li>• Natural language query support for expense data</li>
+                        <li>• Anomaly detection for unusual spending patterns</li>
+                      </ul>
+                      <Button size="sm" variant="outline" className="mt-2" onClick={() => onNavigate("analytics")}>
+                        Explore AI Analytics <ArrowRight className="h-4 w-4 ml-1" />
+                      </Button>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-3 p-4 bg-white/50 dark:bg-slate-800/50 rounded-lg border border-blue-200 dark:border-blue-800">
+                    <Badge className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300">v2.3.0</Badge>
+                    <div>
+                      <h4 className="font-semibold">Mobile Receipt Scanning</h4>
+                      <p className="text-sm text-muted-foreground mb-2">Released: April 3, 2023</p>
+                      <ul className="text-sm space-y-1 text-muted-foreground">
+                        <li>• Instant receipt scanning with OCR technology</li>
+                        <li>• Automatic field extraction (date, amount, vendor)</li>
+                        <li>• Offline mode for scanning without connectivity</li>
+                        <li>• Batch scanning for multiple receipts</li>
+                      </ul>
+                      <Button size="sm" variant="outline" className="mt-2" onClick={() => onNavigate("mobile-app")}>
+                        Download Mobile App <Download className="h-4 w-4 ml-1" />
+                      </Button>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-3 p-4 bg-white/50 dark:bg-slate-800/50 rounded-lg border border-green-200 dark:border-green-800">
+                    <Badge className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">v2.2.0</Badge>
+                    <div>
+                      <h4 className="font-semibold">Advanced Workflow Builder</h4>
+                      <p className="text-sm text-muted-foreground mb-2">Released: February 10, 2023</p>
+                      <ul className="text-sm space-y-1 text-muted-foreground">
+                        <li>• Visual drag-and-drop workflow designer</li>
+                        <li>• Conditional approval paths based on multiple criteria</li>
+                        <li>• Automated notifications and escalations</li>
+                        <li>• Workflow templates for common approval scenarios</li>
+                      </ul>
+                      <Button size="sm" variant="outline" className="mt-2" onClick={() => onNavigate("visual-workflow")}>
+                        Try Workflow Builder <ArrowRight className="h-4 w-4 ml-1" />
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Keyboard Shortcuts */}
+            <Card className="border-0 shadow-sm">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-xl">
+                  <Keyboard className="h-5 w-5" />
+                  Keyboard Shortcuts
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <h4 className="font-semibold mb-3">Navigation Shortcuts</h4>
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between p-2 bg-slate-50 dark:bg-slate-800/30 rounded-lg">
+                        <span className="text-sm">Go to Dashboard</span>
+                        <kbd className="px-2 py-1 bg-background border rounded text-xs font-mono">Alt + D</kbd>
+                      </div>
+                      <div className="flex items-center justify-between p-2 bg-slate-50 dark:bg-slate-800/30 rounded-lg">
+                        <span className="text-sm">Go to Expenses</span>
+                        <kbd className="px-2 py-1 bg-background border rounded text-xs font-mono">Alt + E</kbd>
+                      </div>
+                      <div className="flex items-center justify-between p-2 bg-slate-50 dark:bg-slate-800/30 rounded-lg">
+                        <span className="text-sm">Go to Approvals</span>
+                        <kbd className="px-2 py-1 bg-background border rounded text-xs font-mono">Alt + A</kbd>
+                      </div>
+                      <div className="flex items-center justify-between p-2 bg-slate-50 dark:bg-slate-800/30 rounded-lg">
+                        <span className="text-sm">Go to Reports</span>
+                        <kbd className="px-2 py-1 bg-background border rounded text-xs font-mono">Alt + R</kbd>
+                      </div>
+                      <div className="flex items-center justify-between p-2 bg-slate-50 dark:bg-slate-800/30 rounded-lg">
+                        <span className="text-sm">Go to Settings</span>
+                        <kbd className="px-2 py-1 bg-background border rounded text-xs font-mono">Alt + S</kbd>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h4 className="font-semibold mb-3">Action Shortcuts</h4>
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between p-2 bg-slate-50 dark:bg-slate-800/30 rounded-lg">
+                        <span className="text-sm">Create New Expense</span>
+                        <kbd className="px-2 py-1 bg-background border rounded text-xs font-mono">Ctrl + N</kbd>
+                      </div>
+                      <div className="flex items-center justify-between p-2 bg-slate-50 dark:bg-slate-800/30 rounded-lg">
+                        <span className="text-sm">Save Draft</span>
+                        <kbd className="px-2 py-1 bg-background border rounded text-xs font-mono">Ctrl + S</kbd>
+                      </div>
+                      <div className="flex items-center justify-between p-2 bg-slate-50 dark:bg-slate-800/30 rounded-lg">
+                        <span className="text-sm">Submit Expense</span>
+                        <kbd className="px-2 py-1 bg-background border rounded text-xs font-mono">Ctrl + Enter</kbd>
+                      </div>
+                      <div className="flex items-center justify-between p-2 bg-slate-50 dark:bg-slate-800/30 rounded-lg">
+                        <span className="text-sm">Approve Selected</span>
+                        <kbd className="px-2 py-1 bg-background border rounded text-xs font-mono">Ctrl + Y</kbd>
+                      </div>
+                      <div className="flex items-center justify-between p-2 bg-slate-50 dark:bg-slate-800/30 rounded-lg">
+                        <span className="text-sm">Reject Selected</span>
+                        <kbd className="px-2 py-1 bg-background border rounded text-xs font-mono">Ctrl + R</kbd>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* FAQ Section */}
+            <Card className="border-0 shadow-sm">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-xl">
+                  <HelpCircle className="h-5 w-5" />
+                  Frequently Asked Questions
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg bg-white/50 dark:bg-slate-800/30">
+                    <h4 className="font-semibold mb-2">How do I upload multiple receipts for a single expense?</h4>
+                    <p className="text-sm text-muted-foreground">
+                      When creating or editing an expense, you can upload multiple receipts by clicking the "Add Receipt" button multiple times or by selecting multiple files when prompted. Each expense can have up to 10 receipt attachments with a maximum size of 10MB each.
+                    </p>
+                  </div>
+
+                  <div className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg bg-white/50 dark:bg-slate-800/30">
+                    <h4 className="font-semibold mb-2">What happens if my expense is rejected?</h4>
+                    <p className="text-sm text-muted-foreground">
+                      If your expense is rejected, you'll receive a notification with the reason for rejection. You can then edit the expense to address the issues and resubmit it. The system maintains a complete history of all submissions, rejections, and comments for audit purposes.
+                    </p>
+                  </div>
+
+                  <div className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg bg-white/50 dark:bg-slate-800/30">
+                    <h4 className="font-semibold mb-2">Can I delegate my approval authority while I'm on vacation?</h4>
+                    <p className="text-sm text-muted-foreground">
+                      Yes, you can set up approval delegations for specific date ranges. Navigate to "Delegations" in the system settings, specify the delegate, date range, and optional amount limits. All actions taken by delegates are clearly marked in the audit trail.
+                    </p>
+                  </div>
+
+                  <div className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg bg-white/50 dark:bg-slate-800/30">
+                    <h4 className="font-semibold mb-2">How are multi-currency expenses handled?</h4>
+                    <p className="text-sm text-muted-foreground">
+                      ExpenseFlow supports multi-currency expenses with automatic conversion to your base currency. When creating an expense, select the currency used for the transaction, and the system will apply the current exchange rate. You can also manually override the exchange rate if needed.
+                    </p>
+                  </div>
+
+                  <div className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg bg-white/50 dark:bg-slate-800/30">
+                    <h4 className="font-semibold mb-2">Can I create expense reports for specific projects or clients?</h4>
+                    <p className="text-sm text-muted-foreground">
+                      Yes, you can tag expenses with project codes or client IDs and then generate filtered reports based on these tags. This allows for accurate cost allocation and client billing. Use the "Advanced Filters" option in the reporting section to create project-specific or client-specific reports.
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Support & Resources */}
+            <Card className="border-0 shadow-sm">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-xl">
+                  <LifeBuoy className="h-5 w-5" />
+                  Support & Resources
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg text-center bg-white/50 dark:bg-slate-800/30">
+                    <FileText className="h-8 w-8 mx-auto mb-2 text-blue-600" />
+                    <h3 className="font-semibold">Documentation</h3>
+                    <p className="text-sm text-muted-foreground mb-3">Comprehensive guides and tutorials</p>
+                    <Button size="sm" variant="outline" className="w-full" onClick={() => window.open('#', '_blank')}>
+                      View Documentation <ExternalLink className="h-4 w-4 ml-1" />
+                    </Button>
+                  </div>
+
+                  <div className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg text-center bg-white/50 dark:bg-slate-800/30">
+                    <Video className="h-8 w-8 mx-auto mb-2 text-red-600" />
+                    <h3 className="font-semibold">Video Tutorials</h3>
+                    <p className="text-sm text-muted-foreground mb-3">Step-by-step visual guides</p>
+                    <Button size="sm" variant="outline" className="w-full" onClick={() => window.open('#', '_blank')}>
+                      Watch Tutorials <ExternalLink className="h-4 w-4 ml-1" />
+                    </Button>
+                  </div>
+
+                  <div className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg text-center bg-white/50 dark:bg-slate-800/30">
+                    <MessageSquare className="h-8 w-8 mx-auto mb-2 text-green-600" />
+                    <h3 className="font-semibold">Live Support</h3>
+                    <p className="text-sm text-muted-foreground mb-3">Chat with our support team</p>
+                    <Button size="sm" variant="outline" className="w-full" onClick={() => window.open('#', '_blank')}>
+                      Contact Support <Mail className="h-4 w-4 ml-1" />
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Technical Information */}
+            <Card className="border-0 shadow-sm">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-xl">
+                  <Cpu className="h-5 w-5" />
+                  Technical Stack
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                  <div>
+                    <h4 className="font-semibold mb-2">Frontend</h4>
+                    <ul className="space-y-1 text-muted-foreground">
+                      <li>Next.js 14</li>
+                      <li>React 18</li>
+                      <li>TypeScript 5.1</li>
+                      <li>Tailwind CSS 3.3</li>
+                      <li>ShadcnUI Components</li>
+                      <li>Server Components</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold mb-2">UI Components</h4>
+                    <ul className="space-y-1 text-muted-foreground">
+                      <li>Radix UI Primitives</li>
+                      <li>Lucide Icons</li>
+                      <li>Recharts 2.7</li>
+                      <li>React Hook Form</li>
+                      <li>React DnD</li>
+                      <li>React Dropzone</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold mb-2">Data & State</h4>
+                    <ul className="space-y-1 text-muted-foreground">
+                      <li>TanStack Query v5</li>
+                      <li>Zustand 4.4</li>
+                      <li>React Hook Form 7.45</li>
+                      <li>Zod Validation</li>
+                      <li>Server Actions</li>
+                      <li>Edge Runtime</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold mb-2">Integrations</h4>
+                    <ul className="space-y-1 text-muted-foreground">
+                      <li>Groq AI API</li>
+                      <li>React-PDF</li>
+                      <li>ExcelJS</li>
+                      <li>Date-fns</li>
+                      <li>Tesseract.js OCR</li>
+                      <li>Auth.js Authentication</li>
+                    </ul>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </div>
   )
 }

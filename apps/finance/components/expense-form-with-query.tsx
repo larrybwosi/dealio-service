@@ -1,8 +1,6 @@
 "use client";
 
-import type React from "react";
-
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   Card,
   CardContent,
@@ -31,7 +29,6 @@ import {
 } from "@workspace/ui/components/popover";
 import { Progress } from "@workspace/ui/components/progress";
 import { Alert, AlertDescription } from "@workspace/ui/components/alert";
-import { format } from "date-fns";
 import {
   CalendarIcon,
   Upload,
@@ -46,38 +43,18 @@ import {
   Send,
   FileText,
   Clock,
+  Info,
 } from "lucide-react";
-import { useCreateExpense } from "@/hooks/use-expenses";
-import { useCategories } from "@/hooks/use-categories";
-import { useBudgets } from "@/hooks/use-budgets";
-import { toast } from "sonner";
-import { PaymentMethod } from "@/prisma/client";
-import { useLocationsList } from "@/hooks/use-locations";
 
-interface ExpenseFormData {
-  description: string;
-  amount: number;
-  categoryId: string;
-  date: Date | undefined;
-  paymentMethod: PaymentMethod;
-  locationId: string;
-  notes: string;
-  tags: string[];
-  attachments: File[];
-  isReimbursable: boolean;
-  isBillable: boolean;
-  isRecurring: boolean;
-  clientId?: string;
-  projectId?: string;
-}
+const PaymentMethod = {
+  CREDIT_CARD: "CREDIT_CARD",
+  DEBIT_CARD: "DEBIT_CARD",
+  CASH: "CASH",
+  BANK_TRANSFER: "BANK_TRANSFER",
+};
 
-export function ExpenseFormWithQuery() {
-  const createExpenseMutation = useCreateExpense();
-  const { data: categoriesData, isLoading: categoriesLoading } = useCategories();
-  const { data: locationsData, isLoading: locationsLoading } = useLocationsList();
-  const { data: budgetsData } = useBudgets();
-
-  const [formData, setFormData] = useState<ExpenseFormData>({
+export default function ExpenseFormWithQuery() {
+  const [formData, setFormData] = useState({
     description: "",
     amount: 0,
     categoryId: "",
@@ -94,44 +71,28 @@ export function ExpenseFormWithQuery() {
 
   const [newTag, setNewTag] = useState("");
   const [uploadProgress, setUploadProgress] = useState(0);
-  const [validationErrors, setValidationErrors] = useState<
-    Record<string, string>
-  >({});
+  const [validationErrors, setValidationErrors] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
 
-  const categories = categoriesData || [];
-  const locations = locationsData || [];
+  const categories = [
+    { id: "1", name: "Travel" },
+    { id: "2", name: "Meals & Entertainment" },
+    { id: "3", name: "Office Supplies" },
+    { id: "4", name: "Software" },
+  ];
 
-  // Get relevant budget for selected category
-  const relevantBudget = budgetsData?.data?.find((budget) =>
-    budget.categories?.some((cat: any) => cat.id === formData.categoryId)
-  );
+  const locations = [
+    { id: "1", name: "New York Office" },
+    { id: "2", name: "San Francisco Office" },
+    { id: "3", name: "Remote" },
+  ];
 
-  const categoryBudget = relevantBudget?.categories?.find(
-    (cat: any) => cat.id === formData.categoryId
-  );
-  const budgetUsagePercentage = categoryBudget
-    ? (categoryBudget.used / categoryBudget.allocated) * 100
-    : 0;
-
-  const validateForm = (): boolean => {
-    const errors: Record<string, string> = {};
-
-    if (!formData?.description?.trim()) {
-      errors.description = "Description is required";
-    }
-    if (!formData.amount || formData.amount <= 0) {
-      errors.amount = "Amount must be greater than 0";
-    }
-    if (!formData.categoryId) {
-      errors.category = "Category is required";
-    }
-    if (!formData.date) {
-      errors.date = "Date is required";
-    }
-
-    setValidationErrors(errors);
-    return Object.keys(errors).length === 0;
+  const categoryBudget = {
+    used: 3200,
+    allocated: 5000,
   };
+
+  const budgetUsagePercentage = (categoryBudget.used / categoryBudget.allocated) * 100;
 
   const addTag = () => {
     if (newTag && !formData.tags.includes(newTag)) {
@@ -140,533 +101,504 @@ export function ExpenseFormWithQuery() {
     }
   };
 
-  const removeTag = (tagToRemove: string) => {
+  const removeTag = (tagToRemove) => {
     setFormData({
       ...formData,
       tags: formData.tags.filter((tag) => tag !== tagToRemove),
     });
   };
 
-  const handleFileUpload = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleFileUpload = (event) => {
     const files = Array.from(event.target.files || []);
     if (files.length > 0) {
-      try {
-        setUploadProgress(0);
-
-        // Upload each file to the API
-        for (const file of files) {
-          const formData = new FormData();
-          formData.append("file", file);
-
-          const response = await fetch("https://dealio-erp.vercel.appp/api/upload", {
-            method: "POST",
-            body: formData,
-          });
-
-          if (!response.ok) {
-            throw new Error("File upload failed");
-          }
-
-          // Update progress for each file
-          setUploadProgress((prev) => {
-            const newProgress = prev + 100 / files.length;
-            return newProgress > 100 ? 100 : newProgress;
-          });
-        }
-
-        // Add files to form data after successful upload
-        setFormData((prev) => ({
-          ...prev,
-          attachments: [...prev.attachments, ...files],
-        }));
-
-        toast.success(`${files.length} file(s) uploaded successfully`);
-      } catch (error) {
-        console.error("Error uploading files:", error);
-        toast.error("Failed to upload files");
-      } finally {
-        setUploadProgress(100);
-      }
+      setFormData((prev) => ({
+        ...prev,
+        attachments: [...prev.attachments, ...files],
+      }));
     }
   };
 
-  const removeAttachment = (index: number) => {
+  const removeAttachment = (index) => {
     setFormData({
       ...formData,
       attachments: formData.attachments.filter((_, i) => i !== index),
     });
   };
 
-  const handleSubmit = async (asDraft = false) => {
-    if (!asDraft && !validateForm()) {
-      toast.error("Please fix the validation errors");
-      return;
-    }
-
-    try {
-      const expenseData = {
-        ...formData,
-        date: formData.date?.toISOString().split("T")[0],
-        status: asDraft ? "draft" : "pending",
-      };
-
-      await createExpenseMutation.mutateAsync(expenseData);
-
-      if (asDraft) {
-        toast.success("Expense saved as draft");
-      } else {
-        toast.success("Expense submitted for approval");
-        // Reset form
-        setFormData({
-          description: "",
-          amount: 0,
-          categoryId: "",
-          date: new Date(),
-          paymentMethod: PaymentMethod.CREDIT_CARD,
-          locationId: "",
-          notes: "",
-          tags: [],
-          attachments: [],
-          isReimbursable: false,
-          isBillable: false,
-          isRecurring: false,
-        });
-      }
-    } catch (error) {
-      console.error("Error submitting expense:", error);
-    }
-  };
-
-  const isLoading = createExpenseMutation.isPending;
-
   return (
-    <div className="p-4 max-w-5xl mx-auto">
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold">Create New Expense</h1>
-        <p className="text-sm text-gray-600">
-          Submit a new expense for approval
-        </p>
-      </div>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Header */}
+        <div className="mb-8">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="p-2 bg-slate-900 rounded-lg">
+              <Receipt className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <h1 className="text-3xl font-bold tracking-tight text-slate-900">
+                New Expense
+              </h1>
+              <p className="text-sm text-slate-600 mt-1">
+                Submit an expense for approval and reimbursement
+              </p>
+            </div>
+          </div>
+        </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Main Form */}
-        <Card className="lg:col-span-2">
-          <CardHeader className="pb-4">
-            <CardTitle className="text-lg flex items-center gap-2">
-              <Receipt className="w-5 h-5" />
-              Expense Details
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            {/* Basic Information */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="description" className="text-sm font-medium">
-                  Description *
-                </Label>
-                <Input
-                  id="description"
-                  placeholder="Brief description of the expense"
-                  className="h-9"
-                  value={formData.description}
-                  onChange={(e) =>
-                    setFormData({ ...formData, description: e.target.value })
-                  }
-                />
-                {validationErrors.description && (
-                  <p className="text-xs text-red-600">
-                    {validationErrors.description}
-                  </p>
-                )}
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="amount" className="text-sm font-medium">
-                  Amount *
-                </Label>
-                <div className="relative">
-                  <DollarSign className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
-                  <Input
-                    id="amount"
-                    type="number"
-                    placeholder="0.00"
-                    className="h-9 pl-9"
-                    step="0.01"
-                    value={formData.amount || ""}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Main Form */}
+          <div className="lg:col-span-2 space-y-6">
+            <Card className="border-slate-200 shadow-sm">
+              <CardHeader className="border-b border-slate-100 bg-slate-50/50">
+                <CardTitle className="text-lg font-semibold text-slate-900">
+                  Expense Information
+                </CardTitle>
+                <CardDescription className="text-sm text-slate-600">
+                  Provide details about your expense
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="pt-6 space-y-6">
+                {/* Description & Amount */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="description" className="text-sm font-medium text-slate-900">
+                      Description
+                      <span className="text-red-500 ml-1">*</span>
+                    </Label>
+                    <Input
+                      id="description"
+                      placeholder="e.g., Client dinner at The Restaurant"
+                      className="h-10 border-slate-300 focus:border-slate-900 focus:ring-slate-900"
+                      value={formData.description}
+                      onChange={(e) =>
+                        setFormData({ ...formData, description: e.target.value })
+                      }
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="amount" className="text-sm font-medium text-slate-900">
+                      Amount
+                      <span className="text-red-500 ml-1">*</span>
+                    </Label>
+                    <div className="relative">
+                      <DollarSign className="absolute left-3 top-3 h-4 w-4 text-slate-500" />
+                      <Input
+                        id="amount"
+                        type="number"
+                        placeholder="0.00"
+                        className="h-10 pl-9 border-slate-300 focus:border-slate-900 focus:ring-slate-900"
+                        step="0.01"
+                        value={formData.amount || ""}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            amount: parseFloat(e.target.value) || 0,
+                          })
+                        }
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Category & Date */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <Label className="text-sm font-medium text-slate-900">
+                      Category
+                      <span className="text-red-500 ml-1">*</span>
+                    </Label>
+                    <Select
+                      value={formData.categoryId}
+                      onValueChange={(value) =>
+                        setFormData({ ...formData, categoryId: value })
+                      }
+                    >
+                      <SelectTrigger className="h-10 border-slate-300 focus:border-slate-900 focus:ring-slate-900">
+                        <SelectValue placeholder="Select a category" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {categories.map((category) => (
+                          <SelectItem key={category.id} value={category.id}>
+                            {category.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-sm font-medium text-slate-900">
+                      Date
+                      <span className="text-red-500 ml-1">*</span>
+                    </Label>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="outline"
+                          className="h-10 w-full justify-start text-left font-normal border-slate-300 hover:bg-slate-50"
+                        >
+                          <CalendarIcon className="mr-2 h-4 w-4 text-slate-500" />
+                          {formData.date ? (
+                            formData.date.toLocaleDateString()
+                          ) : (
+                            <span className="text-slate-500">Pick a date</span>
+                          )}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0">
+                        <Calendar
+                          mode="single"
+                          selected={formData.date}
+                          onSelect={(date) => setFormData({ ...formData, date })}
+                          initialFocus
+                        />
+                      </PopoverContent>
+                    </Popover>
+                  </div>
+                </div>
+
+                {/* Payment Method & Location */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <Label className="text-sm font-medium text-slate-900">
+                      Payment Method
+                    </Label>
+                    <Select
+                      value={formData.paymentMethod}
+                      onValueChange={(value) =>
+                        setFormData({
+                          ...formData,
+                          paymentMethod: value,
+                        })
+                      }
+                    >
+                      <SelectTrigger className="h-10 border-slate-300 focus:border-slate-900 focus:ring-slate-900">
+                        <SelectValue placeholder="Select payment method" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {Object.values(PaymentMethod).map((method) => (
+                          <SelectItem key={method} value={method}>
+                            {method
+                              .split("_")
+                              .map(
+                                (word) =>
+                                  word.charAt(0) + word.slice(1).toLowerCase()
+                              )
+                              .join(" ")}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-sm font-medium text-slate-900">Location</Label>
+                    <Select
+                      value={formData.locationId}
+                      onValueChange={(value) =>
+                        setFormData({ ...formData, locationId: value })
+                      }
+                    >
+                      <SelectTrigger className="h-10 border-slate-300 focus:border-slate-900 focus:ring-slate-900">
+                        <SelectValue placeholder="Select location" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {locations.map((location) => (
+                          <SelectItem key={location.id} value={location.id}>
+                            {location.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+
+                <div className="h-px bg-slate-200" />
+
+                {/* Notes */}
+                <div className="space-y-2">
+                  <Label htmlFor="notes" className="text-sm font-medium text-slate-900">
+                    Additional Notes
+                  </Label>
+                  <Textarea
+                    id="notes"
+                    placeholder="Add any relevant details or context..."
+                    className="resize-none border-slate-300 focus:border-slate-900 focus:ring-slate-900 min-h-[100px]"
+                    value={formData.notes}
                     onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        amount: Number.parseFloat(e.target.value) || 0,
-                      })
+                      setFormData({ ...formData, notes: e.target.value })
                     }
                   />
                 </div>
-                {validationErrors.amount && (
-                  <p className="text-xs text-red-600">
-                    {validationErrors.amount}
-                  </p>
-                )}
-              </div>
-            </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label className="text-sm font-medium">Category *</Label>
-                <Select
-                  value={formData.categoryId}
-                  onValueChange={(value) =>
-                    setFormData({ ...formData, categoryId: value })
-                  }
-                  disabled={categoriesLoading}
-                >
-                  <SelectTrigger className="h-9">
-                    <SelectValue placeholder="Select category" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {categories.map((category) => (
-                      <SelectItem key={category.id} value={category.id}>
-                        {category.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                {validationErrors.category && (
-                  <p className="text-xs text-red-600">
-                    {validationErrors.category}
-                  </p>
-                )}
-              </div>
-              <div className="space-y-2">
-                <Label className="text-sm font-medium">Date *</Label>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      className="h-9 justify-start text-left font-normal bg-transparent"
-                    >
-                      <CalendarIcon className="mr-2 h-4 w-4" />
-                      {formData.date ? (
-                        format(formData.date, "PPP")
-                      ) : (
-                        <span>Pick a date</span>
-                      )}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0">
-                    <Calendar
-                      mode="single"
-                      selected={formData.date}
-                      onSelect={(date) => setFormData({ ...formData, date })}
-                      initialFocus
-                    />
-                  </PopoverContent>
-                </Popover>
-                {validationErrors.date && (
-                  <p className="text-xs text-red-600">
-                    {validationErrors.date}
-                  </p>
-                )}
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label className="text-sm font-medium">Payment Method</Label>
-                <Select
-                  value={formData.paymentMethod}
-                  onValueChange={(value) =>
-                    setFormData({
-                      ...formData,
-                      paymentMethod: value as PaymentMethod,
-                    })
-                  }
-                >
-                  <SelectTrigger className="h-9">
-                    <SelectValue placeholder="Select payment method" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Object.values(PaymentMethod).map((method) => (
-                      <SelectItem key={method} value={method}>
-                        {method
-                          .split("_")
-                          .map(
-                            (word) =>
-                              word.charAt(0) + word.slice(1).toLowerCase()
-                          )
-                          .join(" ")}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="space-y-2">
-                <Label className="text-sm font-medium">Location</Label>
-                <Select
-                  value={formData.locationId}
-                  onValueChange={(value) =>
-                    setFormData({ ...formData, locationId: value })
-                  }
-                  disabled={locationsLoading}
-                >
-                  <SelectTrigger className="h-9">
-                    <SelectValue placeholder="Select location" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {locations.map((location) => (
-                      <SelectItem key={location.id} value={location.id}>
-                        {location.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-
-            {/* Notes */}
-            <div className="space-y-2">
-              <Label htmlFor="notes" className="text-sm font-medium">
-                Additional Notes
-              </Label>
-              <Textarea
-                id="notes"
-                placeholder="Additional details about this expense..."
-                className="resize-none"
-                rows={3}
-                value={formData.notes}
-                onChange={(e) =>
-                  setFormData({ ...formData, notes: e.target.value })
-                }
-              />
-            </div>
-
-            {/* Tags */}
-            <div className="space-y-3">
-              <Label className="text-sm font-medium">Tags</Label>
-              <div className="flex flex-wrap gap-2 mb-3">
-                {formData.tags.map((tag) => (
-                  <Badge key={tag} variant="secondary" className="text-sm h-6">
-                    <Tag className="w-3 h-3 mr-1" />
-                    {tag}
-                    <button
-                      onClick={() => removeTag(tag)}
-                      className="ml-2 hover:text-red-600"
-                    >
-                      <X className="w-3 h-3" />
-                    </button>
-                  </Badge>
-                ))}
-              </div>
-              <div className="flex gap-2">
-                <Input
-                  value={newTag}
-                  onChange={(e) => setNewTag(e.target.value)}
-                  placeholder="Add tag"
-                  className="h-8 flex-1"
-                  onKeyPress={(e) => e.key === "Enter" && addTag()}
-                />
-                <Button onClick={addTag} size="sm" className="h-8 px-3">
-                  Add
-                </Button>
-              </div>
-            </div>
-
-            {/* Checkboxes */}
-            <div className="space-y-4">
-              <div className="flex items-center space-x-3">
-                <Checkbox
-                  id="reimbursable"
-                  checked={formData.isReimbursable}
-                  onCheckedChange={(checked) =>
-                    setFormData({ ...formData, isReimbursable: !!checked })
-                  }
-                />
-                <Label htmlFor="reimbursable" className="text-sm">
-                  This expense is reimbursable
-                </Label>
-              </div>
-              <div className="flex items-center space-x-3">
-                <Checkbox
-                  id="billable"
-                  checked={formData.isBillable}
-                  onCheckedChange={(checked) =>
-                    setFormData({ ...formData, isBillable: !!checked })
-                  }
-                />
-                <Label htmlFor="billable" className="text-sm">
-                  This expense is billable to client
-                </Label>
-              </div>
-              <div className="flex items-center space-x-3">
-                <Checkbox
-                  id="recurring"
-                  checked={formData.isRecurring}
-                  onCheckedChange={(checked) =>
-                    setFormData({ ...formData, isRecurring: !!checked })
-                  }
-                />
-                <Label htmlFor="recurring" className="text-sm">
-                  Set up as recurring expense
-                </Label>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Sidebar */}
-        <div className="space-y-6">
-          {/* File Upload */}
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-base">Receipts & Documents</CardTitle>
-              <CardDescription className="text-sm">
-                Upload supporting documents
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
-                <input
-                  type="file"
-                  multiple
-                  accept="image/*,.pdf,.doc,.docx"
-                  onChange={handleFileUpload}
-                  className="hidden"
-                  id="file-upload"
-                />
-                <label htmlFor="file-upload" className="cursor-pointer">
-                  <Upload className="w-8 h-8 mx-auto mb-2 text-gray-400" />
-                  <p className="text-sm text-gray-600">Click to upload files</p>
-                  <p className="text-xs text-gray-500">
-                    PNG, JPG, PDF up to 10MB
-                  </p>
-                </label>
-              </div>
-
-              {uploadProgress > 0 && uploadProgress < 100 && (
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span>Uploading...</span>
-                    <span>{Math.round(uploadProgress)}%</span>
-                  </div>
-                  <Progress value={uploadProgress} className="h-2" />
-                </div>
-              )}
-
-              {formData.attachments.length > 0 && (
-                <div className="space-y-2">
-                  {formData.attachments.map((file, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
-                    >
-                      <div className="flex items-center gap-2">
-                        <FileText className="w-4 h-4 text-gray-500" />
-                        <span className="text-sm truncate">{file.name}</span>
-                      </div>
-                      <button
-                        onClick={() => removeAttachment(index)}
-                        className="text-red-600 hover:text-red-800"
-                      >
-                        <X className="w-4 h-4" />
-                      </button>
+                {/* Tags */}
+                <div className="space-y-3">
+                  <Label className="text-sm font-medium text-slate-900">Tags</Label>
+                  {formData.tags.length > 0 && (
+                    <div className="flex flex-wrap gap-2">
+                      {formData.tags.map((tag) => (
+                        <Badge
+                          key={tag}
+                          variant="secondary"
+                          className="text-sm h-7 px-3 bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200"
+                        >
+                          {tag}
+                          <button
+                            onClick={() => removeTag(tag)}
+                            className="ml-2 hover:text-slate-900"
+                          >
+                            <X className="w-3 h-3" />
+                          </button>
+                        </Badge>
+                      ))}
                     </div>
-                  ))}
+                  )}
+                  <div className="flex gap-2">
+                    <Input
+                      value={newTag}
+                      onChange={(e) => setNewTag(e.target.value)}
+                      placeholder="Type and press Enter..."
+                      className="h-9 border-slate-300 focus:border-slate-900 focus:ring-slate-900"
+                      onKeyPress={(e) => e.key === "Enter" && addTag()}
+                    />
+                    <Button
+                      onClick={addTag}
+                      variant="outline"
+                      size="sm"
+                      className="h-9 px-4 border-slate-300 hover:bg-slate-50"
+                    >
+                      Add
+                    </Button>
+                  </div>
                 </div>
-              )}
-            </CardContent>
-          </Card>
 
-          {/* Budget Impact */}
-          {categoryBudget && (
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-base">Budget Impact</CardTitle>
+                <div className="h-px bg-slate-200" />
+
+                {/* Checkboxes */}
+                <div className="space-y-4">
+                  <div className="flex items-start space-x-3 p-3 rounded-lg hover:bg-slate-50 transition-colors">
+                    <Checkbox
+                      id="reimbursable"
+                      checked={formData.isReimbursable}
+                      onCheckedChange={(checked) =>
+                        setFormData({ ...formData, isReimbursable: !!checked })
+                      }
+                      className="mt-0.5"
+                    />
+                    <div className="flex-1">
+                      <Label htmlFor="reimbursable" className="text-sm font-medium text-slate-900 cursor-pointer">
+                        Reimbursable expense
+                      </Label>
+                      <p className="text-xs text-slate-600 mt-0.5">
+                        I paid for this and need reimbursement
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-start space-x-3 p-3 rounded-lg hover:bg-slate-50 transition-colors">
+                    <Checkbox
+                      id="billable"
+                      checked={formData.isBillable}
+                      onCheckedChange={(checked) =>
+                        setFormData({ ...formData, isBillable: !!checked })
+                      }
+                      className="mt-0.5"
+                    />
+                    <div className="flex-1">
+                      <Label htmlFor="billable" className="text-sm font-medium text-slate-900 cursor-pointer">
+                        Billable to client
+                      </Label>
+                      <p className="text-xs text-slate-600 mt-0.5">
+                        This expense should be billed to a client
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-start space-x-3 p-3 rounded-lg hover:bg-slate-50 transition-colors">
+                    <Checkbox
+                      id="recurring"
+                      checked={formData.isRecurring}
+                      onCheckedChange={(checked) =>
+                        setFormData({ ...formData, isRecurring: !!checked })
+                      }
+                      className="mt-0.5"
+                    />
+                    <div className="flex-1">
+                      <Label htmlFor="recurring" className="text-sm font-medium text-slate-900 cursor-pointer">
+                        Recurring expense
+                      </Label>
+                      <p className="text-xs text-slate-600 mt-0.5">
+                        This is a monthly or regular expense
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Sidebar */}
+          <div className="space-y-6">
+            {/* File Upload */}
+            <Card className="border-slate-200 shadow-sm">
+              <CardHeader className="border-b border-slate-100 bg-slate-50/50">
+                <CardTitle className="text-base font-semibold text-slate-900">
+                  Attachments
+                </CardTitle>
+                <CardDescription className="text-sm text-slate-600">
+                  Upload receipts and documents
+                </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-3">
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span>
-                      {
-                        categories.find((c) => c.id === formData.categoryId)
-                          ?.name
-                      }{" "}
-                      Budget
-                    </span>
-                    <span>
+              <CardContent className="pt-6 space-y-4">
+                <div className="border-2 border-dashed border-slate-300 rounded-lg p-8 text-center hover:border-slate-400 hover:bg-slate-50/50 transition-all">
+                  <input
+                    type="file"
+                    multiple
+                    accept="image/*,.pdf,.doc,.docx"
+                    onChange={handleFileUpload}
+                    className="hidden"
+                    id="file-upload"
+                  />
+                  <label htmlFor="file-upload" className="cursor-pointer">
+                    <Upload className="w-10 h-10 mx-auto mb-3 text-slate-400" />
+                    <p className="text-sm font-medium text-slate-700 mb-1">
+                      Drop files or click to upload
+                    </p>
+                    <p className="text-xs text-slate-500">
+                      PNG, JPG, PDF up to 10MB each
+                    </p>
+                  </label>
+                </div>
+
+                {formData.attachments.length > 0 && (
+                  <div className="space-y-2">
+                    {formData.attachments.map((file, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center justify-between p-3 bg-slate-50 border border-slate-200 rounded-lg hover:bg-slate-100 transition-colors"
+                      >
+                        <div className="flex items-center gap-3 flex-1 min-w-0">
+                          <div className="p-1.5 bg-white rounded border border-slate-200">
+                            <FileText className="w-4 h-4 text-slate-600" />
+                          </div>
+                          <span className="text-sm text-slate-700 truncate">
+                            {file.name}
+                          </span>
+                        </div>
+                        <button
+                          onClick={() => removeAttachment(index)}
+                          className="ml-2 text-slate-400 hover:text-red-600 transition-colors"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
+            {/* Budget Impact */}
+            <Card className="border-slate-200 shadow-sm">
+              <CardHeader className="border-b border-slate-100 bg-slate-50/50">
+                <CardTitle className="text-base font-semibold text-slate-900">
+                  Budget Impact
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="pt-6 space-y-4">
+                <div className="space-y-3">
+                  <div className="flex justify-between items-baseline">
+                    <span className="text-sm text-slate-600">Travel Budget</span>
+                    <span className="text-sm font-semibold text-slate-900">
                       ${categoryBudget.used.toLocaleString()} / $
                       {categoryBudget.allocated.toLocaleString()}
                     </span>
                   </div>
-                  <Progress value={budgetUsagePercentage} className="h-2" />
-                  <div className="text-sm text-gray-600">
-                    {(100 - budgetUsagePercentage).toFixed(1)}% remaining
+                  <Progress value={budgetUsagePercentage} className="h-2.5 bg-slate-100" />
+                  <div className="flex items-center gap-2">
+                    <div className="flex-1 text-sm text-slate-600">
+                      {(100 - budgetUsagePercentage).toFixed(1)}% remaining
+                    </div>
+                    <Badge variant="secondary" className="bg-slate-100 text-slate-700 border-slate-200">
+                      ${(categoryBudget.allocated - categoryBudget.used).toLocaleString()} left
+                    </Badge>
                   </div>
                 </div>
                 {budgetUsagePercentage > 90 && (
-                  <Alert>
-                    <AlertCircle className="h-4 w-4" />
-                    <AlertDescription className="text-sm">
-                      This expense will exceed 90% of the budget allocation.
+                  <Alert className="border-amber-200 bg-amber-50">
+                    <AlertCircle className="h-4 w-4 text-amber-600" />
+                    <AlertDescription className="text-sm text-amber-800">
+                      This expense will exceed 90% of your budget allocation
                     </AlertDescription>
                   </Alert>
                 )}
               </CardContent>
             </Card>
-          )}
 
-          {/* Approval Info */}
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-base">Approval Process</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <div className="flex items-center gap-2 text-sm">
-                <User className="w-4 h-4 text-gray-400" />
-                <span>Manager: Sarah Wilson</span>
-              </div>
-              <div className="flex items-center gap-2 text-sm">
-                <Clock className="w-4 h-4 text-blue-500" />
-                <span>Expected approval: 1-2 business days</span>
-              </div>
-              {formData.amount > 500 && (
-                <div className="flex items-center gap-2 text-sm">
-                  <AlertCircle className="w-4 h-4 text-yellow-500" />
-                  <span>
-                    Requires additional approval for amounts &gt; $500
-                  </span>
+            {/* Approval Info */}
+            <Card className="border-slate-200 shadow-sm">
+              <CardHeader className="border-b border-slate-100 bg-slate-50/50">
+                <CardTitle className="text-base font-semibold text-slate-900">
+                  Approval Process
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="pt-6 space-y-4">
+                <div className="space-y-3">
+                  <div className="flex items-start gap-3">
+                    <div className="p-1.5 bg-slate-100 rounded-lg mt-0.5">
+                      <User className="w-4 h-4 text-slate-600" />
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-sm font-medium text-slate-900">Sarah Wilson</p>
+                      <p className="text-xs text-slate-600">Approving Manager</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="p-1.5 bg-slate-100 rounded-lg mt-0.5">
+                      <Clock className="w-4 h-4 text-slate-600" />
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-sm font-medium text-slate-900">1-2 business days</p>
+                      <p className="text-xs text-slate-600">Expected approval time</p>
+                    </div>
+                  </div>
                 </div>
-              )}
-            </CardContent>
-          </Card>
+                {formData.amount > 500 && (
+                  <Alert className="border-slate-200 bg-slate-50">
+                    <Info className="h-4 w-4 text-slate-600" />
+                    <AlertDescription className="text-sm text-slate-700">
+                      Expenses over $500 require additional approval from Finance
+                    </AlertDescription>
+                  </Alert>
+                )}
+              </CardContent>
+            </Card>
 
-          {/* Action Buttons */}
-          <div className="space-y-3">
-            <Button
-              className="w-full h-10"
-              onClick={() => handleSubmit(false)}
-              disabled={isLoading}
-            >
-              {isLoading ? (
-                <>
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  Submitting...
-                </>
-              ) : (
-                <>
-                  <Send className="w-4 h-4 mr-2" />
-                  Submit for Approval
-                </>
-              )}
-            </Button>
-            <Button
-              variant="outline"
-              className="w-full h-10 bg-transparent"
-              onClick={() => handleSubmit(true)}
-              disabled={isLoading}
-            >
-              <Save className="w-4 h-4 mr-2" />
-              Save as Draft
-            </Button>
+            {/* Action Buttons */}
+            <div className="space-y-3">
+              <Button
+                className="w-full h-11 bg-slate-900 hover:bg-slate-800 text-white shadow-sm"
+                onClick={() => {}}
+                disabled={isLoading}
+              >
+                {isLoading ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    Submitting...
+                  </>
+                ) : (
+                  <>
+                    <Send className="w-4 h-4 mr-2" />
+                    Submit for Approval
+                  </>
+                )}
+              </Button>
+              <Button
+                variant="outline"
+                className="w-full h-11 border-slate-300 hover:bg-slate-50 text-slate-700"
+                onClick={() => {}}
+                disabled={isLoading}
+              >
+                <Save className="w-4 h-4 mr-2" />
+                Save as Draft
+              </Button>
+            </div>
           </div>
         </div>
       </div>
