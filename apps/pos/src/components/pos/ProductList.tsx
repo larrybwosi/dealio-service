@@ -5,10 +5,10 @@ import { Input } from '@workspace/ui/components/input';
 import { Button } from '@workspace/ui/components/button';
 import { Tabs, TabsList, TabsTrigger } from '@workspace/ui/components/tabs';
 import { Badge } from '@workspace/ui/components/badge';
-import { ScrollArea } from '@workspace/ui/componentsscroll-area';
+import { ScrollArea } from '@workspace/ui/components/scroll-area';
 import { ProductCard } from './product-card';
 import { ProductListError } from './product-list-error';
-import { ProductSkeleton } from '@workspace/ui/componentsskeletons/ProductSkeleton';
+import { ProductSkeleton } from '@workspace/ui/components/skeletons/ProductSkeleton';
 
 import { Search, RefreshCw, X, Package } from 'lucide-react';
 

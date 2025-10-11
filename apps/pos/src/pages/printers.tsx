@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@workspace/ui/components/card';
 import { Button } from '@workspace/ui/components/button';
 import { Badge } from '@workspace/ui/components/badge';
-import { Alert, AlertDescription } from '@workspace/ui/componentsalert';
+import { Alert, AlertDescription } from '@workspace/ui/components/alert';
 import { Separator } from '@workspace/ui/components/separator';
 import {
   Loader2,

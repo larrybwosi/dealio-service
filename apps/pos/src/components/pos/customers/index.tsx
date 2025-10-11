@@ -13,11 +13,11 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@workspace/ui/componentstable";
+} from "@workspace/ui/components/table";
 import { Input } from "@workspace/ui/components/input";
 import { Button } from "@workspace/ui/components/button";
-import { Skeleton } from "@workspace/ui/componentsskeleton";
-import { Alert, AlertDescription } from "@workspace/ui/componentsalert";
+import { Skeleton } from "@workspace/ui/components/skeleton";
+import { Alert, AlertDescription } from "@workspace/ui/components/alert";
 import { Customer } from "@/types";
 import {
   PlusCircle,

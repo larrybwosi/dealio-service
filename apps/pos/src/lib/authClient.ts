@@ -168,7 +168,13 @@ export const authClient = createAuthClient({
   disableDefaultFetchPlugins: true,
 });
 
-export const { signIn, signUp, changePassword, organization, apiKey } = authClient;
+export const { signIn, signUp, useSession, signOut, changePassword, apiKey } = createAuthClient({
+  baseURL: process.env.VITE_PUBLIC_API_ENDPOINT,
+  plugins: [apiKeyClient(), usernameClient(), organizationClient()],
+  fetchOptions: {
+    credentials: 'include',
+  },
+});
 
 // ========= SESSION FETCHER =========
 const fetchSession = async (): Promise<SessionData> => {
@@ -194,132 +200,6 @@ const fetchSession = async (): Promise<SessionData> => {
   return parseStoredDates(data);
 };
 
-// ========= SESSION HOOK =========
-export function useSession(options: UseSessionOptions = {}): UseSessionReturn {
-  const queryClient = useQueryClient();
-
-  const queryResult = useQuery<SessionData, BetterFetchError>({
-    queryKey: QUERY_KEY,
-    queryFn: async (): Promise<SessionData> => {
-      // Try to get from localStorage first
-      const storedSession = getStoredSession();
-      if (storedSession) {
-        // Check if session is valid and not near expiry
-        if (isSessionValid(storedSession) && !isSessionNearExpiry(storedSession)) {
-          return storedSession;
-        }
-        
-        // If session is valid but near expiry, refresh it silently
-        if (isSessionValid(storedSession) && isSessionNearExpiry(storedSession)) {
-          try {
-            console.log('Session near expiry, refreshing token...');
-            const freshData = await fetchSession();
-            storeSession(freshData);
-            return freshData;
-          } catch (error) {
-            console.warn('Failed to refresh near-expiry token:', error);
-            // Fall back to the stored session if refresh fails
-            return storedSession;
-          }
-        }
-        
-        // If session is invalid (expired), clear it and fetch a new one
-        clearStoredSession();
-      }
-
-      // Fetch from API and store
-      const freshData = await fetchSession();
-      storeSession(freshData);
-      return freshData;
-    },
-
-    // Cache configuration
-    staleTime: options.persistFor ?? TIME_CONSTANTS.ONE_HOUR,
-    gcTime: TIME_CONSTANTS.TWENTY_FOUR_HOURS,
-
-    // Prevent excessive refetching
-    refetchOnWindowFocus: true, // Enable to catch expired sessions when user returns
-    refetchOnReconnect: true, // Enable to refresh token when reconnecting
-    refetchOnMount: true,
-    // Set default refetchInterval to check for token expiry
-    refetchInterval: options.refetchInterval ?? TIME_CONSTANTS.FIVE_MINUTES,
-    refetchIntervalInBackground: true,
-
-    // Retry configuration
-    retry: (failureCount, error) => {
-      if (isAuthError(error)) {
-        clearStoredSession();
-        return false;
-      }
-      return failureCount < 2;
-    },
-    retryDelay: attemptIndex => Math.min(1000 * Math.pow(2, attemptIndex), TIME_CONSTANTS.MAX_RETRY_DELAY),
-
-    // Other options
-    networkMode: 'online',
-    enabled: options.enabled !== false,
-  });
-
-  // Helper functions
-  const clearSession = (): void => {
-    clearStoredSession();
-    queryClient.removeQueries({ queryKey: QUERY_KEY });
-    queryClient.clear();
-  };
-
-  const refreshSession = async (): Promise<SessionData> => {
-    clearStoredSession();
-    const freshData = await queryClient.fetchQuery({
-      queryKey: QUERY_KEY,
-      queryFn: fetchSession,
-      staleTime: 0, // Force fresh fetch
-    });
-    storeSession(freshData);
-    return freshData;
-  };
-
-  return {
-    ...queryResult,
-    data: queryResult.data,
-    error: queryResult.error,
-    clearSession,
-    refreshSession,
-  };
-}
-
-// ========= SIGN OUT FUNCTION =========
-export const signOut = async (): Promise<void> => {
-  try {
-    const token = localStorage.getItem(BEARER_TOKEN_KEY);
-
-    await axios.post(
-      `${API_ENDPOINT}/api/auth/sign-out`,
-      {},
-      {
-        withCredentials: true,
-        adapter: axiosTauriApiAdapter,
-        headers: {
-          Authorization: token ? `Bearer ${token}` : undefined,
-          'Content-Type': 'application/json',
-        },
-        timeout: 10000, // 10 second timeout
-      }
-    );
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      const errorInfo = error.response?.data || { message: 'Failed to parse error response.' };
-      throw new BetterFetchError(
-        `Failed to sign out. Status: ${error.response?.status || 'unknown'}`,
-        error.response?.status || 0,
-        errorInfo
-      );
-    }
-    throw error;
-  } finally {
-    // Always clear session data, even if the API call fails
-    clearStoredSession();
-  }
-};
 
 // ========= ADDITIONAL UTILITIES =========
 

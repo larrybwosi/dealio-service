@@ -9,7 +9,7 @@ import { InvoiceModal } from '@/components/pos/InvoiceModal';
 import { CartItem, Customer, Order, OrderType } from '@/types';
 import { useOrgStore } from '@/lib/tanstack-axios';
 import { useBusinessConfig } from '@/lib/business-config-manager';
-import { ScrollArea } from '@workspace/ui/componentsscroll-area';
+import { ScrollArea } from '@workspace/ui/components/scroll-area';
 import { withAuth } from '@/providers/session';
 
 function PosSystem() {

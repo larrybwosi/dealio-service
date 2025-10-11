@@ -19,8 +19,8 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@workspace/ui/componentsalert-dialog';
-import { Avatar, AvatarFallback, AvatarImage } from '@workspace/ui/componentsavatar';
+} from '@workspace/ui/components/alert-dialog';
+import { Avatar, AvatarFallback, AvatarImage } from '@workspace/ui/components/avatar';
 import { Separator } from '@workspace/ui/components/separator';
 import {
   ChevronRight,

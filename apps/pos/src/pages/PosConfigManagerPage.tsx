@@ -4,11 +4,11 @@ import { Button } from '@workspace/ui/components/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@workspace/ui/components/card';
 import { Input } from '@workspace/ui/components/input';
 import { Label } from '@workspace/ui/components/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@workspace/ui/componentsselect';
-import { Switch } from '@workspace/ui/componentsswitch';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@workspace/ui/components/select';
+import { Switch } from '@workspace/ui/components/switch';
 import { Separator } from '@workspace/ui/components/separator';
 import { Badge } from '@workspace/ui/components/badge';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@workspace/ui/componentstooltip';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@workspace/ui/components/tooltip';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -19,7 +19,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '@workspace/ui/componentsalert-dialog';
+} from '@workspace/ui/components/alert-dialog';
 import {
   Dialog,
   DialogContent,

@@ -1,8 +1,8 @@
 import { Eye } from 'lucide-react';
-import { Button } from '../ui/button';
 import { cn } from '@/lib/utils';
 import { OrderQueue } from '@/types';
 import { BusinessConfig } from '@/types/business-config';
+import { Button } from '@workspace/ui/components/button';
 
 interface OrderQueueCardProps {
   queue: OrderQueue;

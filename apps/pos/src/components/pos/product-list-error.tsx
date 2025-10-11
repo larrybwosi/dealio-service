@@ -1,7 +1,7 @@
 // components/products/product-list-error.tsx
-import { Alert, AlertDescription } from '@workspace/ui/componentsalert';
+import { Alert, AlertDescription } from '@workspace/ui/components/alert';
 import { Button } from '@workspace/ui/components/button';
-import { Skeleton } from '@workspace/ui/componentsskeleton';
+import { Skeleton } from '@workspace/ui/components/skeleton';
 import { cn } from '@/lib/utils';
 import { AlertTriangle, RefreshCw, WifiOff } from 'lucide-react';
 

@@ -9,9 +9,6 @@ import {
 import { auth } from './auth';
 import { dodopaymentsClient } from '@dodopayments/better-auth';
 
-// const headers = new Headers();
-// headers.append('Content-Type', 'application/json');
-// headers.append('Access-Control-Allow-Credentials', 'true');
 
 export const {
   signIn,
