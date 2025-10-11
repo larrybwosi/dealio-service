@@ -37,7 +37,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@workspace/ui/componentsselect";
+} from "@workspace/ui/components/select";
 
 // Simulated auth state - replace with your actual auth solution
 const useAuth = () => {

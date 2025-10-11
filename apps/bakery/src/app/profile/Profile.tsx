@@ -7,10 +7,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@workspace/ui/componen
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@workspace/ui/components/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@workspace/ui/components/dialog";
 import { Textarea } from "@workspace/ui/components/textarea";
-import { Switch } from "@workspace/ui/componentsswitch";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@workspace/ui/componentsselect";
+import { Switch } from "@workspace/ui/components/switch";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@workspace/ui/components/select";
 import { Badge } from "@workspace/ui/components/badge";
-import { Avatar, AvatarFallback, AvatarImage } from "@workspace/ui/componentsavatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@workspace/ui/components/avatar";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import Header from "@/components/Header";

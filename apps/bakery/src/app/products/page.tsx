@@ -2,12 +2,12 @@
 
 import { useState, useMemo } from "react";
 import { Star, Search, Filter, Heart, ShoppingCart, Grid, List } from "lucide-react";
-import { Button } from "@workspace/ui/components/button.tsx";
-import { Input } from "@workspace/ui/components/input.tsx";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@workspace/ui/componentsselect.tsx";
-import { Badge } from "@workspace/ui/components/badge.tsx";
-import { Card, CardContent } from "@workspace/ui/components/card.tsx";
-import Header from "@/components/Header.tsx";
+import { Button } from "@workspace/ui/components/button";
+import { Input } from "@workspace/ui/components/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@workspace/ui/components/select";
+import { Badge } from "@workspace/ui/components/badge";
+import { Card, CardContent } from "@workspace/ui/components/card";
+import Header from "@/components/Header";
 import { useRouter } from 'next/navigation';
 
 const Page = () => {
