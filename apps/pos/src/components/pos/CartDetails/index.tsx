@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useState } from 'react';
 import { ChevronDown, ChevronUp, Trash2, CreditCard, User, ShoppingCart } from 'lucide-react';
 import { Button } from '@workspace/ui/components/button';
-import { RadioGroup, RadioGroupItem } from '@workspace/ui/componentsradio-group';
+import { RadioGroup, RadioGroupItem } from '@workspace/ui/components/radio-group';
 import { Label } from '@workspace/ui/components/label';
 import { Input } from '@workspace/ui/components/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@workspace/ui/components/select';

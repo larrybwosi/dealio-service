@@ -6,8 +6,7 @@
     "build": "next build",
     "dev": "next dev  --turbopack",
     "lint": "next lint",
-    "start": "next start",
-    "postinstall": "prisma generate  --no-engine"
+    "start": "next start"
   },
   "dependencies": {
     "@ai-sdk/groq": "latest",
