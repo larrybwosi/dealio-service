@@ -19,7 +19,7 @@ export default function Footer() {
           <div className="lg:col-span-1">
             <div className="flex items-center mb-4">
               <BookOpen className="h-8 w-8 text-amber-400 mr-2" />
-              <span className="text-2xl font-bold">BookHub</span>
+              <span className="text-2xl font-bold">Denvis</span>
             </div>
             <p className="text-slate-400 mb-4 text-sm">
               Your trusted partner for books, office supplies, and technology
@@ -130,7 +130,7 @@ export default function Footer() {
             <div className="space-y-3 text-slate-400 text-sm">
               <div className="flex items-center">
                 <Mail className="h-4 w-4 mr-2 text-amber-400" />
-                <span>info@bookhub.co.ke</span>
+                <span>info@denvis.co.ke</span>
               </div>
               <div className="flex items-center">
                 <Phone className="h-4 w-4 mr-2 text-amber-400" />
@@ -152,7 +152,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-slate-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center text-slate-400 text-sm">
-          <p>&copy; 2024 BookHub. All rights reserved.</p>
+          <p>&copy; 2025 Denvis. All rights reserved.</p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <a href="#" className="hover:text-amber-400 transition-colors">
               Privacy Policy

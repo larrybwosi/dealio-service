@@ -43,7 +43,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 
-export default function BookHubHomepage() {
+export default function DenvisHomepage() {
   const categories = [
     {
       icon: BookOpen,
@@ -131,7 +131,7 @@ export default function BookHubHomepage() {
       name: "Dr. Mary Njeri",
       role: "University Professor",
       content:
-        "BookHub transformed how I source academic materials. Their extensive collection and knowledgeable staff make research so much easier. A true partner in education!",
+        "Denvis transformed how I source academic materials. Their extensive collection and knowledgeable staff make research so much easier. A true partner in education!",
       rating: 5,
       image:
         "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100&h=100&fit=crop&crop=face",
@@ -141,7 +141,7 @@ export default function BookHubHomepage() {
       name: "James Ochieng",
       role: "Tech Entrepreneur",
       content:
-        "From startup to scale-up, BookHub has been our go-to for office equipment and tech. Their business solutions saved us thousands while maintaining quality. Exceptional service!",
+        "From startup to scale-up, Denvis has been our go-to for office equipment and tech. Their business solutions saved us thousands while maintaining quality. Exceptional service!",
       rating: 5,
       image:
         "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face",
@@ -151,7 +151,7 @@ export default function BookHubHomepage() {
       name: "Linda Akinyi",
       role: "Medical Student",
       content:
-        "As a medical student, I need reliable resources. BookHub's textbook selection and student discounts have been a lifesaver throughout my studies. Highly recommended!",
+        "As a medical student, I need reliable resources. Denvis's textbook selection and student discounts have been a lifesaver throughout my studies. Highly recommended!",
       rating: 5,
       image:
         "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face",
@@ -231,23 +231,22 @@ export default function BookHubHomepage() {
         <div
           className="absolute inset-0 bg-cover bg-center opacity-30"
           style={{
-            backgroundImage:
-              "https://www.istockphoto.com/photo/bookstore-full-of-books-makes-for-better-everyday-life-gm1389125849-446527206?utm_campaign=srp_photos_bottom&utm_content=https%3A%2F%2Funsplash.com%2Fs%2Fphotos%2Fbookshop&utm_medium=affiliate&utm_source=unsplash&utm_term=bookshop%3A%3A%3A",
+            backgroundImage: "url('https://images.unsplash.com/photo-1589998059171-988d887df646?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2076&q=80')",
           }}
         ></div>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-32">
+        <div className="relative max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-16 sm:py-20 lg:py-24 xl:py-32">
           <div className="text-center">
             {/* Social Proof Badge */}
-            <div className="flex justify-center mb-8">
-              <Badge className="bg-amber-600/20 text-amber-200 border-amber-600/30 px-6 py-2 text-sm font-medium">
-                <Sparkles className="h-4 w-4 mr-2" />
+            <div className="flex justify-center mb-6 sm:mb-8">
+              <Badge className="bg-amber-600/20 text-amber-200 border-amber-600/30 px-4 py-1.5 sm:px-6 sm:py-2 text-xs sm:text-sm font-medium">
+                <Sparkles className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
                 Trusted by 15,000+ Customers Across Kenya
               </Badge>
             </div>
 
             {/* Main Headline - Marketing Focused */}
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-8 leading-tight">
+            <h1 className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-6 sm:mb-8 leading-tight">
               Where Knowledge
               <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500">
@@ -256,7 +255,7 @@ export default function BookHubHomepage() {
             </h1>
 
             {/* Compelling Subheadline */}
-            <p className="text-xl md:text-3xl mb-8 text-slate-200 max-w-5xl mx-auto leading-relaxed font-light">
+            <p className="text-base sm:text-xl md:text-2xl lg:text-3xl mb-6 sm:mb-8 text-slate-200 max-w-4xl mx-auto leading-relaxed font-light px-4">
               From bestselling books to cutting-edge laptops, we're Kenya's
               premier destination for{" "}
               <span className="text-amber-300 font-semibold">
@@ -266,58 +265,58 @@ export default function BookHubHomepage() {
             </p>
 
             {/* Value Proposition */}
-            <div className="flex flex-wrap justify-center gap-6 mb-12 text-slate-300">
+            <div className="flex flex-wrap justify-center gap-4 sm:gap-6 mb-8 sm:mb-12 text-slate-300 text-sm sm:text-base">
               <div className="flex items-center">
-                <CheckCircle className="h-5 w-5 text-green-400 mr-2" />
+                <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-green-400 mr-2" />
                 <span>Same-Day Delivery</span>
               </div>
               <div className="flex items-center">
-                <CheckCircle className="h-5 w-5 text-green-400 mr-2" />
+                <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-green-400 mr-2" />
                 <span>Expert Consultation</span>
               </div>
               <div className="flex items-center">
-                <CheckCircle className="h-5 w-5 text-green-400 mr-2" />
+                <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-green-400 mr-2" />
                 <span>Best Price Guarantee</span>
               </div>
             </div>
 
             {/* Enhanced CTAs */}
-            <div className="flex flex-col sm:flex-row gap-6 justify-center mb-16">
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center mb-12 sm:mb-16 px-4">
               <Button
                 size="lg"
-                className="bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white px-10 py-4 text-lg font-semibold shadow-2xl transform hover:scale-105 transition-all duration-300"
+                className="bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white px-6 sm:px-8 lg:px-10 py-3 sm:py-4 text-sm sm:text-base lg:text-lg font-semibold shadow-2xl transform hover:scale-105 transition-all duration-300 w-full sm:w-auto"
               >
-                <Link href="/products" className="flex items-center">
-                  Start Shopping <ArrowRight className="ml-2 h-5 w-5" />
+                <Link href="/products" className="flex items-center justify-center">
+                  Start Shopping <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
                 </Link>
               </Button>
               <Button
                 size="lg"
                 variant="outline"
-                className="border-2 border-white text-white hover:bg-white hover:text-slate-900 px-10 py-4 text-lg font-semibold backdrop-blur-sm"
+                className="border-2 border-white text-white hover:bg-white hover:text-slate-900 px-6 sm:px-8 lg:px-10 py-3 sm:py-4 text-sm sm:text-base lg:text-lg font-semibold backdrop-blur-sm w-full sm:w-auto"
               >
-                <a href="#locations" className="flex items-center">
-                  Visit Our Stores <MapPin className="ml-2 h-5 w-5" />
+                <a href="#locations" className="flex items-center justify-center">
+                  Visit Our Stores <MapPin className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
                 </a>
               </Button>
             </div>
 
             {/* Achievement Stats - Marketing Focused */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 max-w-4xl mx-auto px-4">
               {achievements.map((achievement, index) => {
                 const IconComponent = achievement.icon;
                 return (
                   <div key={index} className="text-center group">
-                    <div className="mb-3">
-                      <IconComponent className="h-8 w-8 text-amber-400 mx-auto mb-2 group-hover:scale-110 transition-transform" />
-                      <div className="text-3xl md:text-4xl font-bold text-amber-400">
+                    <div className="mb-2 sm:mb-3">
+                      <IconComponent className="h-6 w-6 sm:h-8 sm:w-8 text-amber-400 mx-auto mb-1 sm:mb-2 group-hover:scale-110 transition-transform" />
+                      <div className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-amber-400">
                         {achievement.number}
                       </div>
                     </div>
-                    <div className="text-sm font-medium text-white">
+                    <div className="text-xs sm:text-sm font-medium text-white">
                       {achievement.label}
                     </div>
-                    <div className="text-xs text-slate-300 mt-1">
+                    <div className="text-xs text-slate-300 mt-1 hidden xs:block">
                       {achievement.description}
                     </div>
                   </div>
@@ -331,22 +330,22 @@ export default function BookHubHomepage() {
       {/* About Us Section - Enhanced for Branding */}
       <section
         id="about"
-        className="py-24 bg-gradient-to-br from-slate-50 to-blue-50"
+        className="py-16 sm:py-20 lg:py-24 bg-gradient-to-br from-slate-50 to-blue-50"
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             <div>
-              <Badge className="mb-6 bg-amber-100 text-amber-800 px-4 py-2">
+              <Badge className="mb-4 sm:mb-6 bg-amber-100 text-amber-800 px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm">
                 Our Story
               </Badge>
-              <h2 className="text-4xl md:text-5xl font-bold text-slate-800 mb-8 leading-tight">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-slate-800 mb-6 sm:mb-8 leading-tight">
                 Empowering Dreams,
                 <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-orange-600">
                   One Book at a Time
                 </span>
               </h2>
-              <p className="text-xl text-slate-600 mb-8 leading-relaxed">
+              <p className="text-base sm:text-lg md:text-xl text-slate-600 mb-6 sm:mb-8 leading-relaxed">
                 Born in 2020 from a simple belief:{" "}
                 <strong>
                   access to knowledge should never be a barrier to success.
@@ -355,36 +354,36 @@ export default function BookHubHomepage() {
                 into Kenya's most trusted educational and professional resource
                 hub.
               </p>
-              <p className="text-lg text-slate-600 mb-10 leading-relaxed">
+              <p className="text-sm sm:text-base md:text-lg text-slate-600 mb-8 sm:mb-10 leading-relaxed">
                 Today, we serve over 15,000 customers - from ambitious students
                 to Fortune 500 companies - providing not just products, but
                 partnerships in their journey to excellence.
               </p>
 
               {/* Mission Points */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-10">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-8 sm:mb-10">
                 <div className="flex items-start">
-                  <div className="w-12 h-12 bg-gradient-to-br from-amber-500 to-orange-600 rounded-xl flex items-center justify-center mr-4 flex-shrink-0">
-                    <Heart className="h-6 w-6 text-white" />
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-amber-500 to-orange-600 rounded-lg sm:rounded-xl flex items-center justify-center mr-3 sm:mr-4 flex-shrink-0">
+                    <Heart className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                   </div>
                   <div>
-                    <div className="font-bold text-slate-800 mb-1">
+                    <div className="font-bold text-slate-800 mb-1 text-sm sm:text-base">
                       Customer Obsessed
                     </div>
-                    <div className="text-sm text-slate-600">
+                    <div className="text-xs sm:text-sm text-slate-600">
                       Your success is our only metric that matters
                     </div>
                   </div>
                 </div>
                 <div className="flex items-start">
-                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center mr-4 flex-shrink-0">
-                    <Shield className="h-6 w-6 text-white" />
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg sm:rounded-xl flex items-center justify-center mr-3 sm:mr-4 flex-shrink-0">
+                    <Shield className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                   </div>
                   <div>
-                    <div className="font-bold text-slate-800 mb-1">
+                    <div className="font-bold text-slate-800 mb-1 text-sm sm:text-base">
                       Quality Guaranteed
                     </div>
-                    <div className="text-sm text-slate-600">
+                    <div className="text-xs sm:text-sm text-slate-600">
                       Only authentic products, rigorously verified
                     </div>
                   </div>
@@ -393,36 +392,36 @@ export default function BookHubHomepage() {
 
               <Button
                 size="lg"
-                className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white px-8 py-3"
+                className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white px-6 sm:px-8 py-2.5 sm:py-3 text-sm sm:text-base"
               >
                 Discover Our Impact
               </Button>
             </div>
 
             <div className="relative">
-              <div className="aspect-square rounded-3xl overflow-hidden shadow-2xl">
+              <div className="aspect-square rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl">
                 <img
                   src="https://media.istockphoto.com/id/1092141430/photo/young-girl-student.webp?a=1&b=1&s=612x612&w=0&k=20&c=045CqQp2MbWI8c8nl90Uu-UBDterams_bVVO0JNlTpg="
-                  alt="BookHub Store Interior"
+                  alt="Denvis Store Interior"
                   className="w-full h-full object-cover"
                 />
               </div>
 
               {/* Floating Achievement Cards */}
-              <div className="absolute -bottom-8 -left-8 bg-white p-6 rounded-2xl shadow-xl border">
-                <div className="text-3xl font-bold text-amber-600">4.9★</div>
-                <div className="text-sm text-slate-600 font-medium">
+              <div className="absolute -bottom-4 -left-4 sm:-bottom-8 sm:-left-8 bg-white p-4 sm:p-6 rounded-xl sm:rounded-2xl shadow-xl border">
+                <div className="text-xl sm:text-2xl md:text-3xl font-bold text-amber-600">4.9★</div>
+                <div className="text-xs sm:text-sm text-slate-600 font-medium">
                   Customer Rating
                 </div>
-                <div className="text-xs text-slate-500 mt-1">
+                <div className="text-xs text-slate-500 mt-1 hidden sm:block">
                   From 2,500+ reviews
                 </div>
               </div>
 
-              <div className="absolute -top-8 -right-8 bg-gradient-to-br from-green-500 to-emerald-600 text-white p-6 rounded-2xl shadow-xl">
-                <div className="text-2xl font-bold">98%</div>
-                <div className="text-sm font-medium">Return Rate</div>
-                <div className="text-xs opacity-90 mt-1">Customer loyalty</div>
+              <div className="absolute -top-4 -right-4 sm:-top-8 sm:-right-8 bg-gradient-to-br from-green-500 to-emerald-600 text-white p-4 sm:p-6 rounded-xl sm:rounded-2xl shadow-xl">
+                <div className="text-lg sm:text-xl md:text-2xl font-bold">98%</div>
+                <div className="text-xs sm:text-sm font-medium">Return Rate</div>
+                <div className="text-xs opacity-90 mt-1 hidden sm:block">Customer loyalty</div>
               </div>
             </div>
           </div>
@@ -430,26 +429,26 @@ export default function BookHubHomepage() {
       </section>
 
       {/* Featured Categories - Enhanced Visual Appeal */}
-      <section className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-20">
-            <Badge className="mb-6 bg-amber-100 text-amber-800 px-4 py-2">
+      <section className="py-16 sm:py-20 lg:py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
+          <div className="text-center mb-12 sm:mb-16 lg:mb-20">
+            <Badge className="mb-4 sm:mb-6 bg-amber-100 text-amber-800 px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm">
               Shop by Category
             </Badge>
-            <h2 className="text-4xl md:text-5xl font-bold text-slate-800 mb-6">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-slate-800 mb-4 sm:mb-6">
               Everything You Need to
               <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-orange-600">
                 Achieve Greatness
               </span>
             </h2>
-            <p className="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed px-4">
               Explore our carefully curated categories, each designed to fuel
               your ambitions and accelerate your success
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {categories.map((category, index) => {
               const IconComponent = category.icon;
               return (
@@ -457,13 +456,13 @@ export default function BookHubHomepage() {
                   key={index}
                   className="group hover:shadow-2xl transition-all duration-500 cursor-pointer border-0 shadow-lg overflow-hidden bg-gradient-to-br from-white to-slate-50"
                 >
-                  <CardHeader className="text-center pb-4 relative">
+                  <CardHeader className="text-center pb-3 sm:pb-4 relative">
                     <div
-                      className={`mx-auto w-24 h-24 bg-gradient-to-br ${category.color} rounded-3xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg`}
+                      className={`mx-auto w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 bg-gradient-to-br ${category.color} rounded-2xl sm:rounded-3xl flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg`}
                     >
-                      <IconComponent className="h-12 w-12 text-white" />
+                      <IconComponent className="h-6 w-6 sm:h-8 sm:w-8 lg:h-10 lg:w-10 text-white" />
                     </div>
-                    <CardTitle className="text-xl font-bold text-slate-800 group-hover:text-amber-600 transition-colors mb-2">
+                    <CardTitle className="text-lg sm:text-xl font-bold text-slate-800 group-hover:text-amber-600 transition-colors mb-2">
                       {category.title}
                     </CardTitle>
                     <Badge variant="secondary" className="text-xs font-medium">
@@ -471,7 +470,7 @@ export default function BookHubHomepage() {
                     </Badge>
                   </CardHeader>
                   <CardContent>
-                    <CardDescription className="text-center text-slate-600 leading-relaxed text-base">
+                    <CardDescription className="text-center text-slate-600 leading-relaxed text-sm sm:text-base">
                       {category.description}
                     </CardDescription>
                   </CardContent>
@@ -483,30 +482,30 @@ export default function BookHubHomepage() {
       </section>
 
       {/* Featured Products - Marketing Focused */}
-      <section className="py-24 bg-gradient-to-br from-slate-50 to-blue-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-20">
-            <Badge className="mb-6 bg-amber-100 text-amber-800 px-4 py-2">
+      <section className="py-16 sm:py-20 lg:py-24 bg-gradient-to-br from-slate-50 to-blue-50">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
+          <div className="text-center mb-12 sm:mb-16 lg:mb-20">
+            <Badge className="mb-4 sm:mb-6 bg-amber-100 text-amber-800 px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm">
               Customer Favorites
             </Badge>
-            <h2 className="text-4xl md:text-5xl font-bold text-slate-800 mb-6">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-slate-800 mb-4 sm:mb-6">
               Products That
               <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-orange-600">
                 Change Lives
               </span>
             </h2>
-            <p className="text-xl text-slate-600 max-w-3xl mx-auto mb-8 leading-relaxed">
+            <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-3xl mx-auto mb-6 sm:mb-8 leading-relaxed px-4">
               Discover why thousands of customers choose these game-changing
               products to fuel their success
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-16">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10 mb-12 sm:mb-16">
             {featuredProducts.map((product) => (
               <div key={product.id} className="group">
                 <ProductCard product={product} />
-                <div className="mt-4 text-center">
+                <div className="mt-3 sm:mt-4 text-center">
                   <Badge className="bg-green-100 text-green-800 text-xs">
                     ⭐ Customer Favorite
                   </Badge>
@@ -518,10 +517,10 @@ export default function BookHubHomepage() {
           <div className="text-center">
             <Button
               size="lg"
-              className="bg-gradient-to-r from-slate-800 to-slate-900 hover:from-slate-900 hover:to-black text-white px-10 py-4 shadow-xl"
+              className="bg-gradient-to-r from-slate-800 to-slate-900 hover:from-slate-900 hover:to-black text-white px-6 sm:px-8 lg:px-10 py-2.5 sm:py-3 lg:py-4 shadow-xl text-sm sm:text-base"
             >
-              <Link href="/products" className="flex items-center">
-                Explore All Products <ArrowRight className="ml-2 h-5 w-5" />
+              <Link href="/products" className="flex items-center justify-center">
+                Explore All Products <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
               </Link>
             </Button>
           </div>
@@ -529,59 +528,59 @@ export default function BookHubHomepage() {
       </section>
 
       {/* Testimonials - Enhanced for Social Proof */}
-      <section className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-20">
-            <Badge className="mb-6 bg-amber-100 text-amber-800 px-4 py-2">
+      <section className="py-16 sm:py-20 lg:py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
+          <div className="text-center mb-12 sm:mb-16 lg:mb-20">
+            <Badge className="mb-4 sm:mb-6 bg-amber-100 text-amber-800 px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm">
               Success Stories
             </Badge>
-            <h2 className="text-4xl md:text-5xl font-bold text-slate-800 mb-6">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-slate-800 mb-4 sm:mb-6">
               Real People,
               <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-orange-600">
                 Real Results
               </span>
             </h2>
-            <p className="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
-              See how BookHub has transformed the journeys of students,
+            <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed px-4">
+              See how Denvis has transformed the journeys of students,
               professionals, and entrepreneurs across Kenya
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10">
             {testimonials.map((testimonial, index) => (
               <Card
                 key={index}
                 className="hover:shadow-2xl transition-all duration-300 border-0 shadow-lg overflow-hidden group"
               >
                 <CardHeader className="relative">
-                  <div className="flex items-center mb-6">
+                  <div className="flex items-center mb-4 sm:mb-6">
                     <img
                       src={testimonial.image}
                       alt={testimonial.name}
-                      className="w-16 h-16 rounded-full mr-4 ring-4 ring-amber-100"
+                      className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-full mr-3 sm:mr-4 ring-2 sm:ring-4 ring-amber-100"
                     />
                     <div>
-                      <div className="font-bold text-slate-800 text-lg">
+                      <div className="font-bold text-slate-800 text-base sm:text-lg">
                         {testimonial.name}
                       </div>
-                      <div className="text-amber-600 font-medium">
+                      <div className="text-amber-600 font-medium text-sm sm:text-base">
                         {testimonial.role}
                       </div>
-                      <div className="text-xs text-slate-500 mt-1">
+                      <div className="text-xs text-slate-500 mt-1 hidden sm:block">
                         {testimonial.achievement}
                       </div>
                     </div>
                   </div>
-                  <div className="flex text-amber-400 mb-4">
+                  <div className="flex text-amber-400 mb-3 sm:mb-4">
                     {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star key={i} className="h-5 w-5 fill-current" />
+                      <Star key={i} className="h-4 w-4 sm:h-5 sm:w-5 fill-current" />
                     ))}
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <Quote className="h-8 w-8 text-amber-600 mb-4 opacity-50" />
-                  <p className="text-slate-600 leading-relaxed text-lg italic">
+                  <Quote className="h-6 w-6 sm:h-8 sm:w-8 text-amber-600 mb-3 sm:mb-4 opacity-50" />
+                  <p className="text-slate-600 leading-relaxed text-sm sm:text-base lg:text-lg italic">
                     "{testimonial.content}"
                   </p>
                 </CardContent>
@@ -594,39 +593,39 @@ export default function BookHubHomepage() {
       {/* Our Locations Section - Enhanced with Google Map */}
       <section
         id="locations"
-        className="py-24 bg-gradient-to-br from-slate-50 to-blue-50"
+        className="py-16 sm:py-20 lg:py-24 bg-gradient-to-br from-slate-50 to-blue-50"
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-20">
-            <Badge className="mb-6 bg-amber-100 text-amber-800 px-4 py-2">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
+          <div className="text-center mb-12 sm:mb-16 lg:mb-20">
+            <Badge className="mb-4 sm:mb-6 bg-amber-100 text-amber-800 px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm">
               Visit Us
             </Badge>
-            <h2 className="text-4xl md:text-5xl font-bold text-slate-800 mb-6">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-slate-800 mb-4 sm:mb-6">
               Find Us Across
               <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-orange-600">
                 Nairobi
               </span>
             </h2>
-            <p className="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed px-4">
               Three convenient locations designed to serve you better, each with
               expert staff ready to help
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
             {/* Main Branch with Google Map */}
             <div className="lg:col-span-2">
               <Card className="hover:shadow-2xl transition-all duration-300 border-0 shadow-lg overflow-hidden">
-                <CardHeader className="bg-gradient-to-r from-amber-600 to-orange-600 text-white">
-                  <CardTitle className="flex items-center text-2xl">
-                    <MapPin className="h-6 w-6 mr-3" />
+                <CardHeader className="bg-gradient-to-r from-amber-600 to-orange-600 text-white p-4 sm:p-6">
+                  <CardTitle className="flex items-center text-xl sm:text-2xl">
+                    <MapPin className="h-5 w-5 sm:h-6 sm:w-6 mr-2 sm:mr-3" />
                     {mainBranch.name}
-                    <Badge className="ml-3 bg-white/20 text-white">
+                    <Badge className="ml-2 sm:ml-3 bg-white/20 text-white text-xs">
                       Flagship Store
                     </Badge>
                   </CardTitle>
-                  <CardDescription className="text-amber-100 text-lg">
+                  <CardDescription className="text-amber-100 text-sm sm:text-base lg:text-lg">
                     {mainBranch.description}
                   </CardDescription>
                 </CardHeader>
@@ -641,43 +640,43 @@ export default function BookHubHomepage() {
                       allowFullScreen
                       loading="lazy"
                       referrerPolicy="no-referrer-when-downgrade"
-                      title="BookHub Westlands Location"
+                      title="Denvis Westlands Location"
                     ></iframe>
                   </div>
 
-                  <div className="p-6 space-y-4">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="flex items-center text-slate-600">
-                        <MapPin className="h-5 w-5 mr-3 text-amber-600" />
+                  <div className="p-4 sm:p-6 space-y-3 sm:space-y-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                      <div className="flex items-center text-slate-600 text-sm sm:text-base">
+                        <MapPin className="h-4 w-4 sm:h-5 sm:w-5 mr-2 sm:mr-3 text-amber-600 flex-shrink-0" />
                         <span>{mainBranch.address}</span>
                       </div>
-                      <div className="flex items-center text-slate-600">
-                        <Phone className="h-5 w-5 mr-3 text-amber-600" />
+                      <div className="flex items-center text-slate-600 text-sm sm:text-base">
+                        <Phone className="h-4 w-4 sm:h-5 sm:w-5 mr-2 sm:mr-3 text-amber-600 flex-shrink-0" />
                         <span>{mainBranch.phone}</span>
                       </div>
-                      <div className="flex items-center text-slate-600">
-                        <Clock className="h-5 w-5 mr-3 text-amber-600" />
+                      <div className="flex items-center text-slate-600 text-sm sm:text-base">
+                        <Clock className="h-4 w-4 sm:h-5 sm:w-5 mr-2 sm:mr-3 text-amber-600 flex-shrink-0" />
                         <span>{mainBranch.hours}</span>
                       </div>
-                      <div className="flex items-center text-slate-600">
-                        <Users className="h-5 w-5 mr-3 text-amber-600" />
+                      <div className="flex items-center text-slate-600 text-sm sm:text-base">
+                        <Users className="h-4 w-4 sm:h-5 sm:w-5 mr-2 sm:mr-3 text-amber-600 flex-shrink-0" />
                         <span>Manager: {mainBranch.manager}</span>
                       </div>
                     </div>
 
-                    <div className="flex flex-col sm:flex-row gap-3 pt-4">
-                      <Button className="flex-1 bg-amber-600 hover:bg-amber-700">
-                        <Navigation className="h-4 w-4 mr-2" />
+                    <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 pt-3 sm:pt-4">
+                      <Button className="flex-1 bg-amber-600 hover:bg-amber-700 text-sm sm:text-base h-10 sm:h-11">
+                        <Navigation className="h-3 w-3 sm:h-4 sm:w-4 mr-2" />
                         Get Directions
                       </Button>
                       <Button
                         variant="outline"
-                        className="flex-1"
+                        className="flex-1 text-sm sm:text-base h-10 sm:h-11"
                         onClick={() =>
                           window.open(mainBranch.googleMapsUrl, "_blank")
                         }
                       >
-                        <ExternalLink className="h-4 w-4 mr-2" />
+                        <ExternalLink className="h-3 w-3 sm:h-4 sm:w-4 mr-2" />
                         View in Google Maps
                       </Button>
                     </div>
@@ -687,42 +686,42 @@ export default function BookHubHomepage() {
             </div>
 
             {/* Other Branches */}
-            <div className="space-y-6">
+            <div className="space-y-4 sm:space-y-6">
               {otherBranches.map((branch, index) => (
                 <Card
                   key={index}
                   className="hover:shadow-xl transition-all duration-300 border-0 shadow-md"
                 >
-                  <CardHeader>
-                    <CardTitle className="flex items-center text-xl text-slate-800">
-                      <MapPin className="h-5 w-5 text-amber-600 mr-3" />
+                  <CardHeader className="p-4 sm:p-6">
+                    <CardTitle className="flex items-center text-lg sm:text-xl text-slate-800">
+                      <MapPin className="h-4 w-4 sm:h-5 sm:w-5 text-amber-600 mr-2 sm:mr-3" />
                       {branch.name}
                     </CardTitle>
-                    <CardDescription className="text-slate-600">
+                    <CardDescription className="text-slate-600 text-sm sm:text-base">
                       {branch.description}
                     </CardDescription>
                   </CardHeader>
-                  <CardContent className="space-y-3">
-                    <div className="space-y-2 text-sm">
+                  <CardContent className="p-4 sm:p-6 pt-0 space-y-2 sm:space-y-3">
+                    <div className="space-y-2 text-xs sm:text-sm">
                       <div className="flex items-center text-slate-600">
-                        <MapPin className="h-4 w-4 mr-2 text-amber-600" />
+                        <MapPin className="h-3 w-3 sm:h-4 sm:w-4 mr-2 text-amber-600 flex-shrink-0" />
                         {branch.address}
                       </div>
                       <div className="flex items-center text-slate-600">
-                        <Phone className="h-4 w-4 mr-2 text-amber-600" />
+                        <Phone className="h-3 w-3 sm:h-4 sm:w-4 mr-2 text-amber-600 flex-shrink-0" />
                         {branch.phone}
                       </div>
                       <div className="flex items-center text-slate-600">
-                        <Clock className="h-4 w-4 mr-2 text-amber-600" />
+                        <Clock className="h-3 w-3 sm:h-4 sm:w-4 mr-2 text-amber-600 flex-shrink-0" />
                         {branch.hours}
                       </div>
                       <div className="flex items-center text-slate-600">
-                        <Users className="h-4 w-4 mr-2 text-amber-600" />
+                        <Users className="h-3 w-3 sm:h-4 sm:w-4 mr-2 text-amber-600 flex-shrink-0" />
                         {branch.manager}
                       </div>
                     </div>
-                    <Button className="w-full mt-4 bg-slate-800 hover:bg-slate-700">
-                      <Navigation className="h-4 w-4 mr-2" />
+                    <Button className="w-full mt-3 sm:mt-4 bg-slate-800 hover:bg-slate-700 text-sm sm:text-base h-9 sm:h-10">
+                      <Navigation className="h-3 w-3 sm:h-4 sm:w-4 mr-2" />
                       Get Directions
                     </Button>
                   </CardContent>
@@ -734,26 +733,26 @@ export default function BookHubHomepage() {
       </section>
 
       {/* Why Choose Us - Enhanced for Marketing */}
-      <section className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-20">
-            <Badge className="mb-6 bg-amber-100 text-amber-800 px-4 py-2">
-              Why BookHub
+      <section className="py-16 sm:py-20 lg:py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
+          <div className="text-center mb-12 sm:mb-16 lg:mb-20">
+            <Badge className="mb-4 sm:mb-6 bg-amber-100 text-amber-800 px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm">
+              Why Denvis
             </Badge>
-            <h2 className="text-4xl md:text-5xl font-bold text-slate-800 mb-6">
-              The BookHub
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-slate-800 mb-4 sm:mb-6">
+              The Denvis
               <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-orange-600">
                 Advantage
               </span>
             </h2>
-            <p className="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed px-4">
               Discover what sets us apart and why thousands of customers choose
-              BookHub for their success journey
+              Denvis for their success journey
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
             {benefits.map((benefit, index) => {
               const IconComponent = benefit.icon;
               return (
@@ -761,16 +760,16 @@ export default function BookHubHomepage() {
                   key={index}
                   className="text-center group hover:transform hover:scale-105 transition-all duration-300"
                 >
-                  <div className="mx-auto w-24 h-24 bg-gradient-to-br from-amber-100 to-orange-200 rounded-3xl flex items-center justify-center mb-6 group-hover:shadow-xl transition-all duration-300">
-                    <IconComponent className="h-12 w-12 text-amber-600" />
+                  <div className="mx-auto w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 bg-gradient-to-br from-amber-100 to-orange-200 rounded-2xl sm:rounded-3xl flex items-center justify-center mb-4 sm:mb-6 group-hover:shadow-xl transition-all duration-300">
+                    <IconComponent className="h-6 w-6 sm:h-8 sm:w-8 lg:h-10 lg:w-10 text-amber-600" />
                   </div>
-                  <Badge className="mb-3 bg-amber-50 text-amber-700 text-xs font-medium">
+                  <Badge className="mb-2 sm:mb-3 bg-amber-50 text-amber-700 text-xs font-medium">
                     {benefit.highlight}
                   </Badge>
-                  <h3 className="text-xl font-bold text-slate-800 mb-3">
+                  <h3 className="text-lg sm:text-xl font-bold text-slate-800 mb-2 sm:mb-3">
                     {benefit.title}
                   </h3>
-                  <p className="text-slate-600 leading-relaxed">
+                  <p className="text-slate-600 leading-relaxed text-sm sm:text-base">
                     {benefit.description}
                   </p>
                 </div>
@@ -781,24 +780,24 @@ export default function BookHubHomepage() {
       </section>
 
       {/* Newsletter - Enhanced CTA */}
-      <section className="py-24 bg-gradient-to-br from-slate-800 via-slate-900 to-black text-white relative overflow-hidden">
+      <section className="py-16 sm:py-20 lg:py-24 bg-gradient-to-br from-slate-800 via-slate-900 to-black text-white relative overflow-hidden">
         {/* Background Elements */}
         <div className="absolute inset-0">
-          <div className="absolute top-0 left-1/4 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl"></div>
+          <div className="absolute top-0 left-1/4 w-48 h-48 sm:w-96 sm:h-96 bg-amber-500/10 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-0 right-1/4 w-48 h-48 sm:w-96 sm:h-96 bg-blue-500/10 rounded-full blur-3xl"></div>
         </div>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div className="relative max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 text-center">
           <div className="max-w-4xl mx-auto">
-            <Mail className="h-20 w-20 text-amber-400 mx-auto mb-8" />
-            <h2 className="text-4xl md:text-5xl font-bold mb-8">
+            <Mail className="h-12 w-12 sm:h-16 sm:w-16 lg:h-20 lg:w-20 text-amber-400 mx-auto mb-6 sm:mb-8" />
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-6 sm:mb-8">
               Join the Success
               <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-yellow-300">
                 Community
               </span>
             </h2>
-            <p className="text-xl text-slate-300 mb-12 leading-relaxed">
+            <p className="text-base sm:text-lg md:text-xl text-slate-300 mb-8 sm:mb-12 leading-relaxed px-4">
               Get exclusive access to new arrivals, expert insights, special
               discounts, and success stories from our community of achievers.
               Plus, receive a{" "}
@@ -806,28 +805,28 @@ export default function BookHubHomepage() {
               on your first order!
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto mb-8">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 max-w-lg mx-auto mb-6 sm:mb-8 px-4">
               <Input
                 type="email"
                 placeholder="Enter your email for exclusive access"
-                className="flex-1 bg-white/10 backdrop-blur-sm text-white placeholder:text-slate-300 border-white/20 h-14 text-lg"
+                className="flex-1 bg-white/10 backdrop-blur-sm text-white placeholder:text-slate-300 border-white/20 h-12 sm:h-14 text-sm sm:text-base lg:text-lg"
               />
-              <Button className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 px-8 h-14 font-semibold text-lg shadow-xl">
+              <Button className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 px-6 sm:px-8 h-12 sm:h-14 font-semibold text-sm sm:text-base lg:text-lg shadow-xl">
                 Get 10% Off
               </Button>
             </div>
 
-            <div className="flex flex-wrap justify-center gap-6 text-sm text-slate-400">
+            <div className="flex flex-wrap justify-center gap-4 sm:gap-6 text-xs sm:text-sm text-slate-400 px-4">
               <div className="flex items-center">
-                <CheckCircle className="h-4 w-4 text-green-400 mr-2" />
+                <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-green-400 mr-1 sm:mr-2" />
                 <span>15,000+ subscribers</span>
               </div>
               <div className="flex items-center">
-                <CheckCircle className="h-4 w-4 text-green-400 mr-2" />
+                <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-green-400 mr-1 sm:mr-2" />
                 <span>No spam, ever</span>
               </div>
               <div className="flex items-center">
-                <CheckCircle className="h-4 w-4 text-green-400 mr-2" />
+                <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-green-400 mr-1 sm:mr-2" />
                 <span>Unsubscribe anytime</span>
               </div>
             </div>

@@ -39,7 +39,7 @@ export const reviews: Review[] = [
     rating: 5,
     title: "Excellent performance",
     content:
-      "Fast delivery from BookHub and the laptop exceeded expectations. Perfect for software development and the build quality is premium. Worth every shilling.",
+      "Fast delivery from Denvis and the laptop exceeded expectations. Perfect for software development and the build quality is premium. Worth every shilling.",
     date: "2024-01-10",
     verified: true,
     helpful: 18,
@@ -54,7 +54,7 @@ export const reviews: Review[] = [
     rating: 4,
     title: "Great laptop, minor issues",
     content:
-      "Overall excellent machine. The only downside is it gets warm during intensive tasks, but performance is still top-notch. Customer service from BookHub was very helpful.",
+      "Overall excellent machine. The only downside is it gets warm during intensive tasks, but performance is still top-notch. Customer service from Denvis was very helpful.",
     date: "2024-01-08",
     verified: true,
     helpful: 12,
@@ -86,7 +86,7 @@ export const reviews: Review[] = [
     rating: 5,
     title: "Essential reading",
     content:
-      "Bought this for my book club. The concepts are profound and the writing is engaging. BookHub's delivery was prompt and the book quality is excellent.",
+      "Bought this for my book club. The concepts are profound and the writing is engaging. Denvis' delivery was prompt and the book quality is excellent.",
     date: "2024-01-05",
     verified: true,
     helpful: 15,
@@ -152,7 +152,7 @@ export const reviews: Review[] = [
     rating: 4,
     title: "Good quality notebooks",
     content:
-      "Nice paper quality and the covers are durable. Perfect for note-taking in lectures. The set offers good value and the delivery from BookHub was fast.",
+      "Nice paper quality and the covers are durable. Perfect for note-taking in lectures. The set offers good value and the delivery from Denvis was fast.",
     date: "2024-01-09",
     verified: true,
     helpful: 13,
@@ -169,7 +169,7 @@ export const reviews: Review[] = [
     rating: 5,
     title: "Excellent art supplies",
     content:
-      "The colored pencils are vibrant and blend well. The sketchbooks have good paper weight. Everything I needed to start my art journey. BookHub's packaging was also very careful.",
+      "The colored pencils are vibrant and blend well. The sketchbooks have good paper weight. Everything I needed to start my art journey. Denvis's packaging was also very careful.",
     date: "2024-01-07",
     verified: true,
     helpful: 21,
