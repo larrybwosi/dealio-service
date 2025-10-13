@@ -231,7 +231,8 @@ export default function DenvisHomepage() {
         <div
           className="absolute inset-0 bg-cover bg-center opacity-30"
           style={{
-            backgroundImage: "url('https://images.unsplash.com/photo-1589998059171-988d887df646?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2076&q=80')",
+            backgroundImage:
+              "url('https://images.unsplash.com/photo-1589998059171-988d887df646?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2076&q=80')",
           }}
         ></div>
 
@@ -286,8 +287,12 @@ export default function DenvisHomepage() {
                 size="lg"
                 className="bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white px-6 sm:px-8 lg:px-10 py-3 sm:py-4 text-sm sm:text-base lg:text-lg font-semibold shadow-2xl transform hover:scale-105 transition-all duration-300 w-full sm:w-auto"
               >
-                <Link href="/products" className="flex items-center justify-center">
-                  Start Shopping <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
+                <Link
+                  href="/products"
+                  className="flex items-center justify-center"
+                >
+                  Start Shopping{" "}
+                  <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
                 </Link>
               </Button>
               <Button
@@ -295,8 +300,12 @@ export default function DenvisHomepage() {
                 variant="outline"
                 className="border-2 border-white text-white hover:bg-white hover:text-slate-900 px-6 sm:px-8 lg:px-10 py-3 sm:py-4 text-sm sm:text-base lg:text-lg font-semibold backdrop-blur-sm w-full sm:w-auto"
               >
-                <a href="#locations" className="flex items-center justify-center">
-                  Visit Our Stores <MapPin className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
+                <a
+                  href="#locations"
+                  className="flex items-center justify-center"
+                >
+                  Visit Our Stores{" "}
+                  <MapPin className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
                 </a>
               </Button>
             </div>
@@ -401,7 +410,7 @@ export default function DenvisHomepage() {
             <div className="relative">
               <div className="aspect-square rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl">
                 <img
-                  src="https://media.istockphoto.com/id/1092141430/photo/young-girl-student.webp?a=1&b=1&s=612x612&w=0&k=20&c=045CqQp2MbWI8c8nl90Uu-UBDterams_bVVO0JNlTpg="
+                  src="https://images.unsplash.com/photo-1676837567059-3aa25ad73210?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8ODB8fGJvb2slMjBzdG9yZSUyMGludGVyaW9yfGVufDB8fDB8fHww&auto=format&fit=crop&q=60&w=800"
                   alt="Denvis Store Interior"
                   className="w-full h-full object-cover"
                 />
@@ -409,7 +418,9 @@ export default function DenvisHomepage() {
 
               {/* Floating Achievement Cards */}
               <div className="absolute -bottom-4 -left-4 sm:-bottom-8 sm:-left-8 bg-white p-4 sm:p-6 rounded-xl sm:rounded-2xl shadow-xl border">
-                <div className="text-xl sm:text-2xl md:text-3xl font-bold text-amber-600">4.9★</div>
+                <div className="text-xl sm:text-2xl md:text-3xl font-bold text-amber-600">
+                  4.9★
+                </div>
                 <div className="text-xs sm:text-sm text-slate-600 font-medium">
                   Customer Rating
                 </div>
@@ -419,9 +430,15 @@ export default function DenvisHomepage() {
               </div>
 
               <div className="absolute -top-4 -right-4 sm:-top-8 sm:-right-8 bg-gradient-to-br from-green-500 to-emerald-600 text-white p-4 sm:p-6 rounded-xl sm:rounded-2xl shadow-xl">
-                <div className="text-lg sm:text-xl md:text-2xl font-bold">98%</div>
-                <div className="text-xs sm:text-sm font-medium">Return Rate</div>
-                <div className="text-xs opacity-90 mt-1 hidden sm:block">Customer loyalty</div>
+                <div className="text-lg sm:text-xl md:text-2xl font-bold">
+                  98%
+                </div>
+                <div className="text-xs sm:text-sm font-medium">
+                  Return Rate
+                </div>
+                <div className="text-xs opacity-90 mt-1 hidden sm:block">
+                  Customer loyalty
+                </div>
               </div>
             </div>
           </div>
@@ -519,8 +536,12 @@ export default function DenvisHomepage() {
               size="lg"
               className="bg-gradient-to-r from-slate-800 to-slate-900 hover:from-slate-900 hover:to-black text-white px-6 sm:px-8 lg:px-10 py-2.5 sm:py-3 lg:py-4 shadow-xl text-sm sm:text-base"
             >
-              <Link href="/products" className="flex items-center justify-center">
-                Explore All Products <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
+              <Link
+                href="/products"
+                className="flex items-center justify-center"
+              >
+                Explore All Products{" "}
+                <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
               </Link>
             </Button>
           </div>
@@ -574,7 +595,10 @@ export default function DenvisHomepage() {
                   </div>
                   <div className="flex text-amber-400 mb-3 sm:mb-4">
                     {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star key={i} className="h-4 w-4 sm:h-5 sm:w-5 fill-current" />
+                      <Star
+                        key={i}
+                        className="h-4 w-4 sm:h-5 sm:w-5 fill-current"
+                      />
                     ))}
                   </div>
                 </CardHeader>
@@ -604,7 +628,7 @@ export default function DenvisHomepage() {
               Find Us Across
               <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-orange-600">
-                Nairobi
+                Kenya
               </span>
             </h2>
             <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed px-4">

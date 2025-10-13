@@ -32,8 +32,8 @@ export const products: Product[] = [
     images: [
       "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=800&h=600&fit=crop",
       "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=800&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=800&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1605810230434-7631ac76ec81?w=800&h=600&fit=crop",
+      "https://unsplash.com/photos/an-open-laptop-computer-sitting-on-top-of-a-table-WPQF4r0JUcg",
+      "https://unsplash.com/photos/a-cell-phone-on-a-table-RGxLchVZA20",
     ],
     rating: 4.8,
     reviews: 127,
@@ -72,7 +72,7 @@ export const products: Product[] = [
       "Napoleon Hill's timeless masterpiece reveals the secrets of success used by the world's most accomplished individuals. Based on interviews with over 500 successful people including Andrew Carnegie, Henry Ford, and Thomas Edison, this book outlines the 13 principles of success that can transform your life and career. A must-read for entrepreneurs, professionals, and anyone seeking personal growth.",
     category: "Books",
     image:
-      "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=500&h=500&fit=crop",
+      "https://images.unsplash.com/photo-1671774637925-c11dd0051b60?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2070",
     images: [
       "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=800&h=600&fit=crop",
       "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800&h=600&fit=crop",
@@ -115,11 +115,11 @@ export const products: Product[] = [
       "This premium ergonomic office chair is engineered for professionals who spend long hours at their desk. Featuring adjustable lumbar support, breathable mesh backing, and multiple adjustment points, it promotes proper posture and reduces fatigue. The high-quality materials and sturdy construction ensure durability, while the sleek design complements any modern office environment.",
     category: "Office Supplies",
     image:
-      "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=500&h=500&fit=crop",
+      "https://images.unsplash.com/photo-1688578735997-32626d2babd4?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=687",
     images: [
-      "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1541558869434-2840d308329a?w=800&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1549497538-303791108f95?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1683836809851-9e3aad661ffd?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1461",
+      "https://images.unsplash.com/photo-1580479928703-71ae234048bd?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=687",
+      "https://images.unsplash.com/photo-1701937188915-ec0dbcbe3963?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=765",
     ],
     rating: 4.6,
     reviews: 156,
@@ -157,10 +157,10 @@ export const products: Product[] = [
       "The Casio FX-991EX is a powerful scientific calculator designed for advanced mathematics, engineering, and scientific applications. With over 550 functions, a high-resolution LCD display, and intuitive operation, it's perfect for students, engineers, and professionals. The calculator features natural textbook display, making complex calculations easier to input and verify.",
     category: "Calculators",
     image:
-      "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=500&h=500&fit=crop",
+      "https://images.unsplash.com/photo-1574607383077-47ddc2dc51c4?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=736",
     images: [
-      "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=800&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1596496181848-3091d4878b24?w=800&h=600&fit=crop",
+      "https://plus.unsplash.com/premium_photo-1729005326801-d9c7b3f9f838?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjF8fENhc2lvJTIwQ2FsY3VsYXRvcnxlbnwwfHwwfHx8MA%3D%3D",
+      "https://unsplash.com/photos/a-person-holding-a-blue-calculator-in-their-hand-qSUQifQbu0g",
     ],
     rating: 4.7,
     reviews: 203,
@@ -199,11 +199,11 @@ export const products: Product[] = [
       "This premium notebook set includes five high-quality notebooks with different ruling styles to meet all your note-taking needs. Each notebook features thick, smooth paper that prevents ink bleed-through, durable covers, and lay-flat binding. Perfect for students, professionals, and anyone who values quality stationery for their daily writing needs.",
     category: "Stationery",
     image:
-      "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=500&h=500&fit=crop",
+      "https://images.unsplash.com/photo-1611571741792-edb58d0ceb67?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8UHJlbWl1bSUyME5vdGVib29rJTIwU2V0fGVufDB8fDB8fHww",
     images: [
-      "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=800&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1455390582262-044cdead277a?w=800&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1471107340929-a87cd0f5b5f3?w=800&h=600&fit=crop",
+      "https://unsplash.com/photos/three-notebooks-sitting-next-to-each-other-on-a-table-R2ffCkYlpJ8",
+      "https://images.unsplash.com/photo-1636014701699-f086cd23fab6?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8UHJlbWl1bSUyME5vdGVib29rJTIwU2V0fGVufDB8fDB8fHww",
+      "https://images.unsplash.com/photo-1722929025573-3d461531ac4d?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fFByZW1pdW0lMjBOb3RlYm9vayUyMFNldHxlbnwwfHwwfHx8MA%3D%3D",
     ],
     rating: 4.4,
     reviews: 78,
@@ -242,9 +242,9 @@ export const products: Product[] = [
       "This comprehensive art supplies kit is perfect for artists, students, and creative enthusiasts. The kit includes professional-grade colored pencils, fine-tip markers, graphite pencils, erasers, and premium sketchbooks. All supplies are organized in a convenient carrying case, making it perfect for studio work, plein air painting, or travel. Whether you're a beginner or experienced artist, this kit provides everything needed to create beautiful artwork.",
     category: "Art Supplies",
     image:
-      "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=500&h=500&fit=crop",
+      "https://images.unsplash.com/photo-1618275341069-262c9ddc62ec?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fEFydCUyMFN1cHBsaWVzJTIwS2l0fGVufDB8fDB8fHww&auto=format&fit=crop&q=60&w=500",
     images: [
-      "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1759523081055-05bcf5d10787?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fEFydCUyMFN1cHBsaWVzJTIwS2l0fGVufDB8fDB8fHww",
       "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&h=600&fit=crop",
       "https://images.unsplash.com/photo-1596548438137-d51ea5c83ca4?w=800&h=600&fit=crop",
     ],
@@ -284,7 +284,7 @@ export const products: Product[] = [
       "Experience superior audio quality with these premium wireless Bluetooth headphones. Featuring active noise cancellation, 30-hour battery life, and crystal-clear call quality, they're perfect for music lovers, professionals, and students. The comfortable over-ear design and premium materials ensure all-day comfort, while the quick-charge feature provides hours of playback with just minutes of charging.",
     category: "Electronics",
     image:
-      "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&h=500&fit=crop",
+      "https://plus.unsplash.com/premium_photo-1679865289918-b21aae5a9559?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTN8fEJsdWV0b290aCUyMEhlYWRwaG9uZXN8ZW58MHx8MHx8fDA%3D&auto=format",
     images: [
       "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&h=600&fit=crop",
       "https://images.unsplash.com/photo-1484704849700-f032a568e944?w=800&h=600&fit=crop",
@@ -325,7 +325,7 @@ export const products: Product[] = [
       "This premium mechanical gaming keyboard features tactile switches, customizable RGB lighting, and durable construction. Perfect for gamers and professionals who demand precision and reliability. The keyboard includes programmable keys, multiple lighting effects, and a comfortable wrist rest for extended use sessions.",
     category: "Electronics",
     image:
-      "https://images.unsplash.com/photo-1541140532154-b024d705b90a?w=500&h=500&fit=crop",
+      "https://images.unsplash.com/photo-1626155399627-86488538895d?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8R2FtaW5nJTIwS2V5Ym9hcmR8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&q=60&w=500",
     images: [
       "https://images.unsplash.com/photo-1541140532154-b024d705b90a?w=800&h=600&fit=crop",
       "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=800&h=600&fit=crop",
@@ -369,7 +369,7 @@ export const products: Product[] = [
     image:
       "https://images.unsplash.com/photo-1609081219090-a6d81d3085bf?w=500&h=500&fit=crop",
     images: [
-      "https://images.unsplash.com/photo-1609081219090-a6d81d3085bf?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1637243218672-d338945efdf7?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8R2FtaW5nJTIwS2V5Ym9hcmR8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&q=60&w=500",
       "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop",
     ],
     rating: 4.8,
@@ -408,9 +408,9 @@ export const products: Product[] = [
       "This professional presentation remote is essential for business presentations, lectures, and meetings. Features wireless connectivity up to 30 meters, red laser pointer, and intuitive controls. The ergonomic design fits comfortably in your hand, and the USB receiver stores conveniently in the device. Perfect for professionals, teachers, and public speakers.",
     category: "Office Supplies",
     image:
-      "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=500&h=500&fit=crop",
+      "https://images.unsplash.com/photo-1750768145390-f0ad18d3e65b?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8QnVzaW5lc3MlMjBQcmVzZW50YXRpb24lMjBSZW1vdGV8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&q=60&w=500",
     images: [
-      "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1745266073009-6aa3a4d7446b?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fEJ1c2luZXNzJTIwUHJlc2VudGF0aW9uJTIwUmVtb3RlfGVufDB8fDB8fHww&auto=format&fit=crop&q=60&w=500",
       "https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=800&h=600&fit=crop",
     ],
     rating: 4.3,
