@@ -82,7 +82,7 @@ class ApiClient {
 
   // Expenses API
   async getExpenses(filters?: ExpenseFilters): Promise<ApiResponse> {
-    return this.request("GET", "/expenses", undefined, filters);
+    return this.request("GET", "/finance/expenses", undefined, filters);
   }
 
   async getExpense(id: string): Promise<ApiResponse> {
@@ -90,7 +90,7 @@ class ApiClient {
   }
 
   async createExpense(data: any): Promise<ApiResponse> {
-    return this.request("POST", "/expenses", data);
+    return this.request("POST", "/finance/expenses", data);
   }
 
   async updateExpense(id: string, data: any): Promise<ApiResponse> {
@@ -114,14 +114,14 @@ class ApiClient {
     criteria?: any;
     comment?: string;
   }): Promise<ApiResponse> {
-    return this.request("POST", "/expenses/bulk-approve", data);
+    return this.request("POST", "/finance/expenses/bulk-approve", data);
   }
 
   async exportExpenses(
     format: "csv" | "excel" | "pdf",
     filters?: ExpenseFilters
   ): Promise<Blob> {
-    const response = await this.client.get("/expenses/export", {
+    const response = await this.client.get("/finance/expenses/export", {
       params: { format, ...filters },
       responseType: "blob",
     });
@@ -130,27 +130,27 @@ class ApiClient {
 
   // Budgets API
   async getBudgets(filters?: BudgetFilters): Promise<ApiResponse> {
-    return this.request("GET", "/budgets", undefined, filters);
+    return this.request("GET", "/finance/budgets", undefined, filters);
   }
 
   async getBudget(id: string): Promise<ApiResponse> {
-    return this.request("GET", `/budgets/${id}`);
+    return this.request("GET", `/finance/budgets/${id}`);
   }
 
   async createBudget(data: any): Promise<ApiResponse> {
-    return this.request("POST", "/budgets", data);
+    return this.request("POST", "/finance/budgets", data);
   }
 
   async updateBudget(id: string, data: any): Promise<ApiResponse> {
-    return this.request("PUT", `/budgets/${id}`, data);
+    return this.request("PUT", `/finance/budgets/${id}`, data);
   }
 
   async deleteBudget(id: string): Promise<ApiResponse> {
-    return this.request("DELETE", `/budgets/${id}`);
+    return this.request("DELETE", `/finance/budgets/${id}`);
   }
 
   async getBudgetAnalytics(id: string): Promise<ApiResponse> {
-    return this.request("GET", `/budgets/${id}/analytics`);
+    return this.request("GET", `/finance/budgets/${id}/analytics`);
   }
 
   // Categories API
