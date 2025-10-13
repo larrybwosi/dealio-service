@@ -27,6 +27,7 @@ import {
   Loader2,
   Navigation
 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 export default function ProfileSetup() {
   const router = useRouter();
