@@ -38,6 +38,8 @@ import {
 } from "lucide-react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
+import FrequentlyBoughtTogether from '@/components/FrequentlyBoughtTogether';
+import { getFrequentlyBoughtTogether } from '@/data/bundles';
 
 export default function ProductDetail() {
   const { slug } = useParams<{ slug: string }>();
@@ -91,6 +93,8 @@ export default function ProductDetail() {
   const relatedProducts = products
     .filter((p) => p.category === product.category && p.id !== product.id)
     .slice(0, 4);
+
+  const frequentlyBoughtTogether = getFrequentlyBoughtTogether(product.id, products);
 
   const discountPercentage = product.originalPrice
     ? Math.round(
@@ -379,7 +383,15 @@ export default function ProductDetail() {
             </div>
           </div>
         </div>
-
+        {/* Frequently Bought Together */}
+        {frequentlyBoughtTogether.length > 0 && (
+          <div className="mb-16">
+            <FrequentlyBoughtTogether
+              currentProduct={product}
+              recommendations={frequentlyBoughtTogether}
+            />
+          </div>
+        )}
         {/* Product Details Tabs */}
         <Card className="mb-12 sm:mb-16 shadow-sm">
           <Tabs defaultValue="description" className="w-full">

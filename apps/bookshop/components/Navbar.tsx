@@ -40,7 +40,7 @@ export default function Navbar() {
             <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-amber-600 to-orange-600 rounded-lg sm:rounded-xl flex items-center justify-center">
               <BookOpen className="h-4 w-4 sm:h-6 sm:w-6 text-white" />
             </div>
-            <span className="text-xl sm:text-2xl font-bold text-slate-800">BookStore</span>
+            <span className="text-xl sm:text-2xl font-bold text-slate-800">Denvis</span>
           </Link>
 
           {/* Desktop Navigation */}
