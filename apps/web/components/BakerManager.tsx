@@ -5,12 +5,11 @@ import { Input } from '@workspace/ui/components/input';
 import { Label } from '@workspace/ui/components/label';
 import { Badge } from '@workspace/ui/components/badge';
 import { Avatar, AvatarFallback } from '@workspace/ui/components/avatar';
-import { BakeryBaker } from '@/types/bakery';
+import { BakeryBaker, BatchStatus } from '@/types';
 import { Plus, Edit, Mail, User, CheckCircle, Clock, Calendar } from 'lucide-react';
-import { useBakerySettingsManagement } from '@/lib/hooks/use-bakery';
+import { useBakerySettingsManagement } from '@/hooks/use-bakery';
 import AddBakerDialog from './BakerForm';
 import { Skeleton } from '@workspace/ui/components/skeleton';
-import { BatchStatus } from '@/prisma/client';
 
 export default function BakerManager() {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
@@ -66,7 +65,7 @@ export default function BakerManager() {
 
   // Loading skeleton component
   const BakerCardSkeleton = () => (
-    <Card className="bg-white shadow-sm">
+    <Card className="bg-background shadow-sm">
       <CardHeader>
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
@@ -154,7 +153,7 @@ export default function BakerManager() {
             <p className="text-gray-600">Manage your bakery team and their assignments</p>
           </div>
         </div>
-        <Card className="bg-white shadow-sm">
+        <Card className="bg-background shadow-sm">
           <CardContent className="flex flex-col items-center justify-center py-12">
             <div className="text-red-500 mb-4">
               <User className="h-12 w-12" />
@@ -196,7 +195,7 @@ export default function BakerManager() {
         {filteredBakers?.map(baker => {
           const stats = getBakerStats(baker);
           return (
-            <Card key={baker.id} className="bg-white shadow-sm hover:shadow-md transition-shadow">
+            <Card key={baker.id} className="bg-background shadow-sm hover:shadow-md transition-shadow">
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-3">
@@ -301,7 +300,7 @@ export default function BakerManager() {
       </div>
 
       {filteredBakers?.length === 0 && (
-        <Card className="bg-white shadow-sm">
+        <Card className="bg-background shadow-sm">
           <CardContent className="flex flex-col items-center justify-center py-12">
             <User className="h-12 w-12 text-gray-400 mb-4" />
             <h3 className="text-lg font-medium text-gray-900 mb-2">No bakers found</h3>

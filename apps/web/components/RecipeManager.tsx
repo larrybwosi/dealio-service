@@ -6,12 +6,12 @@ import { Badge } from '@workspace/ui/components/badge';
 import { Separator } from '@workspace/ui/components/separator';
 import { Skeleton } from '@workspace/ui/components/skeleton';
 import { Alert, AlertDescription } from '@workspace/ui/components/alert';
-import { Recipe } from '@/types/bakery';
+import { Recipe } from '@/types';
 import { Plus, Edit, Eye, Clock, ChefHat, Thermometer, AlertCircle, RefreshCw } from 'lucide-react';
 import CreateEditRecipeDialog from './RecipeForm';
 import ViewRecipeDialog from './ViewRecipe';
-import { useRecipes } from '@/lib/hooks/use-bakery';
 import { useFormattedCurrency } from '@/lib/utils';
+import { useRecipes } from '@/hooks/bakery';
 
 export default function RecipeManager() {
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
@@ -21,19 +21,13 @@ export default function RecipeManager() {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const { data: recipes = [], isLoading, error, refetch } = useRecipes();
-  const formattedCurrency = useFormattedCurrency()
+  const formattedCurrency = useFormattedCurrency();
 
   const filteredRecipes = recipes.filter(
     recipe =>
       recipe.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       recipe.category.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
-  const calculateRecipeCost = (ingredients: Recipe['ingredients']) => {
-    return ingredients.reduce((total, ingredient) => {
-      return total + ingredient.quantity * ingredient.ingredientVariant.buyingPrice;
-    }, 0);
-  };
 
   const getDifficultyColor = (difficulty?: string) => {
     switch (difficulty) {
@@ -60,7 +54,7 @@ export default function RecipeManager() {
 
   // Loading skeleton component
   const RecipeCardSkeleton = () => (
-    <Card className="bg-white shadow-sm">
+    <Card className="bg-background shadow-sm">
       <CardHeader>
         <div className="flex justify-between items-start">
           <div className="space-y-2">
@@ -73,20 +67,16 @@ export default function RecipeManager() {
       <CardContent className="space-y-3">
         <Skeleton className="h-4 w-full" />
         <Skeleton className="h-4 w-3/4" />
-
         <div className="flex items-center space-x-4">
           <Skeleton className="h-4 w-20" />
           <Skeleton className="h-4 w-20" />
           <Skeleton className="h-4 w-16" />
         </div>
-
         <div className="flex items-center justify-between">
           <Skeleton className="h-4 w-24" />
           <Skeleton className="h-4 w-16" />
         </div>
-
         <Separator />
-
         <div className="flex justify-between items-center">
           <Skeleton className="h-4 w-20" />
           <div className="flex space-x-2">
@@ -112,20 +102,16 @@ export default function RecipeManager() {
             New Recipe
           </Button>
         </div>
-
         <Alert variant="destructive">
           <AlertCircle className="h-4 w-4" />
           <AlertDescription>Failed to load recipes. Please try again.</AlertDescription>
         </Alert>
-
         <div className="flex justify-center">
           <Button onClick={() => refetch()} variant="outline">
             <RefreshCw className="h-4 w-4 mr-2" />
             Retry
           </Button>
         </div>
-
-        {/* Dialogs should still be available even in error state */}
         <CreateEditRecipeDialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen} mode="create" />
       </div>
     );
@@ -147,14 +133,12 @@ export default function RecipeManager() {
 
       {/* Dialogs */}
       <CreateEditRecipeDialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen} mode="create" />
-
       <CreateEditRecipeDialog
         open={isEditDialogOpen}
         onOpenChange={setIsEditDialogOpen}
         recipe={editingRecipe}
         mode="edit"
       />
-
       <ViewRecipeDialog open={isViewDialogOpen} onOpenChange={setIsViewDialogOpen} recipe={selectedRecipe} />
 
       {/* Search */}
@@ -181,7 +165,7 @@ export default function RecipeManager() {
             Array.from({ length: 6 }).map((_, index) => <RecipeCardSkeleton key={index} />)
           : // Success state
             filteredRecipes.map(recipe => (
-              <Card key={recipe.id} className="bg-white shadow-sm hover:shadow-md transition-shadow">
+              <Card key={recipe.id} className="bg-background shadow-sm hover:shadow-md transition-shadow">
                 <CardHeader>
                   <div className="flex justify-between items-start">
                     <div>
@@ -194,7 +178,6 @@ export default function RecipeManager() {
                 <CardContent>
                   <div className="space-y-3">
                     <p className="text-sm text-gray-600 line-clamp-2">{recipe.description}</p>
-
                     <div className="flex items-center space-x-4 text-sm text-gray-500">
                       <div className="flex items-center">
                         <Clock className="h-4 w-4 mr-1" />
@@ -211,17 +194,16 @@ export default function RecipeManager() {
                         </div>
                       )}
                     </div>
-
                     {/* Ingredient Cost */}
                     <div className="flex items-center justify-between text-sm">
                       <span className="text-gray-500">Ingredient Cost:</span>
                       <span className="font-medium text-green-600">
-                        {formattedCurrency(calculateRecipeCost(recipe.ingredients))}
+                        {typeof recipe.costPrice === 'number' && !isNaN(recipe.costPrice)
+                          ? formattedCurrency(recipe.costPrice)
+                          : 'N/A'}
                       </span>
                     </div>
-
                     <Separator />
-
                     <div className="flex justify-between items-center">
                       <span className="text-sm font-medium">Yield: {recipe.yield}</span>
                       <div className="flex space-x-2">
@@ -241,7 +223,7 @@ export default function RecipeManager() {
 
       {/* Empty state */}
       {!isLoading && filteredRecipes.length === 0 && (
-        <Card className="bg-white shadow-sm">
+        <Card className="bg-background shadow-sm">
           <CardContent className="flex flex-col items-center justify-center py-12">
             <ChefHat className="h-12 w-12 text-gray-400 mb-4" />
             <h3 className="text-lg font-medium text-gray-900 mb-2">No recipes found</h3>

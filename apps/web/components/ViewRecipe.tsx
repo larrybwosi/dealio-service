@@ -1,7 +1,7 @@
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@workspace/ui/components/dialog';
 import { Label } from '@workspace/ui/components/label';
 import { Badge } from '@workspace/ui/components/badge';
-import { Recipe } from '@/types/bakery';
+import { Recipe } from '@/types';
 import { useFormattedCurrency } from '@/lib/utils';
 
 interface ViewRecipeDialogProps {

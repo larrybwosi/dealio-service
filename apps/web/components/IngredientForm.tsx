@@ -5,9 +5,9 @@ import { Input } from '@workspace/ui/components/input';
 import { Label } from '@workspace/ui/components/label';
 import { Textarea } from '@workspace/ui/components/textarea';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@workspace/ui/components/dialog';
-import { useCreateRawMaterial } from '@/lib/hooks/raw-materials';
-import { CreateRawMaterialInput } from '@/lib/validations/raw-materials';
-import { CategorySelect } from '../common/category-select';
+import { useCreateRawMaterial } from '@/hooks/raw-materials';
+import { CreateRawMaterialInput } from '@/lib/validation';
+import { CategorySelect } from '@/components/common/category-select';
 import { UnitSelect } from '@/components/common/unit-select';
 
 interface CreateIngredientDialogProps {

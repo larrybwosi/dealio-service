@@ -8,15 +8,16 @@ import { Label } from '@workspace/ui/components/label';
 import { Textarea } from '@workspace/ui/components/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@workspace/ui/components/select';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@workspace/ui/components/dialog';
-import { Template } from '@/types/bakery';
-import { Trash2 } from 'lucide-react';
-import { useDeleteConfirmation } from '@/lib/providers/delete-modal';
-import { useBakeryCategories } from '@/lib/hooks/use-bakery';
-import { UnitSelect } from '../common/unit-select';
+import { Template } from '@/types';
+import { Trash2, Clock, Calendar, FileText, BookOpen, Layers, Shield } from 'lucide-react';
+import { useDeleteConfirmation } from '@/components/delete-modal-provider';
+import { useBakeryCategories } from '@/hooks/use-bakery';
+import { UnitSelect } from '@/components/common/unit-select';
 import { Switch } from '@workspace/ui/components/switch';
 import { Checkbox } from '@workspace/ui/components/checkbox';
-import { TemplateFormData, templateSchema } from '@/lib/validations/bakery';
-import { useCreateTemplate, useRecipes, useUpdateTemplate } from '@/lib/hooks/use-bakery';
+import { TemplateFormData, templateSchema } from '@/lib/validation';
+import { useCreateTemplate, useRecipes, useUpdateTemplate } from '@/hooks/use-bakery';
+import { Badge } from '@workspace/ui/components/badge';
 
 interface CreateEditTemplateProps {
   template?: Template | null;
@@ -26,13 +27,13 @@ interface CreateEditTemplateProps {
 }
 
 const DAYS_OF_WEEK = [
-  { value: 0, label: 'Sunday' },
-  { value: 1, label: 'Monday' },
-  { value: 2, label: 'Tuesday' },
-  { value: 3, label: 'Wednesday' },
-  { value: 4, label: 'Thursday' },
-  { value: 5, label: 'Friday' },
-  { value: 6, label: 'Saturday' },
+  { value: 0, label: 'Sun' },
+  { value: 1, label: 'Mon' },
+  { value: 2, label: 'Tue' },
+  { value: 3, label: 'Wed' },
+  { value: 4, label: 'Thu' },
+  { value: 5, label: 'Fri' },
+  { value: 6, label: 'Sat' },
 ] as const;
 
 export function CreateEditTemplate({ template, isOpen, onOpenChange, onDelete }: CreateEditTemplateProps) {
@@ -65,16 +66,15 @@ export function CreateEditTemplate({ template, isOpen, onOpenChange, onDelete }:
       isActive: template?.isActive ?? true,
       scheduleTime: template?.scheduleTime || '',
       scheduleDays: template?.scheduleDays || [],
+      shelfLifeDays: template?.shelfLifeDays || undefined,
     },
   });
 
   const handleFormSubmit = async (data: TemplateFormData) => {
     try {
       if (isEditing && template) {
-        // Update existing template
         await updateTemplate({ templateId: template.id, data });
       } else {
-        // Create new template
         await createTemplate(data);
         if (!isEditing) {
           reset();
@@ -82,7 +82,6 @@ export function CreateEditTemplate({ template, isOpen, onOpenChange, onDelete }:
       }
       onOpenChange(false);
     } catch (error) {
-      // Error handling is managed by the mutation hooks
       console.error(`Failed to ${isEditing ? 'update' : 'create'} template:`, error);
     }
   };
@@ -110,13 +109,14 @@ export function CreateEditTemplate({ template, isOpen, onOpenChange, onDelete }:
         recipeId: template?.recipeId || '',
         categoryId: template?.categoryId || '',
         quantity: template?.quantity || 1,
-        unitId: template?.unitId || '', // Fixed: changed from unit to unitId
+        unitId: template?.unitId || '',
         duration: template?.duration || '',
         procedure: template?.procedure || '',
         notes: template?.notes || '',
         isActive: template?.isActive ?? true,
         scheduleTime: template?.scheduleTime || '',
         scheduleDays: template?.scheduleDays || [],
+        shelfLifeDays: template?.shelfLifeDays || undefined,
       });
     }
     onOpenChange(open);
@@ -128,10 +128,8 @@ export function CreateEditTemplate({ template, isOpen, onOpenChange, onDelete }:
 
     let newDays;
     if (dayIndex > -1) {
-      // Remove day if already selected
       newDays = currentDays.filter(d => d !== dayValue);
     } else {
-      // Add day if not selected
       newDays = [...currentDays, dayValue];
     }
 
@@ -143,28 +141,40 @@ export function CreateEditTemplate({ template, isOpen, onOpenChange, onDelete }:
     return currentDays.includes(dayValue);
   };
 
-  // Use the appropriate pending state based on whether we're creating or updating
   const isMutationPending = creatingTemplate || updatingTemplate;
   const isFormSubmitting = isSubmitting || isMutationPending;
+
+  const selectedDaysCount = watch('scheduleDays')?.length || 0;
 
   return (
     <Dialog open={isOpen} onOpenChange={handleDialogOpenChange}>
       <DialogContent className="max-w-2xl max-h-[90vh] sm:max-w-2xl overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle>{isEditing ? 'Edit Template' : 'Create New Template'}</DialogTitle>
-          <DialogDescription>
+        <DialogHeader className="pb-4 border-b">
+          <DialogTitle className="text-xl font-semibold flex items-center gap-2">
+            <Layers className="h-5 w-5" />
+            {isEditing ? 'Edit Template' : 'Create New Template'}
+          </DialogTitle>
+          <DialogDescription className="text-base">
             {isEditing ? 'Update your template details' : 'Create a reusable template from an existing recipe'}
           </DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
-          <div className="space-y-4">
+        <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6 pt-2">
+          {/* Template Basics Section */}
+          <div className="space-y-5">
+            <div className="flex items-center gap-2 pb-2 border-b">
+              <BookOpen className="h-4 w-4 text-gray-500" />
+              <h3 className="font-semibold text-sm text-gray-700">Template Basics</h3>
+            </div>
+
             {/* Template Name */}
-            <div>
-              <Label htmlFor="name">Template Name</Label>
+            <div className="space-y-2">
+              <Label htmlFor="name" className="text-sm font-medium">
+                Template Name <span className="text-red-500">*</span>
+              </Label>
               <Input
                 id="name"
-                placeholder="Enter template name"
+                placeholder="e.g., Daily Bread Batch, Weekend Pastries"
                 {...register('name')}
                 className={errors.name ? 'border-red-500' : ''}
                 disabled={isFormSubmitting}
@@ -174,8 +184,10 @@ export function CreateEditTemplate({ template, isOpen, onOpenChange, onDelete }:
 
             {/* Base Recipe and Category */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="recipeId">Base Recipe</Label>
+              <div className="space-y-2">
+                <Label htmlFor="recipeId" className="text-sm font-medium">
+                  Base Recipe <span className="text-red-500">*</span>
+                </Label>
                 <Select
                   value={watch('recipeId')}
                   onValueChange={value => setValue('recipeId', value)}
@@ -186,17 +198,14 @@ export function CreateEditTemplate({ template, isOpen, onOpenChange, onDelete }:
                   </SelectTrigger>
                   <SelectContent>
                     {isLoading ? (
-                      // Loading skeleton state
                       Array.from({ length: 5 }).map((_, index) => (
                         <div key={index} className="flex items-center space-x-2 px-2 py-1.5 text-sm">
                           <div className="h-4 w-32 bg-gray-200 rounded animate-pulse" />
                         </div>
                       ))
                     ) : error ? (
-                      // Error state
                       <div className="px-2 py-1.5 text-sm text-red-500">Failed to load recipes</div>
                     ) : (
-                      // Loaded state
                       recipes.map(recipe => (
                         <SelectItem key={recipe.id} value={recipe.id}>
                           {recipe.name}
@@ -208,8 +217,10 @@ export function CreateEditTemplate({ template, isOpen, onOpenChange, onDelete }:
                 {errors.recipeId && <p className="text-red-500 text-sm mt-1">{errors.recipeId.message}</p>}
               </div>
 
-              <div>
-                <Label htmlFor="categoryId">Category</Label>
+              <div className="space-y-2">
+                <Label htmlFor="categoryId" className="text-sm font-medium">
+                  Category
+                </Label>
                 <Select
                   value={watch('categoryId')}
                   onValueChange={value => setValue('categoryId', value)}
@@ -232,8 +243,10 @@ export function CreateEditTemplate({ template, isOpen, onOpenChange, onDelete }:
 
             {/* Quantity and Unit */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="quantity">Default Quantity</Label>
+              <div className="space-y-2">
+                <Label htmlFor="quantity" className="text-sm font-medium">
+                  Default Quantity
+                </Label>
                 <Input
                   id="quantity"
                   type="number"
@@ -245,117 +258,186 @@ export function CreateEditTemplate({ template, isOpen, onOpenChange, onDelete }:
                 {errors.quantity && <p className="text-red-500 text-sm mt-1">{errors.quantity.message}</p>}
               </div>
 
-              <div>
-                <Label htmlFor="unitId">Unit</Label>
+              <div className="space-y-2">
+                <Label htmlFor="unitId" className="text-sm font-medium">
+                  Unit
+                </Label>
                 <UnitSelect
                   value={watch('unitId')}
                   onValueChange={value => setValue('unitId', value)}
                   showLabel={false}
                   placeholder="Select Unit"
-                  businessType='bakery'
+                  unitType="COUNT"
                   disabled={isFormSubmitting}
                 />
                 {errors.unitId && <p className="text-red-500 text-sm mt-1">{errors.unitId.message}</p>}
               </div>
             </div>
+          </div>
 
-            {/* Schedule Settings */}
-            <div className="space-y-4 p-4 border rounded-lg">
-              <Label className="text-base font-semibold">Schedule Settings (Optional)</Label>
+          {/* Schedule Section */}
+          <div className="space-y-5">
+            <div className="flex items-center gap-2 pb-2 border-b">
+              <Calendar className="h-4 w-4 text-gray-500" />
+              <h3 className="font-semibold text-sm text-gray-700">Schedule Settings</h3>
+              <span className="text-xs text-gray-500 ml-auto">Optional</span>
+            </div>
 
-              {/* Schedule Time */}
-              <div>
-                <Label htmlFor="scheduleTime">Scheduled Time</Label>
+            {/* Schedule Time */}
+            <div className="space-y-2">
+              <Label htmlFor="scheduleTime" className="text-sm font-medium">
+                Scheduled Time
+              </Label>
+              <div className="relative max-w-xs">
+                <Clock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                 <Input
                   id="scheduleTime"
                   type="time"
                   placeholder="HH:MM"
                   {...register('scheduleTime')}
-                  className={errors.scheduleTime ? 'border-red-500' : ''}
+                  className={errors.scheduleTime ? 'border-red-500 pl-10' : 'pl-10'}
                   disabled={isFormSubmitting}
                 />
-                {errors.scheduleTime && <p className="text-red-500 text-sm mt-1">{errors.scheduleTime.message}</p>}
-                <p className="text-sm text-gray-500 mt-1">
-                  Time when this template should be scheduled (e.g., 08:00, 14:30)
-                </p>
               </div>
+              {errors.scheduleTime && <p className="text-red-500 text-sm mt-1">{errors.scheduleTime.message}</p>}
+              <p className="text-xs text-gray-500">Time when this template should be scheduled (e.g., 08:00, 14:30)</p>
+            </div>
 
-              {/* Schedule Days */}
-              <div>
-                <Label htmlFor="scheduleDays">Scheduled Days</Label>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mt-2">
-                  {DAYS_OF_WEEK.map(day => (
-                    <div key={day.value} className="flex items-center space-x-2">
-                      <Checkbox
-                        id={`day-${day.value}`}
-                        checked={isDaySelected(day.value)}
-                        onCheckedChange={() => toggleScheduleDay(day.value)}
-                        disabled={isFormSubmitting}
-                      />
-                      <Label htmlFor={`day-${day.value}`} className="text-sm font-normal">
-                        {day.label}
-                      </Label>
-                    </div>
-                  ))}
-                </div>
-                {errors.scheduleDays && <p className="text-red-500 text-sm mt-1">{errors.scheduleDays.message}</p>}
+            {/* Schedule Days */}
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <Label htmlFor="scheduleDays" className="text-sm font-medium">
+                  Scheduled Days
+                </Label>
+                {selectedDaysCount > 0 && (
+                  <Badge variant="secondary" className="text-xs">
+                    {selectedDaysCount} day{selectedDaysCount !== 1 ? 's' : ''} selected
+                  </Badge>
+                )}
               </div>
-            </div>
-
-            {/* Duration */}
-            <div>
-              <Label htmlFor="duration">Expected Duration</Label>
-              <Input id="duration" placeholder="e.g., 4 hours" {...register('duration')} disabled={isFormSubmitting} />
-            </div>
-
-            {/* Procedure */}
-            <div>
-              <Label htmlFor="procedure">Standard Procedure</Label>
-              <Textarea
-                id="procedure"
-                placeholder="Standard production procedure for this template"
-                rows={3}
-                {...register('procedure')}
-                disabled={isFormSubmitting}
-              />
-            </div>
-
-            {/* Notes */}
-            <div>
-              <Label htmlFor="notes">Notes</Label>
-              <Textarea
-                id="notes"
-                placeholder="Additional notes or special instructions"
-                rows={2}
-                {...register('notes')}
-                disabled={isFormSubmitting}
-              />
-            </div>
-
-            {/* Active Status */}
-            <div className="flex items-center space-x-2">
-              <Switch
-                id="isActive"
-                checked={watch('isActive')}
-                onCheckedChange={checked => setValue('isActive', checked)}
-                disabled={isFormSubmitting}
-              />
-              <Label htmlFor="isActive" className="text-sm font-normal">
-                Active Template
-              </Label>
+              <div className="grid grid-cols-4 sm:grid-cols-7 gap-2">
+                {DAYS_OF_WEEK.map(day => (
+                  <div key={day.value} className="flex flex-col items-center space-y-1">
+                    <Checkbox
+                      id={`day-${day.value}`}
+                      checked={isDaySelected(day.value)}
+                      onCheckedChange={() => toggleScheduleDay(day.value)}
+                      disabled={isFormSubmitting}
+                      className="h-8 w-8 data-[state=checked]:bg-gray-900 data-[state=checked]:border-gray-900"
+                    />
+                    <Label htmlFor={`day-${day.value}`} className="text-xs font-normal cursor-pointer text-center">
+                      {day.label}
+                    </Label>
+                  </div>
+                ))}
+              </div>
+              {errors.scheduleDays && <p className="text-red-500 text-sm mt-1">{errors.scheduleDays.message}</p>}
             </div>
           </div>
 
+          {/* Production Details Section */}
+          <div className="space-y-5">
+            <div className="flex items-center gap-2 pb-2 border-b">
+              <FileText className="h-4 w-4 text-gray-500" />
+              <h3 className="font-semibold text-sm text-gray-700">Production Details</h3>
+            </div>
+
+            {/* Shelf Life */}
+            <div className="space-y-2">
+              <Label htmlFor="shelfLifeDays" className="text-sm font-medium">
+                Shelf Life (Days)
+              </Label>
+              <div className="relative max-w-xs">
+                <Shield className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                <Input
+                  id="shelfLifeDays"
+                  type="number"
+                  min="1"
+                  placeholder="e.g., 3, 7, 30"
+                  {...register('shelfLifeDays', { valueAsNumber: true })}
+                  className={errors.shelfLifeDays ? 'border-red-500 pl-10' : 'pl-10'}
+                  disabled={isFormSubmitting}
+                />
+              </div>
+              {errors.shelfLifeDays && <p className="text-red-500 text-sm mt-1">{errors.shelfLifeDays.message}</p>}
+              <p className="text-xs text-gray-500">Number of days the finished product remains fresh</p>
+            </div>
+
+            {/* Duration */}
+            <div className="space-y-2">
+              <Label htmlFor="duration" className="text-sm font-medium">
+                Expected Duration
+              </Label>
+              <Input
+                id="duration"
+                placeholder="e.g., 4 hours, 2 hours 30 minutes"
+                {...register('duration')}
+                disabled={isFormSubmitting}
+              />
+              <p className="text-xs text-gray-500">Estimated time to complete this production run</p>
+            </div>
+
+            {/* Procedure */}
+            <div className="space-y-2">
+              <Label htmlFor="procedure" className="text-sm font-medium">
+                Standard Procedure
+              </Label>
+              <Textarea
+                id="procedure"
+                placeholder="Step-by-step production procedure for this template..."
+                rows={4}
+                {...register('procedure')}
+                disabled={isFormSubmitting}
+                className="resize-none"
+              />
+              <p className="text-xs text-gray-500">Standardized steps to follow when using this template</p>
+            </div>
+
+            {/* Notes */}
+            <div className="space-y-2">
+              <Label htmlFor="notes" className="text-sm font-medium">
+                Additional Notes
+              </Label>
+              <Textarea
+                id="notes"
+                placeholder="Special instructions, quality checks, or important reminders..."
+                rows={3}
+                {...register('notes')}
+                disabled={isFormSubmitting}
+                className="resize-none"
+              />
+            </div>
+          </div>
+
+          {/* Template Status */}
+          <div className="flex items-center justify-between p-4 border rounded-lg bg-gray-50">
+            <div className="space-y-1">
+              <Label htmlFor="isActive" className="text-sm font-medium">
+                Template Status
+              </Label>
+              <p className="text-xs text-gray-500">
+                {watch('isActive') ? 'Active templates can be used in production' : 'Inactive templates are archived'}
+              </p>
+            </div>
+            <Switch
+              id="isActive"
+              checked={watch('isActive')}
+              onCheckedChange={checked => setValue('isActive', checked)}
+              disabled={isFormSubmitting}
+            />
+          </div>
+
           {/* Actions */}
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between items-center pt-4 border-t">
             <div>
               {isEditing && onDelete && (
                 <Button
                   type="button"
-                  variant="destructive"
+                  variant="outline"
                   size="sm"
                   onClick={handleDelete}
                   disabled={isFormSubmitting}
+                  className="text-red-600 border-red-200 hover:bg-red-50 hover:text-red-700"
                 >
                   <Trash2 className="h-4 w-4 mr-2" />
                   Delete Template
@@ -363,23 +445,24 @@ export function CreateEditTemplate({ template, isOpen, onOpenChange, onDelete }:
               )}
             </div>
 
-            <div className="flex justify-end space-x-2">
+            <div className="flex gap-3">
               <Button
                 type="button"
                 variant="outline"
                 onClick={() => handleDialogOpenChange(false)}
                 disabled={isFormSubmitting}
+                className="min-w-24"
               >
                 Cancel
               </Button>
-              <Button type="submit" className="bg-orange-600 hover:bg-orange-700" disabled={isFormSubmitting}>
+              <Button type="submit" disabled={isFormSubmitting} className="min-w-24 bg-gray-900 hover:bg-gray-800">
                 {isFormSubmitting ? (
                   <>
                     <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                    {isEditing ? 'Updating...' : 'Creating...'}
+                    {isEditing ? 'Saving...' : 'Creating...'}
                   </>
                 ) : isEditing ? (
-                  'Update Template'
+                  'Save Changes'
                 ) : (
                   'Create Template'
                 )}

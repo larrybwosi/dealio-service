@@ -8,14 +8,14 @@ import { Input } from '@workspace/ui/components/input';
 import { Label } from '@workspace/ui/components/label';
 import { Textarea } from '@workspace/ui/components/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@workspace/ui/components/select';
-import { Recipe } from '@/types/bakery';
+import { Recipe } from '@/types';
 import { Save, X, Plus, Trash2, Loader2 } from 'lucide-react';
 import { UnitSelect } from '@/components/common/unit-select';
 import { useFormattedCurrency } from '@/lib/utils';
-import { useCreateRecipe, useUpdateRecipe } from '@/lib/hooks/use-bakery';
-import { RecipeFormData, recipeSchema } from '@/lib/validations/bakery';
-import { useBakeryCategories, useListIngredients } from '@/lib/hooks/use-bakery';
-import { useProductVariants } from '@/lib/api/products';
+import { useCreateRecipe, useUpdateRecipe } from '@/hooks/use-bakery';
+import { RecipeFormData, recipeSchema } from '@/lib/validation';
+import { useBakeryCategories, useListIngredients } from '@/hooks/use-bakery';
+import { ProductVariantsSelect } from "@/components/common/product-variant-select";
 
 interface CreateEditRecipeDialogProps {
   open: boolean;
@@ -40,31 +40,11 @@ function IngredientFormSkeleton() {
   );
 }
 
-// Helper function to format variant display name
-function getVariantDisplayName(variant: any): string {
-  if (!variant) return '';
-
-  const variantName = variant.name || '';
-  const productName = variant.product?.name || '';
-
-  if (variantName.toLowerCase() === 'default' || variantName.toLowerCase() === 'default variant') {
-    return productName;
-  }
-
-  return productName && variantName ? `${productName} - ${variantName}` : productName || variantName;
-}
 
 function CreateEditRecipeDialog({ open, onOpenChange, recipe, mode }: CreateEditRecipeDialogProps) {
   const formattedCurrency = useFormattedCurrency();
   const { data: categories, isLoading: loadingCategories } = useBakeryCategories();
   const { ingredients, isLoading: loadingIngredients } = useListIngredients();
-
-  const { data: productVariants, isLoading: loadingProductVariants } = useProductVariants({
-    includeLocation: true,
-    isActive: true,
-    productType: 'FINISHED_GOOD',
-  });
-
 
   const createRecipe = useCreateRecipe();
   const updateRecipe = useUpdateRecipe();
@@ -287,26 +267,14 @@ function CreateEditRecipeDialog({ open, onOpenChange, recipe, mode }: CreateEdit
             </div>
             <div>
               <Label htmlFor="producesVariantId">Produces Variant</Label>
-              {loadingProductVariants ? (
-                <SelectSkeleton />
-              ) : (
-                <Select
+                <ProductVariantsSelect
                   value={watch('producesVariantId') || ''}
                   onValueChange={value => setValue('producesVariantId', value)}
-                  disabled={isSubmitting}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select product variant" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {productVariants?.map(variant => (
-                      <SelectItem key={variant.id} value={variant.id}>
-                        {getVariantDisplayName(variant)}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              )}
+                  productType="FINISHED_GOOD"
+                  placeholder="Select the product variant"
+                  required={true}
+                  showLocationInfo={false} // Typically don't need location info for production selection
+                />
             </div>
           </div>
 
@@ -337,7 +305,8 @@ function CreateEditRecipeDialog({ open, onOpenChange, recipe, mode }: CreateEdit
               <div className="space-y-2">
                 {ingredientFields.map((field, index) => {
                   const ingredient = ingredients?.find(i => i.id === watchIngredients?.[index]?.ingredientVariantId);
-                  const cost = (Number(watchIngredients?.[index]?.quantity) || 0) * (Number(ingredient?.unitPrice )|| 0);
+                  const cost =
+                    (Number(watchIngredients?.[index]?.quantity) || 0) * (Number(ingredient?.unitPrice) || 0);
 
                   return (
                     <div key={field.id} className="grid grid-cols-[1fr_100px_120px_50px] gap-2 items-start">
@@ -385,7 +354,7 @@ function CreateEditRecipeDialog({ open, onOpenChange, recipe, mode }: CreateEdit
                           onValueChange={value => setValue(`ingredients.${index}.unitId`, value)}
                           showLabel={false}
                           placeholder="Select Unit"
-                          businessType='bakery'
+                          businessType="bakery"
                           disabled={isSubmitting}
                         />
                         {errors.ingredients?.[index]?.unitId && (
@@ -420,7 +389,11 @@ function CreateEditRecipeDialog({ open, onOpenChange, recipe, mode }: CreateEdit
                   <div className="flex justify-between items-center p-3 bg-green-50 rounded border border-green-200 mt-4">
                     <span className="font-medium">Total Ingredient Cost:</span>
                     <span className="font-bold text-green-600">
-                      {formattedCurrency(calculateRecipeCost((watchIngredients || []).map(ing => ({ ...ing, quantity: Number(ing?.quantity) || 0 }))))}
+                      {formattedCurrency(
+                        calculateRecipeCost(
+                          (watchIngredients || []).map(ing => ({ ...ing, quantity: Number(ing?.quantity) || 0 }))
+                        )
+                      )}
                     </span>
                   </div>
                 )}

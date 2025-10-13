@@ -31,13 +31,13 @@ import {
 } from 'lucide-react';
 import { BatchForm } from './BatchForm';
 import { BatchView } from './BatchView';
-import { useBatches, useCancelBatch, useCompleteBatch, useStartBatch } from '@/lib/hooks/use-bakery';
+import { useBatches, useCancelBatch, useCompleteBatch, useStartBatch } from '@/hooks/use-bakery';
 import { toast } from 'sonner';
 import { useFormattedCurrency } from '@/lib/utils';
 import { Skeleton } from '@workspace/ui/components/skeleton';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@workspace/ui/components/tooltip';
-import { BatchStatus } from '@/prisma/client';
-import { useListIngredients } from '@/lib/hooks/use-bakery';
+import { BatchStatus } from "@/types";
+import { useListIngredients } from '@/hooks/use-bakery';
 
 // Updated Batch interface to match new API response
 interface FormattedBatch {
@@ -103,7 +103,7 @@ export const getStatusColor = (status: BatchStatus): string => {
 // Loading Skeleton Component
 function BatchCardSkeleton() {
   return (
-    <Card className="bg-white shadow-sm">
+    <Card className="bg-background shadow-sm">
       <CardHeader>
         <div className="flex justify-between items-start">
           <div className="space-y-2">
@@ -140,7 +140,7 @@ function BatchCardSkeleton() {
 // Error State Component
 function BatchErrorState({ error, onRetry }: { error: Error; onRetry: () => void }) {
   return (
-    <Card className="bg-white shadow-sm border-red-200">
+    <Card className="bg-background shadow-sm border-red-200">
       <CardContent className="flex flex-col items-center justify-center py-12">
         <AlertTriangle className="h-12 w-12 text-red-500 mb-4" />
         <h3 className="text-lg font-medium text-gray-900 mb-2">Failed to load batches</h3>
@@ -296,7 +296,6 @@ export default function BatchManager() {
             <BatchForm
               onSuccess={() => setIsCreateDialogOpen(false)}
               onCancel={() => setIsCreateDialogOpen(false)}
-              ingredientStock={ingredientStock}
             />
           </DialogContent>
         </Dialog>
@@ -340,7 +339,7 @@ export default function BatchManager() {
       {!loadingBatches && !loadingIngredients && !error && (
         <div className="space-y-4">
           {filteredBatches.map(batch => (
-            <Card key={batch.id} className="bg-white shadow-sm hover:shadow-md transition-shadow">
+            <Card key={batch.id} className="bg-background shadow-sm hover:shadow-md transition-shadow">
               <CardHeader>
                 <div className="flex justify-between items-start">
                   <div>
@@ -525,7 +524,7 @@ export default function BatchManager() {
 
       {/* Empty State */}
       {!loadingBatches && !loadingIngredients && !error && filteredBatches.length === 0 && (
-        <Card className="bg-white shadow-sm">
+        <Card className="bg-background shadow-sm">
           <CardContent className="flex flex-col items-center justify-center py-12">
             <Clock className="h-12 w-12 text-gray-400 mb-4" />
             <h3 className="text-lg font-medium text-gray-900 mb-2">No batches found</h3>

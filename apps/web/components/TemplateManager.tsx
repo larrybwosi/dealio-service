@@ -13,11 +13,11 @@ import {
 } from '@workspace/ui/components/dialog';
 import { Badge } from '@workspace/ui/components/badge';
 import { Skeleton } from '@workspace/ui/components/skeleton';
-import { Template } from '@/types/bakery';
+import { Template } from '@/types';
 import { Plus, Edit, Eye, File, Clock } from 'lucide-react';
-import { useDeleteConfirmation } from '@/lib/providers/delete-modal';
+import { useDeleteConfirmation } from '@/components/delete-modal-provider';
 import { CreateEditTemplate } from './CreateEditTemplate';
-import { useDeleteTemplate, useTemplates } from '@/lib/hooks/use-bakery';
+import { useDeleteTemplate, useTemplates } from '@/hooks/use-bakery';
 
 export default function TemplateManager() {
   const [selectedTemplate, setSelectedTemplate] = useState<Template | null>(null);
@@ -27,6 +27,7 @@ export default function TemplateManager() {
   const [searchTerm, setSearchTerm] = useState('');
 
   const { data: templates, isLoading: loadingTemplates, error } = useTemplates();
+  console.log(templates);
   const { mutateAsync: deleteTemplate, isPending: deletingTemplate } = useDeleteTemplate();
   const { confirmDelete } = useDeleteConfirmation();
 
@@ -62,9 +63,29 @@ export default function TemplateManager() {
     setIsEditDialogOpen(true);
   };
 
+  // Helper function to format schedule days
+  const formatScheduleDays = (days: number[] | null) => {
+    if (!days || days.length === 0) return 'Not scheduled';
+
+    const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    return days.map(day => dayNames[day]).join(', ');
+  };
+
+  // Helper function to format schedule time
+  const formatScheduleTime = (time: string | null) => {
+    if (!time) return '';
+
+    // Convert "15:20" to "3:20 PM"
+    const [hours, minutes] = time.split(':');
+    const hour = parseInt(hours, 10);
+    const period = hour >= 12 ? 'PM' : 'AM';
+    const formattedHour = hour % 12 || 12;
+    return `${formattedHour}:${minutes} ${period}`;
+  };
+
   // Skeleton loading component
   const TemplateSkeleton = () => (
-    <Card className="bg-white shadow-sm">
+    <Card className="bg-background shadow-sm">
       <CardHeader>
         <div className="flex justify-between items-start">
           <div className="space-y-2">
@@ -97,7 +118,7 @@ export default function TemplateManager() {
 
   if (error) {
     return (
-      <Card className="bg-white shadow-sm">
+      <Card className="bg-background shadow-sm">
         <CardContent className="flex flex-col items-center justify-center py-12">
           <File className="h-12 w-12 text-red-400 mb-4" />
           <h3 className="text-lg font-medium text-gray-900 mb-2">Failed to load templates</h3>
@@ -154,14 +175,16 @@ export default function TemplateManager() {
             Array.from({ length: 6 }).map((_, index) => <TemplateSkeleton key={index} />)
           : // Actual templates
             filteredTemplates?.map(template => (
-              <Card key={template.id} className="bg-white shadow-sm hover:shadow-md transition-shadow">
+              <Card key={template.id} className="bg-background shadow-sm hover:shadow-md transition-shadow">
                 <CardHeader>
                   <div className="flex justify-between items-start">
                     <div>
                       <CardTitle className="text-lg">{template.name}</CardTitle>
                       <CardDescription>{template.category.name}</CardDescription>
                     </div>
-                    <Badge variant="secondary">Template</Badge>
+                    <Badge variant={template.isActive ? 'default' : 'secondary'}>
+                      {template.isActive ? 'Active' : 'Inactive'}
+                    </Badge>
                   </div>
                 </CardHeader>
                 <CardContent>
@@ -173,15 +196,32 @@ export default function TemplateManager() {
 
                     <div className="flex items-center justify-between text-sm">
                       <span className="text-gray-600">Quantity:</span>
-                      <span className="font-medium">
-                        {template.quantity} {template.unit}
-                      </span>
+                      <span className="font-medium">{template.quantity}</span>
                     </div>
 
                     {template.duration && (
                       <div className="flex items-center text-sm text-gray-500">
                         <Clock className="h-4 w-4 mr-1" />
                         {template.duration}
+                      </div>
+                    )}
+
+                    {/* Schedule Information */}
+                    {template.scheduleDays && template.scheduleDays.length > 0 && (
+                      <div className="text-sm">
+                        <p className="font-medium text-gray-700">Schedule:</p>
+                        <p className="text-gray-600">{formatScheduleDays(template.scheduleDays)}</p>
+                        {template.scheduleTime && (
+                          <p className="text-gray-600">at {formatScheduleTime(template.scheduleTime)}</p>
+                        )}
+                      </div>
+                    )}
+
+                    {/* Shelf Life */}
+                    {template.shelfLifeDays && (
+                      <div className="text-sm">
+                        <p className="font-medium text-gray-700">Shelf Life:</p>
+                        <p className="text-gray-600">{template.shelfLifeDays} days</p>
                       </div>
                     )}
 
@@ -221,15 +261,37 @@ export default function TemplateManager() {
                                 <div className="grid grid-cols-2 gap-4">
                                   <div>
                                     <Label>Default Quantity</Label>
-                                    <p className="text-sm">
-                                      {selectedTemplate.quantity} {selectedTemplate.unit}
-                                    </p>
+                                    <p className="text-sm">{selectedTemplate.quantity}</p>
                                   </div>
                                   <div>
                                     <Label>Expected Duration</Label>
                                     <p className="text-sm">{selectedTemplate.duration || 'Not specified'}</p>
                                   </div>
                                 </div>
+
+                                {/* Schedule Information in View Dialog */}
+                                {selectedTemplate.scheduleDays && selectedTemplate.scheduleDays.length > 0 && (
+                                  <div className="grid grid-cols-2 gap-4">
+                                    <div>
+                                      <Label>Scheduled Days</Label>
+                                      <p className="text-sm">{formatScheduleDays(selectedTemplate.scheduleDays)}</p>
+                                    </div>
+                                    {selectedTemplate.scheduleTime && (
+                                      <div>
+                                        <Label>Scheduled Time</Label>
+                                        <p className="text-sm">{formatScheduleTime(selectedTemplate.scheduleTime)}</p>
+                                      </div>
+                                    )}
+                                  </div>
+                                )}
+
+                                {/* Shelf Life in View Dialog */}
+                                {selectedTemplate.shelfLifeDays && (
+                                  <div>
+                                    <Label>Shelf Life</Label>
+                                    <p className="text-sm">{selectedTemplate.shelfLifeDays} days</p>
+                                  </div>
+                                )}
 
                                 {selectedTemplate.procedure && (
                                   <div>
@@ -247,22 +309,11 @@ export default function TemplateManager() {
                                   </div>
                                 )}
 
-                                <div>
-                                  <Label>Recipe Details</Label>
-                                  <div className="bg-gray-50 p-3 rounded-lg mt-2">
-                                    <p className="text-sm">
-                                      <strong>Yield:</strong> {selectedTemplate.recipe.yield}
-                                    </p>
-                                    <p className="text-sm">
-                                      <strong>Prep Time:</strong> {selectedTemplate.recipe.prepTime}
-                                    </p>
-                                    <p className="text-sm">
-                                      <strong>Bake Time:</strong> {selectedTemplate.recipe.bakeTime}
-                                    </p>
-                                    <p className="text-sm">
-                                      <strong>Difficulty:</strong> {selectedTemplate.recipe.difficulty}
-                                    </p>
-                                  </div>
+                                <div className="flex items-center text-sm">
+                                  <Label className="mr-2">Status:</Label>
+                                  <Badge variant={selectedTemplate.isActive ? 'default' : 'secondary'}>
+                                    {selectedTemplate.isActive ? 'Active' : 'Inactive'}
+                                  </Badge>
                                 </div>
                               </div>
                             </>
@@ -282,7 +333,7 @@ export default function TemplateManager() {
 
       {/* Empty state */}
       {!loadingTemplates && filteredTemplates?.length === 0 && (
-        <Card className="bg-white shadow-sm">
+        <Card className="bg-background shadow-sm">
           <CardContent className="flex flex-col items-center justify-center py-12">
             <File className="h-12 w-12 text-gray-400 mb-4" />
             <h3 className="text-lg font-medium text-gray-900 mb-2">

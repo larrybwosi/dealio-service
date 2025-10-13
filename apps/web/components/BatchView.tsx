@@ -16,7 +16,7 @@ import {
   ShoppingCart,
   Store,
 } from 'lucide-react';
-import { FormattedBatch } from '@/types/bakery';
+import { FormattedBatch } from '@/types';
 import { getStatusColor } from './BatchManager';
 
 

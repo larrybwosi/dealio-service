@@ -15,15 +15,28 @@ import {
   DialogTrigger,
 } from '@workspace/ui/components/dialog';
 import { Badge } from '@workspace/ui/components/badge';
-import { BakeryCategory } from '@/types/bakery';
-import { Plus, Edit, Trash2, ChefHat, BookOpen, File, Clock, AlertCircle, RefreshCw } from 'lucide-react';
+import { BakeryCategory } from '@/types';
+import {
+  Plus,
+  Edit,
+  Trash2,
+  ChefHat,
+  BookOpen,
+  File,
+  Clock,
+  AlertCircle,
+  RefreshCw,
+  Search,
+  FolderOpen,
+} from 'lucide-react';
 import {
   useCreateBakeryCategory,
   useUpdateBakeryCategory,
   useDeleteBakeryCategory,
   useBakeryCategories,
-} from '@/lib/hooks/use-bakery';
+} from '@/hooks/use-bakery';
 import { z } from 'zod';
+import { useDeleteConfirmation } from '@/components/delete-modal-provider';
 
 // Validation schema for bakery category
 const bakeryCategorySchema = z.object({
@@ -62,33 +75,53 @@ function EditCategoryDialog({ category, open, onOpenChange, onSave, isSubmitting
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md">
-        <DialogHeader>
-          <DialogTitle>Edit Category</DialogTitle>
+        <DialogHeader className="pb-4 border-b">
+          <DialogTitle className="flex items-center gap-2 text-lg">
+            <Edit className="h-5 w-5" />
+            Edit Category
+          </DialogTitle>
           <DialogDescription>Update the category information</DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <div>
-            <Label htmlFor="name">Category Name</Label>
-            <Input id="name" {...register('name')} placeholder="Enter category name" disabled={isSubmitting} />
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+          <div className="space-y-2">
+            <Label htmlFor="name" className="text-sm font-medium">
+              Category Name <span className="text-red-500">*</span>
+            </Label>
+            <Input
+              id="name"
+              {...register('name')}
+              placeholder="Enter category name"
+              disabled={isSubmitting}
+              className={errors.name ? 'border-red-500' : ''}
+            />
             {errors.name && <p className="text-sm text-red-500 mt-1">{errors.name.message}</p>}
           </div>
 
-          <div>
-            <Label htmlFor="description">Description</Label>
+          <div className="space-y-2">
+            <Label htmlFor="description" className="text-sm font-medium">
+              Description
+            </Label>
             <Textarea
               id="description"
               {...register('description')}
-              placeholder="Brief description of the category"
+              placeholder="Brief description of what this category contains..."
               rows={3}
               disabled={isSubmitting}
+              className="resize-none"
             />
           </div>
 
-          <div className="flex justify-end space-x-2">
-            <Button type="button" variant="outline" onClick={() => onOpenChange(false)} disabled={isSubmitting}>
+          <div className="flex justify-end gap-3 pt-2">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => onOpenChange(false)}
+              disabled={isSubmitting}
+              className="min-w-24"
+            >
               Cancel
             </Button>
-            <Button type="submit" className="bg-orange-600 hover:bg-orange-700" disabled={isSubmitting}>
+            <Button type="submit" disabled={isSubmitting} className="min-w-24 bg-gray-900 hover:bg-gray-800">
               {isSubmitting ? 'Saving...' : 'Save Changes'}
             </Button>
           </div>
@@ -101,26 +134,28 @@ function EditCategoryDialog({ category, open, onOpenChange, onSave, isSubmitting
 // Skeleton Loader Components
 function CategoryCardSkeleton() {
   return (
-    <Card className="bg-white shadow-sm animate-pulse">
-      <CardHeader>
+    <Card className="bg-background border border-gray-200 animate-pulse">
+      <CardHeader className="pb-4">
         <div className="flex justify-between items-start">
-          <div className="space-y-2 flex-1">
-            <div className="h-6 bg-gray-200 rounded w-3/4"></div>
+          <div className="space-y-3 flex-1">
+            <div className="flex items-center gap-2">
+              <div className="h-5 w-5 bg-gray-200 rounded"></div>
+              <div className="h-6 bg-gray-200 rounded w-32"></div>
+            </div>
             <div className="h-4 bg-gray-200 rounded w-full"></div>
-            <div className="h-4 bg-gray-200 rounded w-2/3"></div>
           </div>
-          <div className="flex space-x-1">
+          <div className="flex gap-1">
             <div className="h-8 w-8 bg-gray-200 rounded"></div>
             <div className="h-8 w-8 bg-gray-200 rounded"></div>
           </div>
         </div>
       </CardHeader>
-      <CardContent>
-        <div className="space-y-3">
-          <div className="grid grid-cols-3 gap-2">
+      <CardContent className="pt-0">
+        <div className="space-y-4">
+          <div className="grid grid-cols-3 gap-3">
             {[...Array(3)].map((_, i) => (
               <div key={i} className="text-center">
-                <div className="flex items-center justify-center mb-1">
+                <div className="flex items-center justify-center mb-2">
                   <div className="h-4 w-4 bg-gray-200 rounded"></div>
                 </div>
                 <div className="h-6 bg-gray-200 rounded w-8 mx-auto mb-1"></div>
@@ -128,7 +163,7 @@ function CategoryCardSkeleton() {
               </div>
             ))}
           </div>
-          <div className="pt-2 border-t">
+          <div className="pt-3 border-t">
             <div className="flex justify-between items-center">
               <div className="h-3 bg-gray-200 rounded w-20"></div>
               <div className="h-5 bg-gray-200 rounded w-12"></div>
@@ -142,11 +177,11 @@ function CategoryCardSkeleton() {
 
 function ErrorState({ message, onRetry }: { message: string; onRetry?: () => void }) {
   return (
-    <Card className="bg-white shadow-sm border-red-200">
-      <CardContent className="flex flex-col items-center justify-center py-12">
-        <AlertCircle className="h-12 w-12 text-red-500 mb-4" />
-        <h3 className="text-lg font-medium text-gray-900 mb-2">Something went wrong</h3>
-        <p className="text-gray-500 text-center mb-4">{message}</p>
+    <Card className="bg-background border border-gray-200">
+      <CardContent className="flex flex-col items-center justify-center py-12 text-center">
+        <AlertCircle className="h-12 w-12 text-gray-400 mb-4" />
+        <h3 className="text-lg font-semibold text-gray-900 mb-2">Unable to load categories</h3>
+        <p className="text-gray-500 mb-4 max-w-sm">{message}</p>
         {onRetry && (
           <Button onClick={onRetry} variant="outline" className="mt-2">
             <RefreshCw className="h-4 w-4 mr-2" />
@@ -167,6 +202,7 @@ export default function CategoryManager() {
   const createCategoryMutation = useCreateBakeryCategory();
   const updateCategoryMutation = useUpdateBakeryCategory();
   const deleteCategoryMutation = useDeleteBakeryCategory();
+  const {confirmDelete} = useDeleteConfirmation()
 
   const {
     register: registerCreate,
@@ -213,7 +249,12 @@ export default function CategoryManager() {
   };
 
   const handleDeleteCategory = async (categoryId: string) => {
-    if (!confirm('Are you sure you want to delete this category? This action cannot be undone.')) {
+    const confirmed = await confirmDelete({
+      entityType: 'item',
+      confirmText: 'Are you sure you want to delete this category?',
+      title:'Delete Category'
+    });
+    if (!confirmed) {
       return;
     }
     try {
@@ -224,7 +265,6 @@ export default function CategoryManager() {
   };
 
   const getCategoryStats = (categoryId: string) => {
-    // Use real data if available on the category, otherwise fall back to mock data
     const category = categories?.find(c => c.id === categoryId);
 
     if (category?.recipes !== undefined && category?.templates !== undefined && category?.batches !== undefined) {
@@ -272,10 +312,10 @@ export default function CategoryManager() {
       <div className="space-y-6">
         <div className="flex justify-between items-center">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900">Category Management</h2>
+            <h2 className="text-2xl font-bold text-gray-900">Category Management</h2>
             <p className="text-gray-600">Organize your bakery items by categories</p>
           </div>
-          <Button disabled className="bg-orange-600 hover:bg-orange-700 opacity-50">
+          <Button disabled className="bg-gray-900 opacity-50">
             <Plus className="h-4 w-4 mr-2" />
             New Category
           </Button>
@@ -290,55 +330,68 @@ export default function CategoryManager() {
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-3xl font-bold text-gray-900">Category Management</h2>
-          <p className="text-gray-600">Organize your bakery items by categories</p>
+          <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
+            <FolderOpen className="h-6 w-6" />
+            Category Management
+          </h2>
+          <p className="text-gray-600 mt-1">Organize your bakery items by categories</p>
         </div>
         <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
           <DialogTrigger asChild>
-            <Button className="bg-orange-600 hover:bg-orange-700">
+            <Button className="bg-gray-900 hover:bg-gray-800">
               <Plus className="h-4 w-4 mr-2" />
               New Category
             </Button>
           </DialogTrigger>
           <DialogContent className="max-w-md">
-            <DialogHeader>
-              <DialogTitle>Create New Category</DialogTitle>
+            <DialogHeader className="pb-4 border-b">
+              <DialogTitle className="flex items-center gap-2 text-lg">
+                <Plus className="h-5 w-5" />
+                Create New Category
+              </DialogTitle>
               <DialogDescription>Add a new category to organize your bakery items</DialogDescription>
             </DialogHeader>
-            <form onSubmit={handleCreateSubmit(handleCreateCategory)} className="space-y-4">
-              <div>
-                <Label htmlFor="create-name">Category Name</Label>
+            <form onSubmit={handleCreateSubmit(handleCreateCategory)} className="space-y-5">
+              <div className="space-y-2">
+                <Label htmlFor="create-name" className="text-sm font-medium">
+                  Category Name <span className="text-red-500">*</span>
+                </Label>
                 <Input
                   id="create-name"
                   {...registerCreate('name')}
-                  placeholder="Enter category name"
+                  placeholder="e.g., Breads, Pastries, Cakes"
                   disabled={isCreating}
+                  className={createErrors.name ? 'border-red-500' : ''}
                 />
                 {createErrors.name && <p className="text-sm text-red-500 mt-1">{createErrors.name.message}</p>}
               </div>
 
-              <div>
-                <Label htmlFor="create-description">Description</Label>
+              <div className="space-y-2">
+                <Label htmlFor="create-description" className="text-sm font-medium">
+                  Description
+                </Label>
                 <Textarea
                   id="create-description"
                   {...registerCreate('description')}
-                  placeholder="Brief description of the category"
+                  placeholder="Brief description of what this category contains..."
                   rows={3}
                   disabled={isCreating}
+                  className="resize-none"
                 />
               </div>
 
-              <div className="flex justify-end space-x-2">
+              <div className="flex justify-end gap-3 pt-2">
                 <Button
                   type="button"
                   variant="outline"
                   onClick={() => setIsCreateDialogOpen(false)}
                   disabled={isCreating}
+                  className="min-w-24"
                 >
                   Cancel
                 </Button>
-                <Button type="submit" className="bg-orange-600 hover:bg-orange-700" disabled={isCreating}>
-                  {isCreating ? 'Creating...' : 'Create Category'}
+                <Button type="submit" disabled={isCreating} className="min-w-24 bg-gray-900 hover:bg-gray-800">
+                  {isCreating ? 'Creating...' : 'Create'}
                 </Button>
               </div>
             </form>
@@ -347,12 +400,13 @@ export default function CategoryManager() {
       </div>
 
       {/* Search */}
-      <div className="flex items-center space-x-4">
+      <div className="relative max-w-md">
+        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
         <Input
-          placeholder="Search categories..."
+          placeholder="Search categories by name or description..."
           value={searchTerm}
           onChange={e => setSearchTerm(e.target.value)}
-          className="max-w-sm"
+          className="pl-10"
         />
       </div>
 
@@ -361,24 +415,25 @@ export default function CategoryManager() {
         {filteredCategories?.map(category => {
           const stats = getCategoryStats(category.id);
           return (
-            <Card key={category.id} className="bg-white shadow-sm hover:shadow-md transition-shadow">
-              <CardHeader>
+            <Card key={category.id} className="bg-background border border-gray-200 hover:border-gray-300 transition-colors">
+              <CardHeader className="pb-4">
                 <div className="flex justify-between items-start">
-                  <div>
-                    <CardTitle className="text-lg flex items-center">
-                      <ChefHat className="h-5 w-5 mr-2 text-orange-600" />
-                      {category.name}
+                  <div className="space-y-2 min-w-0 flex-1">
+                    <CardTitle className="text-lg flex items-center gap-2">
+                      <ChefHat className="h-5 w-5 text-gray-600 flex-shrink-0" />
+                      <span className="truncate">{category.name}</span>
                     </CardTitle>
-                    <CardDescription className="mt-2">
+                    <CardDescription className="line-clamp-2 text-sm">
                       {category.description || 'No description provided'}
                     </CardDescription>
                   </div>
-                  <div className="flex space-x-1">
+                  <div className="flex gap-1 flex-shrink-0 ml-2">
                     <Button
                       variant="outline"
                       size="sm"
                       onClick={() => setEditingCategory(category)}
                       disabled={isUpdating || isDeleting}
+                      className="h-8 w-8 p-0"
                     >
                       <Edit className="h-4 w-4" />
                     </Button>
@@ -387,41 +442,46 @@ export default function CategoryManager() {
                       size="sm"
                       onClick={() => handleDeleteCategory(category.id)}
                       disabled={isDeleting}
+                      className="h-8 w-8 p-0 text-red-600 hover:text-red-700 hover:bg-red-50"
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
                   </div>
                 </div>
               </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  <div className="grid grid-cols-3 gap-2">
-                    <div className="text-center">
+              <CardContent className="pt-0">
+                <div className="space-y-4">
+                  {/* Stats */}
+                  <div className="grid grid-cols-3 gap-3">
+                    <div className="text-center p-2 bg-blue-50 rounded-lg">
                       <div className="flex items-center justify-center mb-1">
                         <BookOpen className="h-4 w-4 text-blue-600" />
                       </div>
-                      <div className="text-lg font-bold text-blue-600">{stats?.recipes}</div>
-                      <div className="text-xs text-gray-500">Recipes</div>
+                      <div className="text-lg font-bold text-blue-600">{stats?.recipes || 0}</div>
+                      <div className="text-xs text-gray-600">Recipes</div>
                     </div>
-                    <div className="text-center">
+                    <div className="text-center p-2 bg-green-50 rounded-lg">
                       <div className="flex items-center justify-center mb-1">
                         <File className="h-4 w-4 text-green-600" />
                       </div>
-                      <div className="text-lg font-bold text-green-600">{stats?.templates}</div>
-                      <div className="text-xs text-gray-500">Templates</div>
+                      <div className="text-lg font-bold text-green-600">{stats?.templates || 0}</div>
+                      <div className="text-xs text-gray-600">Templates</div>
                     </div>
-                    <div className="text-center">
+                    <div className="text-center p-2 bg-purple-50 rounded-lg">
                       <div className="flex items-center justify-center mb-1">
                         <Clock className="h-4 w-4 text-purple-600" />
                       </div>
-                      <div className="text-lg font-bold text-purple-600">{stats?.batches}</div>
-                      <div className="text-xs text-gray-500">Batches</div>
+                      <div className="text-lg font-bold text-purple-600">{stats?.batches || 0}</div>
+                      <div className="text-xs text-gray-600">Batches</div>
                     </div>
                   </div>
 
-                  <div className="pt-2 border-t">
-                    <div className="flex justify-between items-center text-xs text-gray-500">
-                      <span>Created: {new Date(category.createdAt).toLocaleDateString()}</span>
+                  {/* Footer */}
+                  <div className="pt-3 border-t">
+                    <div className="flex justify-between items-center text-xs">
+                      <span className="text-gray-500">
+                        Created: {new Date(category.createdAt).toLocaleDateString()}
+                      </span>
                       <Badge variant="secondary" className="text-xs">
                         Active
                       </Badge>
@@ -434,14 +494,25 @@ export default function CategoryManager() {
         })}
       </div>
 
+      {/* Empty State */}
       {filteredCategories?.length === 0 && (
-        <Card className="bg-white shadow-sm">
-          <CardContent className="flex flex-col items-center justify-center py-12">
-            <ChefHat className="h-12 w-12 text-gray-400 mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No categories found</h3>
-            <p className="text-gray-500 text-center">
-              {searchTerm ? 'Try adjusting your search terms' : 'Create categories to organize your bakery items'}
+        <Card className="bg-background border border-gray-200">
+          <CardContent className="flex flex-col items-center justify-center py-12 text-center">
+            <FolderOpen className="h-12 w-12 text-gray-400 mb-4" />
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              {searchTerm ? 'No categories found' : 'No categories yet'}
+            </h3>
+            <p className="text-gray-500 mb-4 max-w-sm">
+              {searchTerm
+                ? "Try adjusting your search terms to find what you're looking for."
+                : 'Get started by creating your first category to organize your bakery items.'}
             </p>
+            {!searchTerm && (
+              <Button onClick={() => setIsCreateDialogOpen(true)} className="bg-gray-900 hover:bg-gray-800">
+                <Plus className="h-4 w-4 mr-2" />
+                Create Category
+              </Button>
+            )}
           </CardContent>
         </Card>
       )}

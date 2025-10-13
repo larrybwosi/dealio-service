@@ -2,7 +2,6 @@ import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import LocaleCurrency from 'locale-currency';
 import { useMemo } from 'react';
-import { Decimal } from '@/prisma/client/runtime/library';
 import { useOrgStore } from "@org/store";
 
 /**
