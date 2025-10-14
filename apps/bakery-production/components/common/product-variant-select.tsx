@@ -3,7 +3,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Skeleton } from '@workspace/ui/components/skeleton';
 import { Alert, AlertDescription } from '@workspace/ui/components/alert';
 import { AlertCircle, Package } from 'lucide-react';
-import { useProductVariants } from './products';
+import { useProductVariants } from '../../hooks/products';
 
 
 interface ProductVariant {

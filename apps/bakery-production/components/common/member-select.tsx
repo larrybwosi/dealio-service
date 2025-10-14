@@ -4,7 +4,7 @@ import { Skeleton } from '@workspace/ui/components/skeleton';
 import { Alert, AlertDescription } from '@workspace/ui/components/alert';
 import { AlertCircle, User } from 'lucide-react';
 import Image from 'next/image';
-import { useListMembers } from './members';
+import { useListMembers } from '../../hooks/members';
 
 interface Member {
   id: string;

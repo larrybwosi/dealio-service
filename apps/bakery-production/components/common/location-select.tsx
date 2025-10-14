@@ -3,7 +3,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Skeleton } from '@workspace/ui/components/skeleton';
 import { Alert, AlertDescription } from '@workspace/ui/components/alert';
 import { AlertCircle, MapPin } from 'lucide-react';
-import { useListLocations } from './locations';
+import { useListLocations } from '../../hooks/locations';
 
 interface Location {
   id: string;

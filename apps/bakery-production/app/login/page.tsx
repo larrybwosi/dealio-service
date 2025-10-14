@@ -1,5 +1,5 @@
-import BakeryTerminalLogin from "@/components/auth/login-page"
+import {BakeryLoginPage} from "@/components/auth/login-page"
 
 export default function Login() {
-  return <BakeryTerminalLogin />
+  return <BakeryLoginPage />
 }

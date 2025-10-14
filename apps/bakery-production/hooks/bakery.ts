@@ -503,7 +503,7 @@ export const useListIngredients = () => {
   const { data, error, isLoading, isFetching, refetch } = useQuery({
     ...createQueryHook(
       ['raw-materials'],
-      () => apiClient.get<RecipeIngredient>(`/${organizationId}/bakery/bakery/ingredients`),
+      () => apiClient.get<RecipeIngredient>(`/${organizationId}/bakery/ingredients`),
       !!organizationId,
       { staleTime: 1000 * 60 * 5 } // 5 minutes
     ),

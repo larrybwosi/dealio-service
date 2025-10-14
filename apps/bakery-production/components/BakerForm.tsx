@@ -13,7 +13,7 @@ import { Label } from '@workspace/ui/components/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@workspace/ui/components/select';
 import { Plus, Loader2 } from 'lucide-react';
 import { useBakerySettingsManagement } from '@/hooks/use-bakery';
-import { useListMembers } from './common/members';
+import { useListMembers } from '../hooks/members';
 
 interface AddBakerDialogProps {
   open?: boolean;
