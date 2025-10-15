@@ -24,9 +24,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
       <QueryProvider>
         <NuqsAdapter>
           <DeleteConfirmationProvider>
-            <SessionProvider>
+            {/* <SessionProvider> */}
               <OrgProvider>{children}</OrgProvider>
-            </SessionProvider>
+            {/* </SessionProvider> */}
           </DeleteConfirmationProvider>
         </NuqsAdapter>
       </QueryProvider>
