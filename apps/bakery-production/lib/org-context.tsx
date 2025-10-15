@@ -16,6 +16,8 @@ export function OrgProvider({ children }: { children: React.ReactNode }) {
     set: state.set,
   }));
 
+  console.log(session)
+
   const [isLoading, setIsLoading] = useState(true);
   const [loadingStage, setLoadingStage] = useState<'session' | 'organization' | 'complete'>('session');
   const [error, setError] = useState<string | null>(null);
