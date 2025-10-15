@@ -1,76 +1,138 @@
 'use client';
+
 import { createContext, useContext, useEffect, useState, ReactNode, useCallback, useMemo } from 'react';
 import { useSession as useAuthSession } from '@/lib/authClient';
 import LoadingSkeleton from '@/components/session-loader';
 import { useRouter } from 'next/navigation';
 
-interface User {
-  id: string;
-  email?: string;
-  name?: string;
-  //eslint-disable-next-line
+// Define the session type based on your auth implementation
+interface Session {
+  user: {
+    id: string;
+    email: string;
+    name?: string;
+    image?: string;
+    [key: string]: any;
+  };
   [key: string]: any;
 }
 
-interface Session {
-  user: User;
-  expiresAt: number;
-  refreshToken?: string;
-}
-
-interface SessionContextType {
-  isLoading: boolean;
+// Context value type
+interface SessionContextValue {
+  session: Session | null;
   isAuthenticated: boolean;
+  isLoading: boolean;
+  error: Error | null;
+  refreshSession: () => Promise<void>;
 }
 
-const SessionContext = createContext<SessionContextType | undefined>(undefined);
+// Create context with proper typing
+const SessionContext = createContext<SessionContextValue | undefined>(undefined);
 
 interface SessionProviderProps {
   children: ReactNode;
   redirectTo?: string;
   loadingComponent?: ReactNode;
+  requireAuth?: boolean;
+  onAuthError?: (error: Error) => void;
 }
 
 export function SessionProvider({
   children,
   redirectTo = '/login',
   loadingComponent,
+  requireAuth = false,
+  onAuthError,
 }: SessionProviderProps) {
-  // Call useAuthSession at the top level
-  const { data: session, isPending: authLoading, error: authError } = useAuthSession();
+  const { data: session, isPending: authLoading, error: authError, refetch: refetchSession } = useAuthSession();
+
   const router = useRouter();
-  
-  // Add loading timeout to prevent infinite loading
-  useEffect(() => {
-    if (authLoading) {
-      const timeoutId = setTimeout(() => {
-        if (authLoading) {
-          console.log('Auth loading timed out, redirecting to login');
-          router.push(redirectTo);
-        }
-      }, 10000); // 10 seconds timeout
-      return () => clearTimeout(timeoutId);
-    }
-  }, [authLoading, redirectTo]);
+  const [hasRedirected, setHasRedirected] = useState(false);
 
   const isAuthenticated = useMemo(() => !!session, [session]);
 
+  // Refresh session callback
+  const refreshSession = useCallback(async () => {
+    try {
+      await refetchSession();
+    } catch (error) {
+      console.error('Failed to refresh session:', error);
+    }
+  }, [refetchSession]);
 
-  const contextValue = useMemo<SessionContextType>(
+  // Handle authentication errors
+  useEffect(() => {
+    if (authError) {
+      console.error('Authentication error:', authError);
+      if (onAuthError) {
+        onAuthError(authError);
+      }
+    }
+  }, [authError, onAuthError]);
+
+  // Handle redirect for protected routes
+  useEffect(() => {
+    if (!authLoading && !session && requireAuth && !hasRedirected) {
+      console.log('No session found, redirecting to:', redirectTo);
+      setHasRedirected(true);
+      router.push(redirectTo);
+    }
+  }, [authLoading, session, requireAuth, redirectTo, router, hasRedirected]);
+
+  // Memoize context value to prevent unnecessary re-renders
+  const contextValue = useMemo<SessionContextValue>(
     () => ({
-      isLoading: authLoading,
+      session: session || null,
       isAuthenticated,
+      isLoading: authLoading,
+      error: authError || null,
+      refreshSession,
     }),
-    [session, authLoading, isAuthenticated]
+    [session, isAuthenticated, authLoading, authError, refreshSession]
   );
 
-  // Only show loading state for initial authentication
+  // Show loading state for initial authentication
   if (authLoading && !session) {
     console.log('Showing loading state - authenticating...');
     return loadingComponent ? <>{loadingComponent}</> : <LoadingSkeleton />;
   }
 
-  // If we have a session or we're not loading, show the children
+  // Don't render children if auth is required but not authenticated
+  if (requireAuth && !session && !authLoading) {
+    return null;
+  }
+
   console.log('Rendering provider with session:', !!session);
   return <SessionContext.Provider value={contextValue}>{children}</SessionContext.Provider>;
+}
+
+// Custom hook to use session context
+export function useSession() {
+  const context = useContext(SessionContext);
+
+  if (context === undefined) {
+    throw new Error('useSession must be used within a SessionProvider');
+  }
+
+  return context;
+}
+
+// Optional: Hook for protected routes
+export function useRequireAuth() {
+  const { session, isLoading } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!isLoading && !session) {
+      router.push('/login');
+    }
+  }, [session, isLoading, router]);
+
+  return { session, isLoading };
+}
+
+// Optional: Hook to get user data directly
+export function useUser() {
+  const { session } = useSession();
+  return session?.user ?? null;
 }

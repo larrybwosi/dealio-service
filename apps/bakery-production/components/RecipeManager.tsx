@@ -32,13 +32,13 @@ export default function RecipeManager() {
   const getDifficultyColor = (difficulty?: string) => {
     switch (difficulty) {
       case 'Easy':
-        return 'bg-green-100 text-green-800';
+        return 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300';
       case 'Medium':
-        return 'bg-yellow-100 text-yellow-800';
+        return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300';
       case 'Hard':
-        return 'bg-red-100 text-red-800';
+        return 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300';
       default:
-        return 'bg-gray-100 text-gray-800';
+        return 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300';
     }
   };
 
@@ -54,34 +54,34 @@ export default function RecipeManager() {
 
   // Loading skeleton component
   const RecipeCardSkeleton = () => (
-    <Card className="bg-background shadow-sm">
+    <Card className="bg-background border-border shadow-sm dark:shadow-gray-900/20">
       <CardHeader>
         <div className="flex justify-between items-start">
           <div className="space-y-2">
-            <Skeleton className="h-6 w-32" />
-            <Skeleton className="h-4 w-24" />
+            <Skeleton className="h-6 w-32 bg-muted" />
+            <Skeleton className="h-4 w-24 bg-muted" />
           </div>
-          <Skeleton className="h-6 w-16" />
+          <Skeleton className="h-6 w-16 bg-muted" />
         </div>
       </CardHeader>
       <CardContent className="space-y-3">
-        <Skeleton className="h-4 w-full" />
-        <Skeleton className="h-4 w-3/4" />
+        <Skeleton className="h-4 w-full bg-muted" />
+        <Skeleton className="h-4 w-3/4 bg-muted" />
         <div className="flex items-center space-x-4">
-          <Skeleton className="h-4 w-20" />
-          <Skeleton className="h-4 w-20" />
-          <Skeleton className="h-4 w-16" />
+          <Skeleton className="h-4 w-20 bg-muted" />
+          <Skeleton className="h-4 w-20 bg-muted" />
+          <Skeleton className="h-4 w-16 bg-muted" />
         </div>
         <div className="flex items-center justify-between">
-          <Skeleton className="h-4 w-24" />
-          <Skeleton className="h-4 w-16" />
+          <Skeleton className="h-4 w-24 bg-muted" />
+          <Skeleton className="h-4 w-16 bg-muted" />
         </div>
-        <Separator />
+        <Separator className="bg-border" />
         <div className="flex justify-between items-center">
-          <Skeleton className="h-4 w-20" />
+          <Skeleton className="h-4 w-20 bg-muted" />
           <div className="flex space-x-2">
-            <Skeleton className="h-9 w-9" />
-            <Skeleton className="h-9 w-9" />
+            <Skeleton className="h-9 w-9 bg-muted" />
+            <Skeleton className="h-9 w-9 bg-muted" />
           </div>
         </div>
       </CardContent>
@@ -94,10 +94,13 @@ export default function RecipeManager() {
       <div className="space-y-6">
         <div className="flex justify-between items-center">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900">Recipe Management</h2>
-            <p className="text-gray-600">Create and manage your bakery recipes with ingredient tracking</p>
+            <h2 className="text-3xl font-bold text-foreground">Recipe Management</h2>
+            <p className="text-muted-foreground">Create and manage your bakery recipes with ingredient tracking</p>
           </div>
-          <Button className="bg-orange-600 hover:bg-orange-700" onClick={() => setIsCreateDialogOpen(true)}>
+          <Button
+            className="bg-orange-600 hover:bg-orange-700 dark:bg-orange-700 dark:hover:bg-orange-600"
+            onClick={() => setIsCreateDialogOpen(true)}
+          >
             <Plus className="h-4 w-4 mr-2" />
             New Recipe
           </Button>
@@ -122,10 +125,13 @@ export default function RecipeManager() {
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-3xl font-bold text-gray-900">Recipe Management</h2>
-          <p className="text-gray-600">Create and manage your bakery recipes with ingredient tracking</p>
+          <h2 className="text-3xl font-bold text-foreground">Recipe Management</h2>
+          <p className="text-muted-foreground">Create and manage your bakery recipes with ingredient tracking</p>
         </div>
-        <Button className="bg-orange-600 hover:bg-orange-700" onClick={() => setIsCreateDialogOpen(true)}>
+        <Button
+          className="bg-orange-600 hover:bg-orange-700 dark:bg-orange-700 dark:hover:bg-orange-600"
+          onClick={() => setIsCreateDialogOpen(true)}
+        >
           <Plus className="h-4 w-4 mr-2" />
           New Recipe
         </Button>
@@ -147,11 +153,11 @@ export default function RecipeManager() {
           placeholder="Search recipes..."
           value={searchTerm}
           onChange={e => setSearchTerm(e.target.value)}
-          className="max-w-sm"
+          className="max-w-sm bg-background border-input"
           disabled={isLoading}
         />
         {isLoading && (
-          <div className="flex items-center space-x-2 text-sm text-gray-500">
+          <div className="flex items-center space-x-2 text-sm text-muted-foreground">
             <RefreshCw className="h-4 w-4 animate-spin" />
             <span>Loading...</span>
           </div>
@@ -165,20 +171,23 @@ export default function RecipeManager() {
             Array.from({ length: 6 }).map((_, index) => <RecipeCardSkeleton key={index} />)
           : // Success state
             filteredRecipes.map(recipe => (
-              <Card key={recipe.id} className="bg-background shadow-sm hover:shadow-md transition-shadow">
+              <Card
+                key={recipe.id}
+                className="bg-background border-border shadow-sm hover:shadow-md dark:hover:shadow-gray-900/30 transition-shadow"
+              >
                 <CardHeader>
                   <div className="flex justify-between items-start">
                     <div>
-                      <CardTitle className="text-lg">{recipe.name}</CardTitle>
-                      <CardDescription>{recipe.category.name}</CardDescription>
+                      <CardTitle className="text-lg text-foreground">{recipe.name}</CardTitle>
+                      <CardDescription className="text-muted-foreground">{recipe.category.name}</CardDescription>
                     </div>
                     <Badge className={getDifficultyColor(recipe.difficulty)}>{recipe.difficulty}</Badge>
                   </div>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
-                    <p className="text-sm text-gray-600 line-clamp-2">{recipe.description}</p>
-                    <div className="flex items-center space-x-4 text-sm text-gray-500">
+                    <p className="text-sm text-muted-foreground line-clamp-2">{recipe.description}</p>
+                    <div className="flex items-center space-x-4 text-sm text-muted-foreground">
                       <div className="flex items-center">
                         <Clock className="h-4 w-4 mr-1" />
                         {recipe.prepTime}
@@ -196,21 +205,31 @@ export default function RecipeManager() {
                     </div>
                     {/* Ingredient Cost */}
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-500">Ingredient Cost:</span>
-                      <span className="font-medium text-green-600">
+                      <span className="text-muted-foreground">Ingredient Cost:</span>
+                      <span className="font-medium text-green-600 dark:text-green-400">
                         {typeof recipe.costPrice === 'number' && !isNaN(recipe.costPrice)
                           ? formattedCurrency(recipe.costPrice)
                           : 'N/A'}
                       </span>
                     </div>
-                    <Separator />
+                    <Separator className="bg-border" />
                     <div className="flex justify-between items-center">
-                      <span className="text-sm font-medium">Yield: {recipe.yield}</span>
+                      <span className="text-sm font-medium text-foreground">Yield: {recipe.yield}</span>
                       <div className="flex space-x-2">
-                        <Button variant="outline" size="sm" onClick={() => handleViewRecipe(recipe)}>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleViewRecipe(recipe)}
+                          className="border-border hover:bg-muted"
+                        >
                           <Eye className="h-4 w-4" />
                         </Button>
-                        <Button variant="outline" size="sm" onClick={() => handleEditRecipe(recipe)}>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleEditRecipe(recipe)}
+                          className="border-border hover:bg-muted"
+                        >
                           <Edit className="h-4 w-4" />
                         </Button>
                       </div>
@@ -223,15 +242,18 @@ export default function RecipeManager() {
 
       {/* Empty state */}
       {!isLoading && filteredRecipes.length === 0 && (
-        <Card className="bg-background shadow-sm">
+        <Card className="bg-background border-border shadow-sm">
           <CardContent className="flex flex-col items-center justify-center py-12">
-            <ChefHat className="h-12 w-12 text-gray-400 mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No recipes found</h3>
-            <p className="text-gray-500 text-center">
+            <ChefHat className="h-12 w-12 text-muted-foreground/50 mb-4" />
+            <h3 className="text-lg font-medium text-foreground mb-2">No recipes found</h3>
+            <p className="text-muted-foreground text-center">
               {searchTerm ? 'Try adjusting your search terms' : 'Get started by creating your first recipe'}
             </p>
             {!searchTerm && (
-              <Button className="mt-4 bg-orange-600 hover:bg-orange-700" onClick={() => setIsCreateDialogOpen(true)}>
+              <Button
+                className="mt-4 bg-orange-600 hover:bg-orange-700 dark:bg-orange-700 dark:hover:bg-orange-600"
+                onClick={() => setIsCreateDialogOpen(true)}
+              >
                 <Plus className="h-4 w-4 mr-2" />
                 Create Recipe
               </Button>
