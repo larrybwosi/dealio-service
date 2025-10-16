@@ -1,10 +1,8 @@
 import { createAuthClient } from 'better-auth/react';
 import {
-  adminClient,
   apiKeyClient,
   customSessionClient,
   organizationClient,
-  usernameClient,
 } from 'better-auth/client/plugins';
 
 
@@ -23,6 +21,5 @@ export const {
   ],
   fetchOptions:{
     credentials:'include',
-    // headers
   }
 });

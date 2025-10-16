@@ -52,7 +52,7 @@ export function OrgProvider({ children }: { children: React.ReactNode }) {
             throw new Error('Failed to fetch organization details');
           }
 
-          const details = await response.data;
+          const details = response.data;
 
           if (details.organizationId) {
             // 4. Set the fetched details in the Zustand store
@@ -70,7 +70,8 @@ export function OrgProvider({ children }: { children: React.ReactNode }) {
             });
             setLoadingStage('complete');
           } else {
-            router.push('/create-org');
+            // 5. No active session, redirect to the login page
+            router.push('/login');
             return;
           }
         } else {
