@@ -86,7 +86,7 @@ interface ValidationErrors {
   attachments?: string;
 }
 
-export default function ExpenseFormWithQuery() {
+export function ExpenseFormWithQuery() {
   const [formData, setFormData] = useState<FormData>({
     description: "",
     amount: 0,

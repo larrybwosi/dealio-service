@@ -118,7 +118,7 @@ const nodeTypes = [
   },
 ];
 
-export default function VisualWorkflowBuilder() {
+export function VisualWorkflowBuilder() {
   const [nodes, setNodes] = useState<WorkflowNode[]>([
     {
       id: "start-1",

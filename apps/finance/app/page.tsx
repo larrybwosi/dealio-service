@@ -1,36 +1,170 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import { useQueryState } from "nuqs";
-import { Sidebar } from "@/components/expense-sidebar";
-import { ExpenseDashboard } from "@/components/expense-dashboard";
-import ExpenseFormWithQuery from "@/components/expense-form-with-query";
-import { ExpenseListWithQuery } from "@/components/expense-list-with-query";
-import { BudgetOverview } from "@/components/budget-overview";
-import { ApprovalWorkflow } from "@/components/approval-workflow";
-import { ExpenseAnalytics } from "@/components/expense-analytics";
-import { RecurringExpenses } from "@/components/recurring-expenses";
-import { ExpenseSettings } from "@/components/expense-settings";
-import { BudgetCreation } from "@/components/budget-creation";
-import { BulkApproval } from "@/components/bulk-approval";
-import { DelegationManagement } from "@/components/delegation-management";
-import { ReminderSystem } from "@/components/reminder-system";
-import { TaxManagement } from "@/components/tax-management";
-import { MyExpensesWithComments } from "@/components/my-expenses-with-comments";
-import { EnhancedApprovalWorkflow } from "@/components/enhanced-approval-workflow";
-import { CategoryManagement } from "@/components/category-management";
-import { VisualWorkflowBuilder } from "@/components/visual-workflow-builder";
-import { ReportsDashboard } from "@/components/reports-dashboard";
-import DocumentationPage from "@/components/documentation-page";
-import { UserManagement } from "@/components/user-management";
-import { DepartmentManagement } from "@/components/department-management";
-import { RoleManagement } from "@/components/role-management";
-import { MemberOperations } from "@/components/member-operations";
-import { OrgProvider } from "@/lib/providers/org";
+import { useState, useEffect, lazy, Suspense } from 'react';
+import { useQueryState } from 'nuqs';
+import { Sidebar } from '@/components/expense-sidebar';
+import { OrgProvider } from '@/lib/providers/org';
+
+// Lazy load all view components
+const ExpenseDashboard = lazy(() =>
+  import('@/components/expense-dashboard').then(m => ({
+    default: m.ExpenseDashboard,
+  }))
+);
+const ExpenseForm = lazy(() =>
+  import('@/components/expense-form-with-query').then(m => ({
+    default: m.ExpenseFormWithQuery,
+  }))
+);
+const ExpenseListWithQuery = lazy(() =>
+  import('@/components/expense-list-with-query').then(m => ({
+    default: m.ExpenseListWithQuery,
+  }))
+);
+const MyExpensesWithComments = lazy(() =>
+  import('@/components/my-expenses-with-comments').then(m => ({
+    default: m.MyExpensesWithComments,
+  }))
+);
+const BudgetOverview = lazy(() =>
+  import('@/components/budget-overview').then(m => ({
+    default: m.BudgetOverview,
+  }))
+);
+const BudgetCreation = lazy(() =>
+  import('@/components/budget-creation').then(m => ({
+    default: m.BudgetCreation,
+  }))
+);
+const ApprovalWorkflow = lazy(() =>
+  import('@/components/approval-workflow').then(m => ({
+    default: m.ApprovalWorkflow,
+  }))
+);
+const EnhancedApprovalWorkflow = lazy(() =>
+  import('@/components/enhanced-approval-workflow').then(m => ({
+    default: m.EnhancedApprovalWorkflow,
+  }))
+);
+const BulkApproval = lazy(() =>
+  import('@/components/bulk-approval').then(m => ({
+    default: m.BulkApproval,
+  }))
+);
+const DelegationManagement = lazy(() =>
+  import('@/components/delegation-management').then(m => ({
+    default: m.DelegationManagement,
+  }))
+);
+const ReminderSystem = lazy(() =>
+  import('@/components/reminder-system').then(m => ({
+    default: m.ReminderSystem,
+  }))
+);
+const TaxManagement = lazy(() =>
+  import('@/components/tax-management').then(m => ({
+    default: m.TaxManagement,
+  }))
+);
+const CategoryManagement = lazy(() =>
+  import('@/components/category-management').then(m => ({
+    default: m.CategoryManagement,
+  }))
+);
+const ExpenseAnalytics = lazy(() =>
+  import('@/components/expense-analytics').then(m => ({
+    default: m.ExpenseAnalytics,
+  }))
+);
+const RecurringExpenses = lazy(() =>
+  import('@/components/recurring-expenses').then(m => ({
+    default: m.RecurringExpenses,
+  }))
+);
+const ExpenseSettings = lazy(() =>
+  import('@/components/expense-settings').then(m => ({
+    default: m.ExpenseSettings,
+  }))
+);
+const VisualWorkflowBuilder = lazy(() =>
+  import('@/components/visual-workflow-builder').then(m => ({
+    default: m.VisualWorkflowBuilder,
+  }))
+);
+const ReportsDashboard = lazy(() =>
+  import('@/components/reports-dashboard').then(m => ({
+    default: m.ReportsDashboard,
+  }))
+);
+const DocumentationPage = lazy(() =>
+  import('@/components/documentation-page').then(m => ({
+    default: m.DocumentationPage,
+  }))
+);
+const UserManagement = lazy(() =>
+  import('@/components/user-management').then(m => ({
+    default: m.UserManagement,
+  }))
+);
+const DepartmentManagement = lazy(() =>
+  import('@/components/department-management').then(m => ({
+    default: m.DepartmentManagement,
+  }))
+);
+const RoleManagement = lazy(() =>
+  import('@/components/role-management').then(m => ({
+    default: m.RoleManagement,
+  }))
+);
+const MemberOperations = lazy(() =>
+  import('@/components/member-operations').then(m => ({
+    default: m.MemberOperations,
+  }))
+);
+
+// Loading fallback component
+function LoadingFallback() {
+  return (
+    <div className="flex items-center justify-center w-full h-full">
+      <div className="text-center">
+        <div className="mb-2 h-8 w-8 animate-spin rounded-full border-4 border-gray-300 border-t-blue-600 mx-auto"></div>
+        <p className="text-sm text-gray-600">Loading...</p>
+      </div>
+    </div>
+  );
+}
+
+// View map for cleaner rendering logic
+const VIEW_COMPONENTS: Record<string, React.LazyExoticComponent<React.ComponentType<any>>> = {
+  dashboard: ExpenseDashboard,
+  create: ExpenseForm,
+  expenses: ExpenseListWithQuery,
+  'my-expenses': MyExpensesWithComments,
+  budgets: BudgetOverview,
+  'create-budget': BudgetCreation,
+  approvals: ApprovalWorkflow,
+  'enhanced-approvals': EnhancedApprovalWorkflow,
+  'bulk-approval': BulkApproval,
+  delegation: DelegationManagement,
+  reminders: ReminderSystem,
+  tax: TaxManagement,
+  categories: CategoryManagement,
+  analytics: ExpenseAnalytics,
+  recurring: RecurringExpenses,
+  settings: ExpenseSettings,
+  'visual-workflow': VisualWorkflowBuilder,
+  reports: ReportsDashboard,
+  'ai-reports': ReportsDashboard,
+  documentation: DocumentationPage,
+  'user-management': UserManagement,
+  'department-management': DepartmentManagement,
+  'role-management': RoleManagement,
+  'member-operations': MemberOperations,
+};
 
 export default function ExpenseManagementSystem() {
-  const [view, setView] = useQueryState("view", {
-    defaultValue: "dashboard",
+  const [view, setView] = useQueryState('view', {
+    defaultValue: 'dashboard',
     clearOnDefault: true,
   });
   const [activeView, setActiveView] = useState(view);
@@ -46,65 +180,20 @@ export default function ExpenseManagementSystem() {
     setView(newView);
   };
 
-  const renderContent = () => {
-    switch (activeView) {
-      case "dashboard":
-        return <ExpenseDashboard />;
-      case "create":
-        return <ExpenseFormWithQuery />;
-      case "expenses":
-        return <ExpenseListWithQuery />;
-      case "my-expenses":
-        return <MyExpensesWithComments />;
-      case "budgets":
-        return <BudgetOverview />;
-      case "create-budget":
-        return <BudgetCreation />;
-      case "approvals":
-        return <ApprovalWorkflow />;
-      case "enhanced-approvals":
-        return <EnhancedApprovalWorkflow />;
-      case "bulk-approval":
-        return <BulkApproval />;
-      case "delegation":
-        return <DelegationManagement />;
-      case "reminders":
-        return <ReminderSystem />;
-      case "tax":
-        return <TaxManagement />;
-      case "categories":
-        return <CategoryManagement />;
-      case "analytics":
-        return <ExpenseAnalytics />;
-      case "recurring":
-        return <RecurringExpenses />;
-      case "settings":
-        return <ExpenseSettings />;
-      case "visual-workflow":
-        return <VisualWorkflowBuilder />;
-      case "reports":
-      case "ai-reports":
-        return <ReportsDashboard />;
-      case "documentation":
-        return <DocumentationPage onNavigate={handleViewChange} />;
-      case "user-management":
-        return <UserManagement />;
-      case "department-management":
-        return <DepartmentManagement />;
-      case "role-management":
-        return <RoleManagement />;
-      case "member-operations":
-        return <MemberOperations />;
-      default:
-        return <ExpenseDashboard />;
-    }
-  };
+  // Get the component for current view
+  const ViewComponent = VIEW_COMPONENTS[activeView] || ExpenseDashboard;
 
   return (
-    <div className="flex h-screen bg-gray-50">
+    <div className="flex h-screen">
       <Sidebar activeView={activeView} onViewChange={handleViewChange} />
       <main className="flex-1 overflow-auto">
-        <OrgProvider>{renderContent()}</OrgProvider>
+        <OrgProvider>
+          <Suspense fallback={<LoadingFallback />}>
+            <ViewComponent onNavigate={activeView === 'documentation' ? handleViewChange : undefined} />
+          </Suspense>
+          {/* Portal for shadcn dialogs */}
+          <div id="dialog-portal" />
+        </OrgProvider>
       </main>
     </div>
   );

@@ -77,12 +77,15 @@ interface Feature {
   }
 }
 
-export default function DocumentationPage({ onNavigate }: { onNavigate: (view: string) => void }) {
+export function DocumentationPage() {
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedCategory, setSelectedCategory] = useState("all")
   const [expandedFeature, setExpandedFeature] = useState<string | null>(null)
   const [bookmarkedFeatures, setBookmarkedFeatures] = useState<Set<string>>(new Set())
 
+  const onNavigate = (featureId: string) => {
+    console.log(`Navigating to feature: ${featureId}`)
+  }
   const features: Feature[] = [
     {
       id: "dashboard",
