@@ -17,7 +17,7 @@ import { Template } from '@/types';
 import { Plus, Edit, Eye, File, Clock } from 'lucide-react';
 import { useDeleteConfirmation } from '@/components/delete-modal-provider';
 import { CreateEditTemplate } from './CreateEditTemplate';
-import { useDeleteTemplate, useTemplates } from '@/hooks/use-bakery';
+import { useDeleteTemplate, useTemplates } from '@/hooks/bakery';
 
 export default function TemplateManager() {
   const [selectedTemplate, setSelectedTemplate] = useState<Template | null>(null);

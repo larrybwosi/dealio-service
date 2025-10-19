@@ -12,9 +12,9 @@ import { Recipe } from '@/types';
 import { Save, X, Plus, Trash2, Loader2 } from 'lucide-react';
 import { UnitSelect } from '@/components/common/unit-select';
 import { useFormattedCurrency } from '@/lib/utils';
-import { useCreateRecipe, useUpdateRecipe } from '@/hooks/use-bakery';
+import { useCreateRecipe, useUpdateRecipe } from '@/hooks/bakery';
 import { RecipeFormData, recipeSchema } from '@/lib/validation';
-import { useBakeryCategories, useListIngredients } from '@/hooks/use-bakery';
+import { useBakeryCategories, useListIngredients } from '@/hooks/bakery';
 import { ProductVariantsSelect } from "@/components/common/product-variant-select";
 
 interface CreateEditRecipeDialogProps {

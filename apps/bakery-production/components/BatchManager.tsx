@@ -31,13 +31,13 @@ import {
 } from 'lucide-react';
 import { BatchForm } from './BatchForm';
 import { BatchView } from './BatchView';
-import { useBatches, useCancelBatch, useCompleteBatch, useStartBatch } from '@/hooks/use-bakery';
+import { useBatches, useCancelBatch, useCompleteBatch, useStartBatch } from '@/hooks/bakery';
 import { toast } from 'sonner';
 import { useFormattedCurrency } from '@/lib/utils';
 import { Skeleton } from '@workspace/ui/components/skeleton';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@workspace/ui/components/tooltip';
 import { BatchStatus } from "@/types";
-import { useListIngredients } from '@/hooks/use-bakery';
+import { useListIngredients } from '@/hooks/bakery';
 
 // Updated Batch interface to match new API response
 interface FormattedBatch {

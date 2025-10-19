@@ -11,12 +11,12 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Template } from '@/types';
 import { Trash2, Clock, Calendar, FileText, BookOpen, Layers, Shield } from 'lucide-react';
 import { useDeleteConfirmation } from '@/components/delete-modal-provider';
-import { useBakeryCategories } from '@/hooks/use-bakery';
+import { useBakeryCategories } from '@/hooks/bakery';
 import { UnitSelect } from '@/components/common/unit-select';
 import { Switch } from '@workspace/ui/components/switch';
 import { Checkbox } from '@workspace/ui/components/checkbox';
 import { TemplateFormData, templateSchema } from '@/lib/validation';
-import { useCreateTemplate, useRecipes, useUpdateTemplate } from '@/hooks/use-bakery';
+import { useCreateTemplate, useRecipes, useUpdateTemplate } from '@/hooks/bakery';
 import { Badge } from '@workspace/ui/components/badge';
 
 interface CreateEditTemplateProps {

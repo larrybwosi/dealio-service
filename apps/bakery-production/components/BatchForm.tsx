@@ -25,8 +25,8 @@ import {
   Clock4,
 } from 'lucide-react';
 import { useFormattedCurrency } from '@/lib/utils';
-import { useCreateBatch, useRecipes, useTemplates, useUpdateBatch, useListIngredients } from '@/hooks/use-bakery';
-import { useBakers, useBakeryCategories } from '@/hooks/use-bakery';
+import { useCreateBatch, useRecipes, useTemplates, useUpdateBatch, useListIngredients } from '@/hooks/bakery';
+import { useBakers, useBakeryCategories } from '@/hooks/bakery';
 import { UnitSelect } from '@/components/common/unit-select';
 import { batchSchema } from '@/lib/validation';
 import { toast } from 'sonner';

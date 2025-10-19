@@ -26,7 +26,7 @@ import {
 } from 'lucide-react';
 import { useQueryState } from 'nuqs';
 import { useFormattedCurrency } from '@/lib/utils';
-import { useBakeryData, type StockItem } from '@/hooks/use-bakery';
+import { useBakeryData, type StockItem } from '@/hooks/bakery';
 import { Batch, BatchStatus, Recipe, RecipeIngredient } from '@/types';
 
 export const getStatusColor = (status: BatchStatus): string => {

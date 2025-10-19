@@ -7,7 +7,7 @@ import { Badge } from '@workspace/ui/components/badge';
 import { Avatar, AvatarFallback } from '@workspace/ui/components/avatar';
 import { BakeryBaker, BatchStatus } from '@/types';
 import { Plus, Edit, Mail, User, CheckCircle, Clock, Calendar } from 'lucide-react';
-import { useBakerySettingsManagement } from '@/hooks/use-bakery';
+import { useBakerySettingsManagement } from '@/hooks/bakery';
 import AddBakerDialog from './BakerForm';
 import { Skeleton } from '@workspace/ui/components/skeleton';
 

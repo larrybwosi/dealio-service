@@ -34,7 +34,7 @@ import {
   useUpdateBakeryCategory,
   useDeleteBakeryCategory,
   useBakeryCategories,
-} from '@/hooks/use-bakery';
+} from '@/hooks/bakery';
 import { z } from 'zod';
 import { useDeleteConfirmation } from '@/components/delete-modal-provider';
 
