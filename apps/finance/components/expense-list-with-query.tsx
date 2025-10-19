@@ -53,6 +53,7 @@ export function ExpenseListWithQuery() {
     limit: 10,
   })
 
+  console.log(expenses)
   const { data: categoriesData, isLoading: categoriesLoading } = useCategories()
 
   // Mutations

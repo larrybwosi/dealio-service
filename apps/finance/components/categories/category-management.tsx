@@ -13,7 +13,7 @@ import {
 import { Plus, Edit, Trash2, MoreHorizontal, Tag, DollarSign, Users, TrendingUp, AlertTriangle } from 'lucide-react';
 import { useQueryState } from 'nuqs';
 import { useCategories } from '@/hooks/use-categories';
-import { CategoryDialog } from './categories/create-modal';
+import { CategoryDialog } from '@/components/categories/create-modal';
 
 const categories = [
   {
@@ -138,11 +138,6 @@ export function CategoryManagement() {
   const handleOpenEditDialog = (categoryId: string) => {
     setEditingCategoryId(categoryId);
     setDialogOpen(true);
-  };
-
-  const handleCloseDialog = () => {
-    setDialogOpen(false);
-    setEditingCategoryId(null);
   };
 
   const editingCategory = editingCategoryId ? categories.find(c => c.id === editingCategoryId) : null;

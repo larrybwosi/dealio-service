@@ -159,15 +159,15 @@ class ApiClient {
   }
 
   async createCategory(data: any): Promise<ApiResponse> {
-    return this.request("POST", "/categories", data);
+    return this.request('POST', '/finance/expenses/categories', data);
   }
 
   async updateCategory(id: string, data: any): Promise<ApiResponse> {
-    return this.request("PUT", `/categories/${id}`, data);
+    return this.request("PUT", `/finance/expenses//categories/${id}`, data);
   }
 
   async deleteCategory(id: string): Promise<ApiResponse> {
-    return this.request("DELETE", `/categories/${id}`);
+    return this.request("DELETE", `/finance/expenses//categories/${id}`);
   }
 
   // Users API

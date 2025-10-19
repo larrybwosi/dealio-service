@@ -1,14 +1,19 @@
 import type React from 'react';
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
-import './globals.css';
+// import './globals.css';
+import "@workspace/ui/globals.css"
 import { Providers } from '@/lib/providers';
+import localFont from 'next/font/local';
+// import Inter from '@workspace/ui/fonts/Inter-VariableFont.ttf';
 
-const inter = Inter({
-  subsets: ['latin'],
-  display: 'swap',
-  preload: true,
-});
+// const inter = localFont({
+//   variable: '--font-geist-sans',
+//   display: 'swap',
+//   preload: true,
+//   fallback: ['system-ui', 'sans-serif'],
+//   src: Inter,
+// });
+
 
 export const metadata: Metadata = {
   title: {
@@ -109,7 +114,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={inter.className} suppressHydrationWarning>
+      <body suppressHydrationWarning>
         <Providers>{children}</Providers>
       </body>
     </html>

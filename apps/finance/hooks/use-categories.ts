@@ -22,7 +22,7 @@ export function useCreateCategory() {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: apiClient.createCategory,
+    mutationFn:data=> apiClient.createCategory(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: CATEGORY_KEYS.lists() })
       toast.success("Category created successfully")

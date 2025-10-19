@@ -67,7 +67,7 @@ const TaxManagement = lazy(() =>
   }))
 );
 const CategoryManagement = lazy(() =>
-  import('@/components/category-management').then(m => ({
+  import('@/components/categories/category-management').then(m => ({
     default: m.CategoryManagement,
   }))
 );
@@ -184,17 +184,15 @@ export default function ExpenseManagementSystem() {
   const ViewComponent = VIEW_COMPONENTS[activeView] || ExpenseDashboard;
 
   return (
-    <div className="flex h-screen">
-      <Sidebar activeView={activeView} onViewChange={handleViewChange} />
-      <main className="flex-1 overflow-auto">
-        <OrgProvider>
+    <OrgProvider>
+      <div className="flex h-screen">
+        <Sidebar activeView={activeView} onViewChange={handleViewChange} />
+        <main className="flex-1 overflow-auto">
           <Suspense fallback={<LoadingFallback />}>
             <ViewComponent onNavigate={activeView === 'documentation' ? handleViewChange : undefined} />
           </Suspense>
-          {/* Portal for shadcn dialogs */}
-          <div id="dialog-portal" />
-        </OrgProvider>
-      </main>
-    </div>
+        </main>
+      </div>
+    </OrgProvider>
   );
 }
