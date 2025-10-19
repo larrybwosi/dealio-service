@@ -22,7 +22,6 @@ export function RestockDialog({ open, onOpenChange, selectedIngredient }: Restoc
   const [restockForm, setRestockForm] = useState({
     quantity: 0,
     unitPrice: 0,
-    supplierId: '',
     notes: '',
   });
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
@@ -214,20 +213,6 @@ export function RestockDialog({ open, onOpenChange, selectedIngredient }: Restoc
                 </div>
                 <p className="text-xs text-gray-500">Cost per unit</p>
               </div>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="supplier" className="text-sm font-medium flex items-center gap-1">
-                <Truck className="h-4 w-4" />
-                Supplier <span className="text-red-500">*</span>
-              </Label>
-              <SupplierSelect
-                value={restockForm.supplierId}
-                onValueChange={handleSupplierChange}
-                placeholder="Select a supplier..."
-                disabled={isProcessing}
-                required={true}
-              />
             </div>
           </div>
 

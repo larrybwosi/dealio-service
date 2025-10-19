@@ -164,7 +164,7 @@ export const useBatches = (filters?: { search?: string; category?: string; statu
         if (filters?.sortBy) params.append('sortBy', filters.sortBy);
 
         return apiClient.get<{ data: FormattedBatch[]; metadata: any }>(
-          `/${organizationId}/bakery/batches?${params}`
+          `/bakery/batches?${params}`
         );
       },
       !!organizationId
@@ -178,7 +178,7 @@ export const useCreateBatch = () => {
 
   return useMutation(
     createMutationHook(
-      (batchData: BatchFormData) => apiClient.post<Batch>(`/${organizationId}/bakery/batches`, batchData),
+      (batchData: BatchFormData) => apiClient.post<Batch>(`/bakery/batches`, batchData),
       [['batches']],
       queryClient
     )
@@ -191,7 +191,7 @@ export const useUpdateBatch = () => {
 
   return useMutation({
     mutationFn: async ({ id, ...batchData }: BatchFormData & { id: string }) =>
-      apiClient.patch<Batch>(`/${organizationId}/bakery/batches/${id}`, batchData),
+      apiClient.patch<Batch>(`/bakery/batches/${id}`, batchData),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['batches'] });
     },
@@ -204,7 +204,7 @@ export const useDeleteBatch = () => {
 
   return useMutation({
     mutationFn: async (batchId: string) => {
-      await apiClient.delete(`/${organizationId}/bakery/batches/${batchId}`);
+      await apiClient.delete(`/bakery/batches/${batchId}`);
       return batchId;
     },
     onSuccess: () => {
@@ -224,8 +224,8 @@ const createBatchActionHook = (action: string) => {
       mutationFn: async (batchId: string) => {
         const url =
           action === 'complete'
-            ? `/${organizationId}/bakery/batches/${batchId}/${action}?locationId=${locationId}`
-            : `/${organizationId}/bakery/batches/${batchId}/${action}`;
+            ? `/bakery/batches/${batchId}/${action}?locationId=${locationId}`
+            : `/bakery/batches/${batchId}/${action}`;
 
         return apiClient.post<Batch>(url);
       },
@@ -247,7 +247,7 @@ export const useRecipes = () => {
   return useQuery({
     ...createQueryHook(
       ['recipes'],
-      () => apiClient.get<Recipe[]>(`/${organizationId}/bakery/recipes`),
+      () => apiClient.get<Recipe[]>(`/bakery/recipes`),
       !!organizationId
     ),
   });
@@ -259,7 +259,7 @@ export const useCreateRecipe = () => {
 
   return useMutation({
     mutationFn: async (recipeData: RecipeFormData) =>
-      apiClient.post<Recipe>(`/${organizationId}/bakery/recipes`, recipeData),
+      apiClient.post<Recipe>(`/bakery/recipes`, recipeData),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['recipes'] });
     },
@@ -272,7 +272,7 @@ export const useUpdateRecipe = () => {
 
   return useMutation({
     mutationFn: async ({ id, ...recipeData }: RecipeFormData & { id: string }) =>
-      apiClient.patch<Recipe>(`/${organizationId}/bakery/recipes/${id}`, recipeData),
+      apiClient.patch<Recipe>(`/bakery/recipes/${id}`, recipeData),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['recipes'] });
     },
@@ -285,7 +285,7 @@ export const useDeleteRecipe = () => {
 
   return useMutation({
     mutationFn: async (id: string) => {
-      await apiClient.delete(`/${organizationId}/bakery/recipes/${id}`);
+      await apiClient.delete(`/bakery/recipes/${id}`);
       return id;
     },
     onSuccess: () => {
@@ -301,7 +301,7 @@ export const useTemplates = () => {
   return useQuery<Template[], Error>({
     ...createQueryHook(
       ['templates'],
-      () => apiClient.get<Template[]>(`/${organizationId}/bakery/templates`),
+      () => apiClient.get<Template[]>(`/bakery/templates`),
       !!organizationId
     ),
   });
@@ -313,7 +313,7 @@ export const useTemplate = (templateId: string) => {
   return useQuery<Template, Error>({
     ...createQueryHook(
       ['template', templateId],
-      () => apiClient.get<Template>(`/${organizationId}/bakery/templates/${templateId}`),
+      () => apiClient.get<Template>(`/bakery/templates/${templateId}`),
       !!organizationId && !!templateId
     ),
   });
@@ -325,7 +325,7 @@ export const useCreateTemplate = () => {
 
   return useMutation({
     mutationFn: async (templateData: unknown) =>
-      apiClient.post<Template>(`/${organizationId}/bakery/templates`, templateData),
+      apiClient.post<Template>(`/bakery/templates`, templateData),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['templates'] });
     },
@@ -338,7 +338,7 @@ export const useUpdateTemplate = () => {
 
   return useMutation<Template, Error, { templateId: string; data: unknown }>({
     mutationFn: async ({ templateId, data }) =>
-      apiClient.patch<Template>(`/${organizationId}/bakery/templates/${templateId}`, data),
+      apiClient.patch<Template>(`/bakery/templates/${templateId}`, data),
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ['templates'] });
       queryClient.invalidateQueries({ queryKey: ['template', variables.templateId] });
@@ -352,7 +352,7 @@ export const useDeleteTemplate = () => {
 
   return useMutation<void, Error, string>({
     mutationFn: async templateId => {
-      await apiClient.delete(`/${organizationId}/bakery/templates/${templateId}`);
+      await apiClient.delete(`/bakery/templates/${templateId}`);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['templates'] });
@@ -367,7 +367,7 @@ export const useBakeryCategories = () => {
   return useQuery<BakeryCategory[], Error>({
     ...createQueryHook(
       ['bakeryCategories'],
-      () => apiClient.get<BakeryCategory[]>(`/${organizationId}/bakery/categories`),
+      () => apiClient.get<BakeryCategory[]>(`/bakery/categories`),
       !!organizationId
     ),
   });
@@ -379,7 +379,7 @@ export const useBakeryCategory = (categoryId: string) => {
   return useQuery<BakeryCategory, Error>({
     ...createQueryHook(
       ['bakeryCategory', categoryId],
-      () => apiClient.get<BakeryCategory[]>(`/${organizationId}/bakery/categories/${categoryId}`),
+      () => apiClient.get<BakeryCategory[]>(`/bakery/categories/${categoryId}`),
       !!organizationId && !!categoryId
     ),
   });
@@ -391,7 +391,7 @@ export const useCreateBakeryCategory = () => {
 
   return useMutation<BakeryCategory, Error, Partial<BakeryCategory>>({
     mutationFn: async newCategoryData =>
-      apiClient.post<BakeryCategory>(`/${organizationId}/bakery/categories`, newCategoryData),
+      apiClient.post<BakeryCategory>(`/bakery/categories`, newCategoryData),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['bakeryCategories'] });
     },
@@ -404,7 +404,7 @@ export const useUpdateBakeryCategory = () => {
 
   return useMutation<BakeryCategory, Error, { id: string; data: Partial<BakeryCategory> }>({
     mutationFn: async ({ id, data: updateData }) =>
-      apiClient.put<BakeryCategory>(`/${organizationId}/bakery/categories/${id}`, updateData),
+      apiClient.put<BakeryCategory>(`/bakery/categories/${id}`, updateData),
     onSuccess: updatedCategory => {
       queryClient.invalidateQueries({ queryKey: ['bakeryCategories'] });
       queryClient.invalidateQueries({ queryKey: ['bakeryCategory', updatedCategory.id] });
@@ -418,7 +418,7 @@ export const useDeleteBakeryCategory = () => {
 
   return useMutation<void, Error, string>({
     mutationFn: async categoryId => {
-      await apiClient.delete(`/${organizationId}/bakery/categories/${categoryId}`);
+      await apiClient.delete(`/bakery/categories/${categoryId}`);
     },
     onSuccess: (_, deletedCategoryId) => {
       queryClient.invalidateQueries({ queryKey: ['bakeryCategories'] });
@@ -434,7 +434,7 @@ export const useBakerySettings = () => {
   return useQuery<BakerySettings, Error>({
     ...createQueryHook(
       ['bakerySettings'],
-      () => apiClient.get<BakerySettings>(`/${organizationId}/bakery/settings`),
+      () => apiClient.get<BakerySettings>(`/bakery/settings`),
       !!organizationId
     ),
   });
@@ -447,7 +447,7 @@ export const useUpdateBakerySettings = () => {
   return useMutation<BakerySettings, Error, unknown>({
     mutationFn: async (data: unknown) => {
       const validatedData = bakerySettingsSchema.parse(data);
-      return apiClient.put<BakerySettings>(`/${organizationId}/bakery/settings`, validatedData);
+      return apiClient.put<BakerySettings>(`/bakery/settings`, validatedData);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['bakerySettings'] });
@@ -461,7 +461,7 @@ export const useBakers = () => {
   return useQuery<BakeryBaker[], Error>({
     ...createQueryHook(
       ['bakers'],
-      () => apiClient.get<BakeryBaker[]>(`/${organizationId}/bakery/bakers`),
+      () => apiClient.get<BakeryBaker[]>(`/bakery/bakers`),
       !!organizationId
     ),
   });
@@ -473,7 +473,7 @@ export const useAddBaker = () => {
 
   return useMutation<BakeryBaker, Error, { memberId: string; specialties: string[] }>({
     mutationFn: async ({ memberId, specialties }) =>
-      apiClient.post<BakeryBaker>(`/${organizationId}/bakery/bakers`, { memberId, specialties }),
+      apiClient.post<BakeryBaker>(`/bakery/bakers`, { memberId, specialties }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['bakers'] });
       queryClient.invalidateQueries({ queryKey: ['bakerySettings'] });
@@ -487,7 +487,7 @@ export const useRemoveBaker = () => {
 
   return useMutation<void, Error, { memberId: string }>({
     mutationFn: async ({ memberId }) => {
-      await apiClient.delete(`/${organizationId}/bakery/bakers/${memberId}`);
+      await apiClient.delete(`/bakery/bakers/${memberId}`);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['bakers'] });
@@ -503,7 +503,7 @@ export const useListIngredients = () => {
   const { data, error, isLoading, isFetching, refetch } = useQuery({
     ...createQueryHook(
       ['raw-materials'],
-      () => apiClient.get<RecipeIngredient>(`/${organizationId}/bakery/ingredients`),
+      () => apiClient.get<RecipeIngredient>(`/bakery/ingredients`),
       !!organizationId,
       { staleTime: 1000 * 60 * 5 } // 5 minutes
     ),
@@ -554,7 +554,7 @@ export const useBakeryData = () => {
   return useQuery({
     ...createQueryHook(
       ['data'],
-      () => apiClient.get<OverviewData>(`/${organizationId}/bakery/overview`),
+      () => apiClient.get<OverviewData>(`/bakery/overview`),
       !!organizationId,
       { staleTime: 5 * 60 * 1000 } // 5 minutes
     ),
@@ -568,7 +568,7 @@ export const useInventoryRecords = () => {
   return useQuery<InventoryRecordsResponse, Error>({
     ...createQueryHook(
       ['inventory-records'],
-      () => apiClient.get<InventoryRecordsResponse>(`/${organizationId}/bakery/ingredients/records`),
+      () => apiClient.get<InventoryRecordsResponse>(`/bakery/ingredients/records`),
       !!organizationId
     ),
   });
@@ -580,7 +580,7 @@ export const useRestockInventory = () => {
   const organizationId = useOrgStore(state => state.organizationId);
 
   return useMutation({
-    mutationFn: async data => await axios.post(`/${organizationId}/bakery/products/${data?.productId!}/variants/${data?.variantId!}/restock`, data)
+    mutationFn: async data => await axios.post(`/bakery/products/${data?.productId!}/variants/${data?.variantId!}/restock`, data)
           .then(res => res.data),
     onSuccess: () => {
       queryClient.invalidateQueries({

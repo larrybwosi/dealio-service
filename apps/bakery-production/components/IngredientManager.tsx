@@ -9,7 +9,6 @@ import { AlertCircle, Package, TrendingDown, AlertTriangle, RefreshCw, Plus } fr
 import { Alert, AlertDescription } from '@workspace/ui/components/alert';
 import { useListIngredients } from '@/hooks/bakery';
 import { useFormattedCurrency } from '@/lib/utils';
-import { RestockDialog } from '@/components/RestockDialog';
 import { CreateIngredientDialog } from './IngredientForm';
 
 type UnitType = 'WEIGHT' | 'VOLUME' | 'COUNT';
@@ -184,10 +183,6 @@ const IngredientCard = ({
               {ingredient.unit.name}
             </Badge>
           </div>
-          <Button size="sm" variant="outline" onClick={() => onRestock(ingredient)} className="gap-2">
-            <RefreshCw className="h-3 w-3" />
-            Restock
-          </Button>
         </div>
       </CardContent>
     </Card>
@@ -197,13 +192,6 @@ const IngredientCard = ({
 export default function IngredientManager() {
   const { ingredients, isLoading, error, refetch } = useListIngredients();
   const formatCurrency = useFormattedCurrency();
-
-  // Nuqs state management for modals
-  const [restockDialog, setRestockDialog] = useQueryState('restock', {
-    defaultValue: '',
-    parse: value => value,
-    serialize: value => value,
-  });
 
   const [createDialog, setCreateDialog] = useQueryState('create', {
     defaultValue: '',
@@ -215,17 +203,10 @@ export default function IngredientManager() {
 
   const handleRestock = (ingredient: Ingredient) => {
     setSelectedIngredient(ingredient);
-    setRestockDialog('open');
   };
 
   const handleCreateIngredient = () => {
     setCreateDialog('open');
-  };
-
-  const handleRestockDialogChange = (open: boolean) => {
-    if (!open) {
-      setRestockDialog('');
-    }
   };
 
   const handleCreateDialogChange = (open: boolean) => {
@@ -369,11 +350,6 @@ export default function IngredientManager() {
 
       {/* Dialogs with nuqs state management */}
       <CreateIngredientDialog open={createDialog === 'open'} onOpenChange={handleCreateDialogChange} />
-      <RestockDialog
-        open={restockDialog === 'open'}
-        onOpenChange={handleRestockDialogChange}
-        selectedIngredient={selectedIngredient}
-      />
     </div>
   );
 }
