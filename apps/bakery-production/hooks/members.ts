@@ -25,7 +25,7 @@ export const useListMembers = () => {
   const organizationId = useOrgStore(state => state.organizationId);
   const { data, refetch, error, isLoading } = useQuery({
     queryKey: ['members', organizationId],
-    queryFn: () => api.get(`/${organizationId}/members`).then(res => res),
+    queryFn: () => api.get(`/organizations/${organizationId}/members`).then(res => res),
     enabled: !!organizationId,
   });
 

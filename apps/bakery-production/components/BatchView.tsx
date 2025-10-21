@@ -19,24 +19,22 @@ import {
 import { FormattedBatch } from '@/types';
 import { getStatusColor } from './BatchManager';
 
-
 interface BatchViewProps {
   batch: FormattedBatch;
-  ingredientStock?: { [key: string]: number }; // Made optional since we're now using API data
+  ingredientStock?: { [key: string]: number };
 }
 
 export function BatchView({ batch }: BatchViewProps) {
   const formattedCurrency = useFormattedCurrency();
 
-  // Helper function to get margin color
+  // Unified margin color system
   const getMarginColor = (margin: number) => {
-    if (margin >= 50) return 'text-green-600';
+    if (margin >= 50) return 'text-emerald-600';
     if (margin >= 30) return 'text-blue-600';
-    if (margin >= 10) return 'text-yellow-600';
+    if (margin >= 10) return 'text-amber-600';
     return 'text-red-600';
   };
 
-  // Helper function to get margin status
   const getMarginStatus = (margin: number) => {
     if (margin >= 50) return 'Excellent';
     if (margin >= 30) return 'Good';
@@ -48,9 +46,9 @@ export function BatchView({ batch }: BatchViewProps) {
     <div className="space-y-6">
       {/* Calculation Error Alert */}
       {batch.calculationError && (
-        <Alert className="border-yellow-200 bg-yellow-50">
-          <AlertTriangle className="h-4 w-4 text-yellow-600" />
-          <AlertDescription className="text-yellow-800">
+        <Alert variant="destructive">
+          <AlertTriangle className="h-4 w-4" />
+          <AlertDescription>
             Cost calculations may be incomplete due to missing ingredient or pricing data.
           </AlertDescription>
         </Alert>
@@ -64,22 +62,24 @@ export function BatchView({ batch }: BatchViewProps) {
         <CardContent>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <Label className="text-gray-500">Status</Label>
+              <Label className="text-muted-foreground">Status</Label>
               <div className="mt-1">
-                <Badge className={getStatusColor(batch.status)}>{batch.status.replace('_', ' ')}</Badge>
+                <Badge variant="outline" className={getStatusColor(batch.status)}>
+                  {batch.status.replace('_', ' ')}
+                </Badge>
               </div>
             </div>
             <div>
-              <Label className="text-gray-500">Category</Label>
+              <Label className="text-muted-foreground">Category</Label>
               <p className="text-sm font-medium mt-1">{batch.category.name}</p>
             </div>
             <div>
-              <Label className="text-gray-500">Recipe</Label>
+              <Label className="text-muted-foreground">Recipe</Label>
               <p className="text-sm font-medium mt-1">{batch.recipe.name}</p>
-              <p className="text-xs text-gray-500">Yield: {batch.recipe.yield}</p>
+              <p className="text-xs text-muted-foreground">Yield: {batch.recipe.yield}</p>
             </div>
             <div>
-              <Label className="text-gray-500">Batch Quantity</Label>
+              <Label className="text-muted-foreground">Batch Quantity</Label>
               <p className="text-sm font-medium mt-1">
                 {batch.quantity} {batch.unit.name} ({batch.unit.symbol})
               </p>
@@ -91,22 +91,22 @@ export function BatchView({ batch }: BatchViewProps) {
       {/* Financial Overview */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-base flex items-center">
-            <DollarSign className="h-4 w-4 mr-2" />
+          <CardTitle className="text-base flex items-center gap-2">
+            <DollarSign className="h-4 w-4" />
             Financial Overview
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           {/* Production Cost */}
-          <div className="bg-orange-50 p-4 rounded-lg">
+          <div className="bg-muted p-4 rounded-lg border">
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center">
-                <Package className="h-4 w-4 mr-2 text-orange-600" />
-                <Label className="text-orange-900">Production Cost</Label>
+                <Package className="h-4 w-4 mr-2" />
+                <Label>Production Cost</Label>
               </div>
-              <span className="text-2xl font-bold text-orange-600">{formattedCurrency(batch.productionCost)}</span>
+              <span className="text-2xl font-bold">{formattedCurrency(batch.productionCost)}</span>
             </div>
-            <p className="text-sm text-orange-700">
+            <p className="text-sm text-muted-foreground">
               {formattedCurrency(batch.costPerUnit)} per {batch.unit.symbol}
             </p>
           </div>
@@ -118,33 +118,33 @@ export function BatchView({ batch }: BatchViewProps) {
             {/* Retail Pricing */}
             <div className="space-y-2">
               <div className="flex items-center">
-                <ShoppingCart className="h-4 w-4 mr-2 text-green-600" />
-                <Label className="text-green-900">Retail Pricing</Label>
+                <ShoppingCart className="h-4 w-4 mr-2" />
+                <Label>Retail Pricing</Label>
               </div>
-              <div className="bg-green-50 p-3 rounded-lg space-y-1">
+              <div className="bg-muted p-3 rounded-lg border space-y-1">
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-green-700">Price per unit:</span>
-                  <span className="font-semibold text-green-900">{formattedCurrency(batch.retailPrice)}</span>
+                  <span className="text-sm text-muted-foreground">Price per unit:</span>
+                  <span className="font-semibold">{formattedCurrency(batch.retailPrice)}</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-green-700">Total value:</span>
-                  <span className="font-bold text-lg text-green-600">{formattedCurrency(batch.totalRetailValue)}</span>
+                  <span className="text-sm text-muted-foreground">Total value:</span>
+                  <span className="font-bold text-lg">{formattedCurrency(batch.totalRetailValue)}</span>
                 </div>
                 <Separator className="my-2" />
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-green-700">Profit:</span>
-                  <span className="font-semibold text-green-900">{formattedCurrency(batch.retailProfit)}</span>
+                  <span className="text-sm text-muted-foreground">Profit:</span>
+                  <span className="font-semibold">{formattedCurrency(batch.retailProfit)}</span>
                 </div>
                 <div className="flex justify-between items-center">
                   <div className="flex items-center">
-                    <Percent className="h-3 w-3 mr-1 text-green-700" />
-                    <span className="text-sm text-green-700">Margin:</span>
+                    <Percent className="h-3 w-3 mr-1" />
+                    <span className="text-sm text-muted-foreground">Margin:</span>
                   </div>
                   <div className="text-right">
                     <span className={`font-bold ${getMarginColor(batch.retailMargin)}`}>
                       {batch.retailMargin.toFixed(1)}%
                     </span>
-                    <p className="text-xs text-gray-500">{getMarginStatus(batch.retailMargin)}</p>
+                    <p className="text-xs text-muted-foreground">{getMarginStatus(batch.retailMargin)}</p>
                   </div>
                 </div>
               </div>
@@ -153,35 +153,33 @@ export function BatchView({ batch }: BatchViewProps) {
             {/* Wholesale Pricing */}
             <div className="space-y-2">
               <div className="flex items-center">
-                <Store className="h-4 w-4 mr-2 text-blue-600" />
-                <Label className="text-blue-900">Wholesale Pricing</Label>
+                <Store className="h-4 w-4 mr-2" />
+                <Label>Wholesale Pricing</Label>
               </div>
-              <div className="bg-blue-50 p-3 rounded-lg space-y-1">
+              <div className="bg-muted p-3 rounded-lg border space-y-1">
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-blue-700">Price per unit:</span>
-                  <span className="font-semibold text-blue-900">{formattedCurrency(batch.wholesalePrice)}</span>
+                  <span className="text-sm text-muted-foreground">Price per unit:</span>
+                  <span className="font-semibold">{formattedCurrency(batch.wholesalePrice)}</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-blue-700">Total value:</span>
-                  <span className="font-bold text-lg text-blue-600">
-                    {formattedCurrency(batch.totalWholesaleValue)}
-                  </span>
+                  <span className="text-sm text-muted-foreground">Total value:</span>
+                  <span className="font-bold text-lg">{formattedCurrency(batch.totalWholesaleValue)}</span>
                 </div>
                 <Separator className="my-2" />
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-blue-700">Profit:</span>
-                  <span className="font-semibold text-blue-900">{formattedCurrency(batch.wholesaleProfit)}</span>
+                  <span className="text-sm text-muted-foreground">Profit:</span>
+                  <span className="font-semibold">{formattedCurrency(batch.wholesaleProfit)}</span>
                 </div>
                 <div className="flex justify-between items-center">
                   <div className="flex items-center">
-                    <Percent className="h-3 w-3 mr-1 text-blue-700" />
-                    <span className="text-sm text-blue-700">Margin:</span>
+                    <Percent className="h-3 w-3 mr-1" />
+                    <span className="text-sm text-muted-foreground">Margin:</span>
                   </div>
                   <div className="text-right">
                     <span className={`font-bold ${getMarginColor(batch.wholesaleMargin)}`}>
                       {batch.wholesaleMargin.toFixed(1)}%
                     </span>
-                    <p className="text-xs text-gray-500">{getMarginStatus(batch.wholesaleMargin)}</p>
+                    <p className="text-xs text-muted-foreground">{getMarginStatus(batch.wholesaleMargin)}</p>
                   </div>
                 </div>
               </div>
@@ -189,21 +187,21 @@ export function BatchView({ batch }: BatchViewProps) {
           </div>
 
           {/* Profitability Summary */}
-          <div className="bg-gray-50 p-4 rounded-lg">
+          <div className="bg-muted p-4 rounded-lg border">
             <div className="flex items-center mb-3">
-              <TrendingUp className="h-4 w-4 mr-2 text-gray-700" />
-              <Label className="text-gray-900">Profitability Summary</Label>
+              <TrendingUp className="h-4 w-4 mr-2" />
+              <Label>Profitability Summary</Label>
             </div>
             <div className="grid grid-cols-2 gap-4 text-sm">
               <div>
-                <p className="text-gray-600">Best margin (Retail):</p>
+                <p className="text-muted-foreground">Best margin (Retail):</p>
                 <p className={`font-bold text-lg ${getMarginColor(batch.retailMargin)}`}>
                   {batch.retailMargin.toFixed(1)}%
                 </p>
               </div>
               <div>
-                <p className="text-gray-600">Total potential profit:</p>
-                <p className="font-bold text-lg text-green-600">
+                <p className="text-muted-foreground">Total potential profit:</p>
+                <p className="font-bold text-lg text-emerald-600">
                   {formattedCurrency(Math.max(batch.retailProfit, batch.wholesaleProfit))}
                 </p>
               </div>
@@ -220,18 +218,18 @@ export function BatchView({ batch }: BatchViewProps) {
         <CardContent>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <Label className="text-gray-500">Scheduled Date & Time</Label>
+              <Label className="text-muted-foreground">Scheduled Date & Time</Label>
               <div className="flex items-center text-sm mt-1">
-                <Calendar className="h-4 w-4 mr-2 text-gray-400" />
+                <Calendar className="h-4 w-4 mr-2 text-muted-foreground" />
                 <span className="font-medium">
                   {new Date(batch.date).toLocaleDateString()} at {batch.time}
                 </span>
               </div>
             </div>
             <div>
-              <Label className="text-gray-500">Assigned Baker</Label>
+              <Label className="text-muted-foreground">Assigned Baker</Label>
               <div className="flex items-center text-sm mt-1">
-                <User className="h-4 w-4 mr-2 text-gray-400" />
+                <User className="h-4 w-4 mr-2 text-muted-foreground" />
                 <span className="font-medium">{batch.baker}</span>
               </div>
             </div>
@@ -239,9 +237,9 @@ export function BatchView({ batch }: BatchViewProps) {
 
           {batch.duration && (
             <div className="mt-4">
-              <Label className="text-gray-500">Expected Duration</Label>
+              <Label className="text-muted-foreground">Expected Duration</Label>
               <div className="flex items-center text-sm mt-1">
-                <Clock className="h-4 w-4 mr-2 text-gray-400" />
+                <Clock className="h-4 w-4 mr-2 text-muted-foreground" />
                 <span className="font-medium">{batch.duration}</span>
               </div>
             </div>
@@ -258,24 +256,22 @@ export function BatchView({ batch }: BatchViewProps) {
           <CardContent className="space-y-4">
             {batch.procedure && (
               <div>
-                <Label className="text-gray-500">Procedure</Label>
-                <p className="text-sm text-gray-700 whitespace-pre-line mt-1 bg-gray-50 p-3 rounded">
-                  {batch.procedure}
-                </p>
+                <Label className="text-muted-foreground">Procedure</Label>
+                <p className="text-sm whitespace-pre-line mt-1 bg-muted p-3 rounded border">{batch.procedure}</p>
               </div>
             )}
 
             {batch.notes && (
               <div>
-                <Label className="text-gray-500">Notes</Label>
-                <p className="text-sm text-gray-700 mt-1 bg-gray-50 p-3 rounded">{batch.notes}</p>
+                <Label className="text-muted-foreground">Notes</Label>
+                <p className="text-sm mt-1 bg-muted p-3 rounded border">{batch.notes}</p>
               </div>
             )}
 
             {batch.createdFromTemplate && (
               <div>
-                <Label className="text-gray-500">Created from Template</Label>
-                <p className="text-sm text-blue-600 font-medium mt-1">{batch.createdFromTemplate.name}</p>
+                <Label className="text-muted-foreground">Created from Template</Label>
+                <p className="text-sm font-medium mt-1">{batch.createdFromTemplate.name}</p>
               </div>
             )}
           </CardContent>
@@ -290,23 +286,23 @@ export function BatchView({ batch }: BatchViewProps) {
         <CardContent>
           <div className="space-y-2 text-sm">
             <div className="flex justify-between">
-              <span className="text-gray-600">Created:</span>
+              <span className="text-muted-foreground">Created:</span>
               <span className="font-medium">{new Date(batch.createdAt).toLocaleString()}</span>
             </div>
             {batch.completedAt && (
               <div className="flex justify-between">
-                <span className="text-gray-600">Completed:</span>
-                <span className="font-medium text-green-600">{new Date(batch.completedAt).toLocaleString()}</span>
+                <span className="text-muted-foreground">Completed:</span>
+                <span className="font-medium text-emerald-600">{new Date(batch.completedAt).toLocaleString()}</span>
               </div>
             )}
             {batch.cancelledAt && (
               <div className="flex justify-between">
-                <span className="text-gray-600">Cancelled:</span>
+                <span className="text-muted-foreground">Cancelled:</span>
                 <span className="font-medium text-red-600">{new Date(batch.cancelledAt).toLocaleString()}</span>
               </div>
             )}
             <div className="flex justify-between">
-              <span className="text-gray-600">Last Updated:</span>
+              <span className="text-muted-foreground">Last Updated:</span>
               <span className="font-medium">{new Date(batch.updatedAt).toLocaleString()}</span>
             </div>
           </div>

@@ -25,9 +25,6 @@ import {
   XCircle,
   AlertTriangle,
   RefreshCw,
-  DollarSign,
-  TrendingUp,
-  Package,
 } from 'lucide-react';
 import { BatchForm } from './BatchForm';
 import { BatchView } from './BatchView';
@@ -36,7 +33,7 @@ import { toast } from 'sonner';
 import { useFormattedCurrency } from '@/lib/utils';
 import { Skeleton } from '@workspace/ui/components/skeleton';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@workspace/ui/components/tooltip';
-import { BatchStatus } from "@/types";
+import { BatchStatus } from '@/types';
 import { useListIngredients } from '@/hooks/bakery';
 
 // Updated Batch interface to match new API response
@@ -71,17 +68,11 @@ interface FormattedBatch {
   completedAt: Date | null;
   cancelledAt: Date | null;
   updatedAt: Date;
-  // Financial metrics
+  // Financial metrics (simplified for card, detailed in BatchView)
   productionCost: number;
   costPerUnit: number;
   retailPrice: number;
-  wholesalePrice: number;
   totalRetailValue: number;
-  totalWholesaleValue: number;
-  retailProfit: number;
-  wholesaleProfit: number;
-  retailMargin: number;
-  wholesaleMargin: number;
   calculationError?: boolean;
 }
 
@@ -114,8 +105,8 @@ function BatchCardSkeleton() {
         </div>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-          {Array.from({ length: 5 }).map((_, index) => (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {Array.from({ length: 3 }).map((_, index) => (
             <div key={index} className="space-y-2">
               <Skeleton className="h-4 w-16" />
               <Skeleton className="h-5 w-20" />
@@ -156,23 +147,6 @@ function BatchErrorState({ error, onRetry }: { error: Error; onRetry: () => void
   );
 }
 
-// Profit Margin Badge Component
-function ProfitMarginBadge({ margin }: { margin: number }) {
-  const getMarginColor = (margin: number) => {
-    if (margin >= 50) return 'bg-green-100 text-green-800';
-    if (margin >= 30) return 'bg-blue-100 text-blue-800';
-    if (margin >= 10) return 'bg-yellow-100 text-yellow-800';
-    return 'bg-red-100 text-red-800';
-  };
-
-  return (
-    <Badge className={getMarginColor(margin)} variant="outline">
-      <TrendingUp className="h-3 w-3 mr-1" />
-      {margin.toFixed(1)}% margin
-    </Badge>
-  );
-}
-
 export default function BatchManager() {
   const [selectedBatch, setSelectedBatch] = useState<FormattedBatch | null>(null);
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
@@ -210,7 +184,7 @@ export default function BatchManager() {
       return matchesSearch && matchesStatus;
     }) || [];
 
-  // Updated batch status handlers using the hooks
+  // Batch status handlers
   const handleStartBatch = (batchId: string) => {
     startBatchMutation.mutate(batchId, {
       onError: error => {
@@ -293,10 +267,7 @@ export default function BatchManager() {
               <DialogTitle>Create New Batch</DialogTitle>
               <DialogDescription>Generate a new production batch with ingredient tracking</DialogDescription>
             </DialogHeader>
-            <BatchForm
-              onSuccess={() => setIsCreateDialogOpen(false)}
-              onCancel={() => setIsCreateDialogOpen(false)}
-            />
+            <BatchForm onSuccess={() => setIsCreateDialogOpen(false)} onCancel={() => setIsCreateDialogOpen(false)} />
           </DialogContent>
         </Dialog>
       </div>
@@ -362,17 +333,15 @@ export default function BatchManager() {
                       {batch.batchNumber} • {batch.recipe.name} • {batch.category.name}
                     </CardDescription>
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <Badge className={getStatusColor(batch.status)}>
-                      {getStatusIcon(batch.status)}
-                      <span className="ml-1">{batch.status.replace('_', ' ')}</span>
-                    </Badge>
-                  </div>
+                  <Badge className={getStatusColor(batch.status)}>
+                    {getStatusIcon(batch.status)}
+                    <span className="ml-1">{batch.status.replace('_', ' ')}</span>
+                  </Badge>
                 </div>
               </CardHeader>
               <CardContent>
-                {/* Primary Info Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-4">
+                {/* Simplified Primary Info Grid: Cost/Unit replaced with Baker */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                   <div>
                     <Label className="text-sm text-gray-500">Quantity</Label>
                     <p className="font-medium">
@@ -392,86 +361,10 @@ export default function BatchManager() {
                       <span className="font-medium">{batch.baker}</span>
                     </div>
                   </div>
-                  <div>
-                    <Label className="text-sm text-gray-500">Duration</Label>
-                    <div className="flex items-center">
-                      <Clock className="h-4 w-4 mr-1 text-gray-400" />
-                      <span className="font-medium">{batch.duration || 'Not specified'}</span>
-                    </div>
-                  </div>
-                  <div>
-                    <Label className="text-sm text-gray-500">Cost/Unit</Label>
-                    <div className="flex items-center">
-                      <span className="font-medium text-orange-600">{formattedCurrency(batch.costPerUnit)}</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Financial Metrics Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 p-4 bg-gray-50 rounded-lg">
-                  <div>
-                    <Label className="text-xs text-gray-500 flex items-center">
-                      <Package className="h-3 w-3 mr-1" />
-                      Production Cost
-                    </Label>
-                    <p className="font-semibold text-lg text-gray-900">{formattedCurrency(batch.productionCost)}</p>
-                  </div>
-                  <div>
-                    <Label className="text-xs text-gray-500 flex items-center">
-                      <DollarSign className="h-3 w-3 mr-1" />
-                      Retail Value
-                    </Label>
-                    <p className="font-semibold text-lg text-green-600">{formattedCurrency(batch.totalRetailValue)}</p>
-                    <p className="text-xs text-gray-500 mt-1">
-                      {formattedCurrency(batch.retailPrice)}/{batch.unit.symbol}
-                    </p>
-                  </div>
-                  <div>
-                    <Label className="text-xs text-gray-500 flex items-center">
-                      <DollarSign className="h-3 w-3 mr-1" />
-                      Wholesale Value
-                    </Label>
-                    <p className="font-semibold text-lg text-blue-600">
-                      {formattedCurrency(batch.totalWholesaleValue)}
-                    </p>
-                    <p className="text-xs text-gray-500 mt-1">
-                      {formattedCurrency(batch.wholesalePrice)}/{batch.unit.symbol}
-                    </p>
-                  </div>
-                  <div>
-                    <Label className="text-xs text-gray-500">Profit Margins</Label>
-                    <div className="flex flex-col gap-1 mt-1">
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <div>
-                              <ProfitMarginBadge margin={batch.retailMargin} />
-                            </div>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p>Retail profit: {formattedCurrency(batch.retailProfit)}</p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <Badge className="bg-blue-50 text-blue-700 w-fit" variant="outline">
-                              <TrendingUp className="h-3 w-3 mr-1" />
-                              {batch.wholesaleMargin.toFixed(1)}% wholesale
-                            </Badge>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p>Wholesale profit: {formattedCurrency(batch.wholesaleProfit)}</p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                    </div>
-                  </div>
                 </div>
 
                 {/* Action Buttons */}
-                <div className="flex justify-between items-center mt-4 pt-4 border-t">
+                <div className="flex justify-between items-center pt-4 border-t">
                   <div className="flex space-x-2">
                     {batch.status === BatchStatus.PLANNED && (
                       <Button

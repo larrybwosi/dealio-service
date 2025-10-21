@@ -1,13 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { UnitCategory } from '@/prisma/client';
 import { UnitType } from '@/types';
-import axios from 'axios';
-
-// Create axios instance with base configuration
-const api = axios.create({
-  baseURL: `${process.env.NEXT_PUBLIC_API_URL}/api`,
-  withCredentials: true,
-});
+import api from '@/lib/axios';
 
 const API_URL = '/units';
 
@@ -147,70 +141,5 @@ export const useGetUnitOfMeasure = (id: string) => {
       return response.data;
     },
     enabled: !!id, // Only run the query if the id is available
-  });
-};
-
-// Hook to create a new unit of measure
-export const useCreateUnitOfMeasure = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: async (newData: CreateUnitOfMeasureInput) => {
-      const response = await api.post(API_URL, newData);
-      return response.data;
-    },
-    onSuccess: () => {
-      // Invalidate and refetch the list of units to see the new one
-      queryClient.invalidateQueries({ queryKey: ['unitsOfMeasure'] });
-      queryClient.invalidateQueries({ queryKey: ['units'] });
-    },
-    onError: error => {
-      if (axios.isAxiosError(error)) {
-        throw new Error(error.response?.data?.message || 'Failed to create unit of measure');
-      }
-      throw error;
-    },
-  });
-};
-
-// Hook to update a unit of measure
-export const useUpdateUnitOfMeasure = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: async ({ id, ...updateData }: { id: string } & UpdateUnitOfMeasureInput) => {
-      const response = await api.put(`${API_URL}/${id}`, updateData);
-      return response.data;
-    },
-    onSuccess: data => {
-      queryClient.invalidateQueries({ queryKey: ['unitsOfMeasure'] });
-      queryClient.invalidateQueries({ queryKey: ['unitOfMeasure', data.id] });
-      queryClient.invalidateQueries({ queryKey: ['units'] });
-    },
-    onError: error => {
-      if (axios.isAxiosError(error)) {
-        throw new Error(error.response?.data?.message || 'Failed to update unit of measure');
-      }
-      throw error;
-    },
-  });
-};
-
-// Hook to delete a unit of measure
-export const useDeleteUnitOfMeasure = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: async (id: string) => {
-      await api.delete(`${API_URL}/${id}`);
-    },
-    onSuccess: () => {
-      // Invalidate the list query to remove the deleted item
-      queryClient.invalidateQueries({ queryKey: ['unitsOfMeasure'] });
-      queryClient.invalidateQueries({ queryKey: ['units'] });
-    },
-    onError: error => {
-      if (axios.isAxiosError(error)) {
-        throw new Error(error.response?.data?.message || 'Failed to delete unit of measure');
-      }
-      throw error;
-    },
   });
 };

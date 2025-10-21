@@ -6,7 +6,7 @@ import { AlertCircle, Building2, CheckCircle2, Lock, Settings } from 'lucide-rea
 import { Skeleton } from '@workspace/ui/components/skeleton';
 import { useOrgStore } from '@org/store';
 import { useSession } from './authClient';
-import axios from 'axios';
+import api from './axios';
 
 export function OrgProvider({ children }: { children: React.ReactNode }) {
   const { data: session, isPending } = useSession();
@@ -15,9 +15,7 @@ export function OrgProvider({ children }: { children: React.ReactNode }) {
     organizationId: state.organizationId,
     set: state.set,
   }));
-
-  console.log(session)
-
+  
   const [isLoading, setIsLoading] = useState(true);
   const [loadingStage, setLoadingStage] = useState<'session' | 'organization' | 'complete'>('session');
   const [error, setError] = useState<string | null>(null);
@@ -42,7 +40,7 @@ export function OrgProvider({ children }: { children: React.ReactNode }) {
           setLoadingStage('organization');
 
           // 3. Session is authenticated, fetch org details from the API
-          const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/org-details`,{withCredentials:true});
+          const response = await api.get(`/org-details`);
           if (!response.data) {
             if (response.status === 404) {
               // User exists but has no org details

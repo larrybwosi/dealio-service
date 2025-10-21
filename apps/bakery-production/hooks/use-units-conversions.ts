@@ -3,6 +3,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { UnitCategory, UnitType, SystemUnit } from "@prisma/client";
+import api from "@/lib/axios";
 
 // --- Type Definitions (matching the API) ---
 
@@ -27,12 +28,6 @@ export interface ConversionData {
   factor: number;
 }
 
-// --- Axios Instance ---
-
-const apiClient = axios.create({
-  baseURL: "/api",
-});
-
 // Helper function to build query string from filter
 const buildQueryString = (filter?: UnitFilter): string => {
   if (!filter) return "";
@@ -52,7 +47,7 @@ export function useConversionData() {
   return useQuery({
     queryKey: ["conversion-data"],
     queryFn: async (): Promise<ConversionData[]> => {
-      const response = await apiClient.get("/units/conversions");
+      const response = await api.get("/units/conversions");
       return response.data;
     },
   });
@@ -71,7 +66,7 @@ export function useUnitConversion(value?: number, from?: string, to?: string) {
   return useQuery({
     queryKey: ["unit-conversion", value, from, to],
     queryFn: async (): Promise<{ convertedValue: number }> => {
-      const response = await apiClient.get("/units/convert", {
+      const response = await api.get("/units/convert", {
         params: { value, from, to },
       });
       return response.data;
@@ -94,7 +89,7 @@ export function useSetProductConversion() {
     mutationFn: async (
       conversionData: ProductConversionInput
     ): Promise<any> => {
-      const response = await apiClient.post(
+      const response = await api.post(
         "/units/conversions/product",
         conversionData
       );
@@ -141,7 +136,7 @@ export function usePrefetchUnits(filter?: UnitFilter) {
     queryClient.prefetchQuery({
       queryKey: ["units", filter],
       queryFn: async (): Promise<SystemUnit[]> => {
-        const response = await apiClient.get("/units", {
+        const response = await api.get("/units", {
           params: buildQueryString(filter),
         });
         return response.data;

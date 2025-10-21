@@ -1,9 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
 import { Button } from '@workspace/ui/components/button';
 import { Input } from '@workspace/ui/components/input';
 import { Label } from '@workspace/ui/components/label';
@@ -11,7 +10,7 @@ import { Textarea } from '@workspace/ui/components/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@workspace/ui/components/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@workspace/ui/components/tabs';
 import { Alert, AlertDescription } from '@workspace/ui/components/alert';
-import { Batch } from '@/types';
+import { Batch, BatchStatus } from '@/types';
 import {
   AlertTriangle,
   Loader2,
@@ -28,13 +27,11 @@ import { useFormattedCurrency } from '@/lib/utils';
 import { useCreateBatch, useRecipes, useTemplates, useUpdateBatch, useListIngredients } from '@/hooks/bakery';
 import { useBakers, useBakeryCategories } from '@/hooks/bakery';
 import { UnitSelect } from '@/components/common/unit-select';
-import { batchSchema } from '@/lib/validation';
+import { BatchInput, batchSchema } from '@/lib/validation';
 import { toast } from 'sonner';
 import { ProductVariantsSelect } from '@/components/common/product-variant-select';
 import { Badge } from '@workspace/ui/components/badge';
 import { useConversionData } from '@/hooks/use-units-conversions';
-
-type BatchFormData = z.infer<typeof batchSchema>;
 
 interface IngredientUsage {
   ingredientId: string;
@@ -74,7 +71,7 @@ export function BatchForm({ batch, onCancel, onSuccess }: BatchFormProps) {
     watch,
     setValue,
     formState: { errors, isSubmitting },
-  } = useForm<BatchFormData>({
+  } = useForm<BatchInput>({
     resolver: zodResolver(batchSchema),
     defaultValues: batch
       ? {
@@ -85,15 +82,15 @@ export function BatchForm({ batch, onCancel, onSuccess }: BatchFormProps) {
           unitId: batch.unitId || '',
           producedVariantId: batch.producedVariantId,
           status: batch.status,
-          date: new Date(batch.date).toISOString().split('T')[0],
+          date: batch.date ? new Date(batch.date) : new Date(),
           time: batch.time,
           bakerId: batch.bakerId || '',
           duration: batch.duration || '',
           procedure: batch.procedure || '',
           notes: batch.notes || '',
           createdFromTemplateId: batch.createdFromTemplateId || undefined,
-          productionDate: batch.productionDate ? new Date(batch.productionDate).toISOString().split('T')[0] : undefined,
-          expiresAt: batch.expiresAt ? new Date(batch.expiresAt).toISOString().split('T')[0] : undefined,
+          productionDate: batch.productionDate ? new Date(batch.productionDate) : new Date(),
+          expiresAt: batch.expiresAt ? new Date(batch.expiresAt) : undefined,
           shelfLifeDays: batch.shelfLifeDays || undefined,
           expirationStatus: batch.expirationStatus || 'FRESH',
         }
@@ -104,8 +101,8 @@ export function BatchForm({ batch, onCancel, onSuccess }: BatchFormProps) {
           quantity: 1,
           unitId: '',
           producedVariantId: '',
-          status: 'PLANNED',
-          date: new Date().toISOString().split('T')[0],
+          status: BatchStatus.PLANNED,
+          date: new Date(),
           time: '08:00',
           bakerId: '',
           duration: '',
@@ -127,15 +124,23 @@ export function BatchForm({ batch, onCancel, onSuccess }: BatchFormProps) {
   const watchedShelfLifeDays = watch('shelfLifeDays');
   const watchedExpiresAt = watch('expiresAt');
 
+  // Memoize currentRecipeId to prevent unnecessary recalculations
+  const currentRecipeId = useMemo(() => {
+    return watchedRecipeId || templates?.find(t => t.id === watchedTemplateId)?.recipeId;
+  }, [watchedRecipeId, watchedTemplateId, templates]);
+
   // Calculate expiration date when production date or shelf life changes
   useEffect(() => {
     if (watchedProductionDate && watchedShelfLifeDays) {
       const productionDate = new Date(watchedProductionDate);
       const expiresAt = new Date(productionDate);
       expiresAt.setDate(expiresAt.getDate() + watchedShelfLifeDays);
-      setValue('expiresAt', expiresAt.toISOString().split('T')[0]);
+      // Only update if the new expiresAt differs from the current one
+      if (!watchedExpiresAt || expiresAt.getTime() !== new Date(watchedExpiresAt).getTime()) {
+        setValue('expiresAt', expiresAt);
+      }
     }
-  }, [watchedProductionDate, watchedShelfLifeDays, setValue]);
+  }, [watchedProductionDate, watchedShelfLifeDays, watchedExpiresAt, setValue]);
 
   // Calculate shelf life days when production date and expiration date change
   useEffect(() => {
@@ -144,130 +149,138 @@ export function BatchForm({ batch, onCancel, onSuccess }: BatchFormProps) {
       const expiresAt = new Date(watchedExpiresAt);
       const diffTime = expiresAt.getTime() - productionDate.getTime();
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      if (diffDays > 0) {
+      // Only update if the new shelfLifeDays differs from the current one
+      if (diffDays > 0 && diffDays !== watchedShelfLifeDays) {
         setValue('shelfLifeDays', diffDays);
       }
     }
-  }, [watchedProductionDate, watchedExpiresAt, setValue]);
+  }, [watchedProductionDate, watchedExpiresAt, watchedShelfLifeDays, setValue]);
 
   // Helper function to convert units using the hook
-  const convertWithHook = (value: number, fromUnit: string, toUnit: string): number => {
-    if (fromUnit === toUnit || fromUnit === 'unknown' || toUnit === 'unknown') {
-      return value;
-    }
+  const convertWithHook = useCallback(
+    (value: number, fromUnit: string, toUnit: string): number => {
+      if (fromUnit === toUnit || fromUnit === 'unknown' || toUnit === 'unknown') {
+        return value;
+      }
 
-    // Use the useUnitConversion hook via a custom hook pattern
-    // Since we can't call hooks inside loops, we'll use the conversion data directly
-    const conversion = conversionData.find(c => c.fromUnit.symbol === fromUnit && c.toUnit.symbol === toUnit);
+      const conversion = conversionData.find(c => c.fromUnit.symbol === fromUnit && c.toUnit.symbol === toUnit);
 
-    if (conversion) {
-      return value * conversion.factor;
-    }
+      if (conversion) {
+        return value * conversion.factor;
+      }
 
-    // Try the reverse conversion
-    const reverseConversion = conversionData.find(c => c.fromUnit.symbol === toUnit && c.toUnit.symbol === fromUnit);
+      const reverseConversion = conversionData.find(c => c.fromUnit.symbol === toUnit && c.toUnit.symbol === fromUnit);
 
-    if (reverseConversion) {
-      return value / reverseConversion.factor;
-    }
+      if (reverseConversion) {
+        return value / reverseConversion.factor;
+      }
 
-    console.warn(`No conversion found from ${fromUnit} to ${toUnit}`);
-    return 0;
-  };
+      console.warn(`No conversion found from ${fromUnit} to ${toUnit}`);
+      return 0;
+    },
+    [conversionData]
+  );
 
-  const calculateIngredientUsage = async (recipeId: string, batchQuantity: number): Promise<IngredientUsage[]> => {
-    const recipe = recipes.find(r => r.id === recipeId);
-    if (!recipe) return [];
+  const calculateIngredientUsage = useCallback(
+    async (recipeId: string, batchQuantity: number): Promise<IngredientUsage[]> => {
+      const recipe = recipes?.find(r => r.id === recipeId);
+      if (!recipe) return [];
 
-    const recipeYieldNumber = parseInt(recipe.yield.split(' ')[0]) || 1;
-    const scalingFactor = batchQuantity / recipeYieldNumber;
+      const recipeYieldNumber = parseInt(recipe?.yield?.split(' ')[0]?.toString()) || 1;
+      const scalingFactor = batchQuantity / recipeYieldNumber;
 
-    return recipe.ingredients.map(ingredient => {
-      const requiredQuantity = ingredient.quantity * scalingFactor;
-      const recipeUnit = ingredient.unit?.symbol || 'unknown';
+      return recipe.ingredients.map(ingredient => {
+        const requiredQuantity = ingredient.quantity * scalingFactor;
+        const recipeUnit = ingredient.unit?.symbol || 'unknown';
 
-      // Find the ingredient data from useListIngredients
-      const ingredientData = ingredients.find(i => i.ingredientId === ingredient.ingredientVariantId);
-      const stockUnit = ingredientData?.unit?.symbol || 'unknown';
-      const availableStockInStockUnit = ingredientData?.currentStock || 0;
-      const unitPriceInStockUnit = Number(ingredientData?.unitPrice) || 0; // e.g., 400 cents/g = $0.004/g
+        const ingredientData = ingredients.find(i => i.ingredientId === ingredient.ingredientVariantId);
+        const stockUnit = ingredientData?.unit?.symbol || 'unknown';
+        const availableStockInStockUnit = ingredientData?.currentStock || 0;
+        const unitPriceInStockUnit = Number(ingredientData?.unitPrice) || 0;
 
-      // Convert stock to recipe unit using the hook-based conversion
-      let availableStockInRecipeUnit = availableStockInStockUnit;
-      try {
-        if (stockUnit !== recipeUnit && stockUnit !== 'unknown' && recipeUnit !== 'unknown') {
-          availableStockInRecipeUnit = convertWithHook(availableStockInStockUnit, stockUnit, recipeUnit);
+        let availableStockInRecipeUnit = availableStockInStockUnit;
+        try {
+          if (stockUnit !== recipeUnit && stockUnit !== 'unknown' && recipeUnit !== 'unknown') {
+            availableStockInRecipeUnit = convertWithHook(availableStockInStockUnit, stockUnit, recipeUnit);
+          }
+        } catch (error) {
+          console.warn(
+            `Could not convert stock for ingredient "${ingredient.ingredientVariant.name}" from "${stockUnit}" to "${recipeUnit}":`,
+            error
+          );
+          availableStockInRecipeUnit = 0;
         }
-      } catch (error) {
-        console.warn(
-          `Could not convert stock for ingredient "${ingredient.ingredientVariant.name}" from "${stockUnit}" to "${recipeUnit}":`,
-          error
-        );
-        availableStockInRecipeUnit = 0;
-      }
 
-      // Convert unit price to recipe unit using the hook-based conversion
-      let unitCostInRecipeUnit = unitPriceInStockUnit;
-      try {
-        if (stockUnit !== recipeUnit && stockUnit !== 'unknown' && recipeUnit !== 'unknown') {
-          const conversionFactor = convertWithHook(1, stockUnit, recipeUnit);
-          unitCostInRecipeUnit = unitPriceInStockUnit / conversionFactor; // e.g., $0.004/g / 1000 = $4/kg
+        let unitCostInRecipeUnit = unitPriceInStockUnit;
+        try {
+          if (stockUnit !== recipeUnit && stockUnit !== 'unknown' && recipeUnit !== 'unknown') {
+            const conversionFactor = convertWithHook(1, stockUnit, recipeUnit);
+            unitCostInRecipeUnit = unitPriceInStockUnit / conversionFactor;
+          }
+        } catch (error) {
+          console.warn(
+            `Could not convert unit price for ingredient "${ingredient.ingredientVariant.name}" from "${stockUnit}" to "${recipeUnit}":`,
+            error
+          );
+          unitCostInRecipeUnit = 0;
         }
-      } catch (error) {
-        console.warn(
-          `Could not convert unit price for ingredient "${ingredient.ingredientVariant.name}" from "${stockUnit}" to "${recipeUnit}":`,
-          error
-        );
-        unitCostInRecipeUnit = 0;
+
+        const totalCost = requiredQuantity * unitCostInRecipeUnit;
+
+        return {
+          ingredientId: ingredient.ingredientVariantId,
+          ingredientName: ingredient.ingredientVariant.name,
+          quantityUsed: requiredQuantity,
+          unit: recipeUnit,
+          unitCost: unitCostInRecipeUnit,
+          totalCost: totalCost,
+          availableStock: availableStockInRecipeUnit,
+          sufficient: availableStockInRecipeUnit >= requiredQuantity,
+        };
+      });
+    },
+    [recipes, ingredients, convertWithHook]
+  );
+
+  const handleTemplateSelect = useCallback(
+    (templateId: string) => {
+      const template = templates?.find(t => t.id === templateId);
+      if (template) {
+        // Batch updates to minimize re-renders
+        setValue('createdFromTemplateId', templateId, { shouldDirty: true });
+        setValue('recipeId', template.recipeId, { shouldDirty: true });
+        setValue('categoryId', template.categoryId, { shouldDirty: true });
+        setValue('quantity', template.quantity, { shouldDirty: true });
+        setValue('unitId', template.unitId, { shouldDirty: true });
+        setValue('duration', template.duration || '', { shouldDirty: true });
+        setValue('procedure', template.procedure || '', { shouldDirty: true });
+        if (template.producedVariantId) {
+          setValue('producedVariantId', template.producedVariantId, { shouldDirty: true });
+        }
       }
+    },
+    [templates, setValue]
+  );
 
-      const totalCost = requiredQuantity * unitCostInRecipeUnit;
+  const handleRecipeSelect = useCallback(
+    (recipeId: string) => {
+      // Batch updates to minimize re-renders
+      setValue('recipeId', recipeId, { shouldDirty: true });
+      setValue('createdFromTemplateId', undefined, { shouldDirty: true });
+    },
+    [setValue]
+  );
 
-      return {
-        ingredientId: ingredient.ingredientVariantId,
-        ingredientName: ingredient.ingredientVariant.name,
-        quantityUsed: requiredQuantity,
-        unit: recipeUnit,
-        unitCost: unitCostInRecipeUnit,
-        totalCost: totalCost,
-        availableStock: availableStockInRecipeUnit,
-        sufficient: availableStockInRecipeUnit >= requiredQuantity,
-      };
-    });
-  };
-
-  const handleTemplateSelect = (templateId: string) => {
-    const template = templates?.find(t => t.id === templateId);
-    if (template) {
-      setValue('createdFromTemplateId', templateId);
-      setValue('recipeId', template.recipeId);
-      setValue('categoryId', template.categoryId);
-      setValue('quantity', template.quantity);
-      setValue('unitId', template.unitId);
-      setValue('duration', template.duration || '');
-      setValue('procedure', template.procedure || '');
-      if (template.producedVariantId) {
-        setValue('producedVariantId', template.producedVariantId);
-      }
-    }
-  };
-
-  const handleRecipeSelect = (recipeId: string) => {
-    setValue('recipeId', recipeId);
-    setValue('createdFromTemplateId', undefined);
-  };
-
-  const handleFormSubmit = async (data: BatchFormData) => {
+  const handleFormSubmit = async (data: BatchInput) => {
     try {
       const recipeId = data.recipeId || templates?.find(t => t.id === data.createdFromTemplateId)?.recipeId;
-      if (recipeId) {
-        const ingredientUsage = await calculateIngredientUsage(recipeId, data.quantity);
-        const insufficientStock = ingredientUsage.filter(usage => !usage.sufficient);
+      // if (recipeId) {
+      //   const insufficientStock = ingredientUsage.filter(usage => !usage.sufficient);
 
-        if (insufficientStock.length > 0) {
-          toast.info(`Insufficient stock for: ${insufficientStock.map(item => item.ingredientName).join(', ')}`);
-        }
-      }
+      //   if (insufficientStock.length > 0) {
+      //     toast.info(`Insufficient stock for: ${insufficientStock.map(item => item.ingredientName).join(', ')}`);
+      //   }
+      // }
 
       const submitData = {
         ...data,
@@ -287,7 +300,6 @@ export function BatchForm({ batch, onCancel, onSuccess }: BatchFormProps) {
     }
   };
 
-  const currentRecipeId = watchedRecipeId || templates?.find(t => t.id === watchedTemplateId)?.recipeId;
   const isMutationPending = createBatchMutation.isPending || updateBatchMutation.isPending;
   const isLoading =
     isMutationPending ||
@@ -297,18 +309,6 @@ export function BatchForm({ batch, onCancel, onSuccess }: BatchFormProps) {
     loadingCategories ||
     loadingIngredients ||
     loadingConversionData;
-
-  const [ingredientUsage, setIngredientUsage] = useState<IngredientUsage[]>([]);
-  useEffect(() => {
-    if (currentRecipeId && watchedQuantity > 0) {
-      calculateIngredientUsage(currentRecipeId, watchedQuantity).then(setIngredientUsage);
-    } else {
-      setIngredientUsage([]);
-    }
-  }, [currentRecipeId, watchedQuantity, conversionData]); // Add conversionData as dependency
-
-  const totalCost = ingredientUsage.reduce((sum, usage) => sum + usage.totalCost, 0);
-  const hasInsufficientStock = ingredientUsage.some(usage => !usage.sufficient);
 
   return (
     <div className="space-y-6">
@@ -469,7 +469,6 @@ export function BatchForm({ batch, onCancel, onSuccess }: BatchFormProps) {
               disabled={isLoading}
               showLabel={false}
               placeholder="Select unit"
-              unitType="COUNT"
             />
             {errors.unitId && <p className="text-sm text-red-500 mt-1">{errors.unitId.message}</p>}
           </div>
@@ -535,67 +534,6 @@ export function BatchForm({ batch, onCancel, onSuccess }: BatchFormProps) {
             </p>
           </div>
         </div>
-
-        {/* Ingredient Requirements Section */}
-        {currentRecipeId && watchedQuantity > 0 && (
-          <div className="space-y-4">
-            <div className="flex items-center gap-2 pb-2 border-b">
-              <AlertTriangle className="h-4 w-4 text-gray-500" />
-              <h3 className="font-semibold text-sm text-gray-700">Ingredient Requirements</h3>
-              {hasInsufficientStock && (
-                <Badge variant="destructive" className="ml-2">
-                  Insufficient Stock
-                </Badge>
-              )}
-            </div>
-
-            <div className="border rounded-lg p-4 bg-gray-50 space-y-3">
-              <div className="grid grid-cols-1 gap-2">
-                {ingredientUsage.map((usage, index) => (
-                  <div
-                    key={index}
-                    className={`flex justify-between items-center p-3 rounded-lg border ${
-                      usage.sufficient ? 'bg-white border-gray-200' : 'bg-red-50 border-red-200'
-                    }`}
-                  >
-                    <div className="flex items-center space-x-3 min-w-0 flex-1">
-                      {!usage.sufficient && <AlertTriangle className="h-4 w-4 text-red-500 flex-shrink-0" />}
-                      <div className="min-w-0 flex-1">
-                        <p className="text-sm font-medium text-gray-900 truncate">{usage.ingredientName}</p>
-                        <p className="text-xs text-gray-500">
-                          Available: {usage.availableStock.toFixed(2)} {usage.unit}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="text-right space-y-1">
-                      <p className="text-sm font-medium">
-                        {usage.quantityUsed.toFixed(2)} {usage.unit}
-                      </p>
-                      <p className="text-xs text-green-600">{formattedCurrency(usage.totalCost)}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {/* Total Cost */}
-              <div className="border-t pt-3">
-                <div className="flex justify-between items-center">
-                  <span className="text-sm font-medium text-gray-900">Total Ingredient Cost</span>
-                  <span className="text-lg font-bold text-green-600">{formattedCurrency(totalCost)}</span>
-                </div>
-              </div>
-
-              {hasInsufficientStock && (
-                <Alert className="mt-3">
-                  <AlertTriangle className="h-4 w-4" />
-                  <AlertDescription>
-                    Some ingredients have insufficient stock. Please restock before creating this batch.
-                  </AlertDescription>
-                </Alert>
-              )}
-            </div>
-          </div>
-        )}
 
         {/* Schedule & Production Section */}
         <div className="space-y-5">

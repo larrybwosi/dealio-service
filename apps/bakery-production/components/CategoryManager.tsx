@@ -60,7 +60,7 @@ function EditCategoryDialog({ category, open, onOpenChange, onSave, isSubmitting
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<BakeryCategoryFormData>({
+  } = useForm({
     resolver: zodResolver(bakeryCategorySchema),
     defaultValues: {
       name: category.name,

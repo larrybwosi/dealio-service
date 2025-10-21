@@ -29,7 +29,7 @@ export interface GeneratedCategory {
 export const useListCategories = () => {
   const organizationId = useOrgStore(state => state.organizationId);
   const {data, isLoading, error, refetch} = useQuery({
-    queryKey: ['categories', organizationId],
+    queryKey: ['categories'],
     queryFn: async () => await api.get(`/${organizationId}/categories`).then(res => res.data),
     enabled: !!organizationId,
   });

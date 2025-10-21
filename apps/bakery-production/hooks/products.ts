@@ -36,7 +36,6 @@ interface UseProductVariantsOptions {
 export const useProductVariants = (options: UseProductVariantsOptions = {}) => {
   const organizationId = useOrgStore(state => state.organizationId);
   const locationId = useOrgStore(state => state.locationId);
-  console.log(organizationId)
 
   const {
     page = 1,
@@ -70,34 +69,33 @@ export const useProductVariants = (options: UseProductVariantsOptions = {}) => {
     },
   ];
 
-  const { data, refetch, error, isLoading, isFetching } = useQuery({
-    queryKey,
-    queryFn: async () => {
-      const params = new URLSearchParams({
-        page: page.toString(),
-        limit: limit.toString(),
-        sortBy,
-        sortOrder,
-        includeLocation: includeLocation.toString(),
-        ...(search && { search }),
-        ...(categoryId && { categoryId }),
-        ...(finalLocationId && { locationId: finalLocationId }),
-        ...(productType && { productType }),
-        ...(isActive !== undefined && { isActive: isActive.toString() }),
-      });
+const { data, refetch, error, isLoading, isFetching } = useQuery({
+  queryKey,
+  queryFn: async () => {
+    const params = {
+      page: page.toString(),
+      limit: limit.toString(),
+      sortBy,
+      sortOrder,
+      includeLocation: includeLocation.toString(),
+      ...(search && { search }),
+      ...(categoryId && { categoryId }),
+      ...(finalLocationId && { locationId: finalLocationId }),
+      ...(productType && { productType }),
+      ...(isActive !== undefined && { isActive: isActive.toString() }),
+    };
 
-      const response = await fetch(`/api/organizations/${organizationId}/products/variants?` + params.toString());
+    const response = await api.get(
+      `/organizations/${organizationId}/products/variants`,
+      { params }
+    );
 
-      if (!response.ok) {
-        throw new Error('Failed to fetch product variants');
-      }
-
-      return response.json();
-    },
-    enabled: !!organizationId,
-    // Optional: Add staleTime and cacheTime for better performance
-    staleTime: 1000 * 60 * 5, // 5 minutes
-  });
+    return response.data;
+  },
+  enabled: !!organizationId,
+  // Optional: Add staleTime and cacheTime for better performance
+  staleTime: 1000 * 60 * 5, // 5 minutes
+});
 
   return {
     data: data?.data || [],

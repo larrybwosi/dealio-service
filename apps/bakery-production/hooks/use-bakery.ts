@@ -1,9 +1,9 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { BatchFormData, RecipeFormData } from '@/lib/validation';
-import { FormattedBatch, Recipe, Template, BakeryBaker, BatchStatus, SystemUnit, BakerySettings, Batch, RecipeIngredient } from '@/types';
-import { bakerySettingsSchema } from '@/lib/validation';
-import { useOrgStore } from '@org/store';
+import { bakerySettingsSchema, BatchFormData, RecipeFormData } from '@/lib/validation';
+import { FormattedBatch, Recipe, Template, BakeryBaker, SystemUnit, BatchStatus, Batch, BakerySettings } from '@/types';
+import { toast } from 'sonner';
 import api from '@/lib/axios';
+import { useOrgStore } from '@org/store';
 
 // Types
 export interface BakeryCategory {
@@ -16,6 +16,13 @@ export interface BakeryCategory {
   templates?: any[];
   batches?: any[];
   updatedAt?: Date;
+}
+
+export interface RecipeIngredient {
+  quantity: number;
+  ingredientVariant: {
+    buyingPrice: number;
+  };
 }
 
 export interface StockItem {
@@ -64,14 +71,11 @@ interface InventoryRecordsResponse {
   usageRecords: UsageRecord[];
 }
 
-// Constants
-const API_BASE = '/api';
-
 // Generic API functions with axios and error handling
 const apiClient = {
   get: async <T>(url: string): Promise<T> => {
     try {
-      const { data } = await api.get<T>(url);
+      const { data } = await api.get<T>(`${url}`);
       return data;
       //eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
@@ -91,7 +95,7 @@ const apiClient = {
 
   patch: async <T>(url: string, data?: unknown): Promise<T> => {
     try {
-      const { data: response } = await api.patch<T>(url, data);
+      const { data: response } = await api.patch<T>(`${url}`, data);
       return response;
       //eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
@@ -101,7 +105,7 @@ const apiClient = {
 
   put: async <T>(url: string, data?: unknown): Promise<T> => {
     try {
-      const { data: response } = await api.put<T>(url, data);
+      const { data: response } = await api.put<T>(`${url}`, data);
       return response;
       //eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
@@ -111,7 +115,7 @@ const apiClient = {
 
   delete: async (url: string): Promise<void> => {
     try {
-      await api.delete(url);
+      await api.delete(`${url}`);
       //eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       throw new Error(error.response?.data?.error || error?.response?.data?.message || 'Failed to delete data');
@@ -120,7 +124,7 @@ const apiClient = {
 };
 
 // Generic hook factories
-const createQueryHook = <T>(key: readonly unknown[], fetchFn: () => Promise<T>, enabled: boolean = true, options: any = {}) => ({
+const createQueryHook = <T>(key: string[], fetchFn: () => Promise<T>, enabled: boolean = true, options: any = {}) => ({
   queryKey: key,
   queryFn: fetchFn,
   enabled,
@@ -138,27 +142,37 @@ const createMutationHook = <TData, TVariables>(
       queryClient.invalidateQueries({ queryKey });
     });
   },
+  onError: (error: Error) => {
+    console.error('Mutation error:', error.message);
+    toast.error(error.message || 'An error occurred');
+  },
 });
 
 // Batches
 export const useBatches = (filters?: { search?: string; category?: string; status?: string; sortBy?: string }) => {
+  const organizationId = useOrgStore(state => state.organizationId);
   const queryKey = ['batches', filters];
 
-  return useQuery<{ data: FormattedBatch[]; metadata: any }, Error>({
-    ...createQueryHook(queryKey, async () => {
-      const params = new URLSearchParams();
-      if (filters?.search) params.append('search', filters.search);
-      if (filters?.category && filters.category !== 'all') params.append('category', filters.category);
-      if (filters?.status && filters.status !== 'all') params.append('status', filters.status);
-      if (filters?.sortBy) params.append('sortBy', filters.sortBy);
+  return useQuery({
+    ...createQueryHook(
+      queryKey,
+      async () => {
+        const params = new URLSearchParams();
+        if (filters?.search) params.append('search', filters.search);
+        if (filters?.category && filters.category !== 'all') params.append('category', filters.category);
+        if (filters?.status && filters.status !== 'all') params.append('status', filters.status);
+        if (filters?.sortBy) params.append('sortBy', filters.sortBy);
 
-      return apiClient.get<{ data: FormattedBatch[]; metadata: any }>(`/bakery/batches?${params}`);
-    }),
+        return apiClient.get<{ data: FormattedBatch[]; metadata: any }>(`/bakery/batches?${params}`);
+      },
+      !!organizationId
+    ),
   });
 };
 
 export const useCreateBatch = () => {
   const queryClient = useQueryClient();
+  const organizationId = useOrgStore(state => state.organizationId);
 
   return useMutation(
     createMutationHook(
@@ -171,6 +185,7 @@ export const useCreateBatch = () => {
 
 export const useUpdateBatch = () => {
   const queryClient = useQueryClient();
+  const organizationId = useOrgStore(state => state.organizationId);
 
   return useMutation({
     mutationFn: async ({ id, ...batchData }: BatchFormData & { id: string }) =>
@@ -183,6 +198,7 @@ export const useUpdateBatch = () => {
 
 export const useDeleteBatch = () => {
   const queryClient = useQueryClient();
+  const organizationId = useOrgStore(state => state.organizationId);
 
   return useMutation({
     mutationFn: async (batchId: string) => {
@@ -199,6 +215,7 @@ export const useDeleteBatch = () => {
 const createBatchActionHook = (action: string) => {
   return () => {
     const queryClient = useQueryClient();
+    const organizationId = useOrgStore(state => state.organizationId);
     const locationId = useOrgStore(state => state.locationId);
 
     return useMutation({
@@ -223,21 +240,19 @@ export const useCancelBatch = createBatchActionHook('cancel');
 
 // Recipes
 export const useRecipes = () => {
+  const organizationId = useOrgStore(state => state.organizationId);
 
-  return useQuery<Recipe[], Error>({
-    ...createQueryHook(
-      ['recipes'],
-      () => apiClient.get<Recipe[]>(`/bakery/recipes`),
-    ),
+  return useQuery({
+    ...createQueryHook(['recipes'], () => apiClient.get<Recipe[]>(`/bakery/recipes`), !!organizationId),
   });
 };
 
 export const useCreateRecipe = () => {
   const queryClient = useQueryClient();
+  const organizationId = useOrgStore(state => state.organizationId);
 
   return useMutation({
-    mutationFn: async (recipeData: RecipeFormData) =>
-      apiClient.post<Recipe>(`/bakery/recipes`, recipeData),
+    mutationFn: async (recipeData: RecipeFormData) => apiClient.post<Recipe>(`/bakery/recipes`, recipeData),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['recipes'] });
     },
@@ -246,6 +261,7 @@ export const useCreateRecipe = () => {
 
 export const useUpdateRecipe = () => {
   const queryClient = useQueryClient();
+  const organizationId = useOrgStore(state => state.organizationId);
 
   return useMutation({
     mutationFn: async ({ id, ...recipeData }: RecipeFormData & { id: string }) =>
@@ -258,6 +274,7 @@ export const useUpdateRecipe = () => {
 
 export const useDeleteRecipe = () => {
   const queryClient = useQueryClient();
+  const organizationId = useOrgStore(state => state.organizationId);
 
   return useMutation({
     mutationFn: async (id: string) => {
@@ -272,31 +289,31 @@ export const useDeleteRecipe = () => {
 
 // Templates
 export const useTemplates = () => {
+  const organizationId = useOrgStore(state => state.organizationId);
 
   return useQuery<Template[], Error>({
-    ...createQueryHook(
-      ['templates'],
-      () => apiClient.get<Template[]>(`/bakery/templates`),
-    ),
+    ...createQueryHook(['templates'], () => apiClient.get<Template[]>(`/bakery/templates`), !!organizationId),
   });
 };
 
 export const useTemplate = (templateId: string) => {
+  const organizationId = useOrgStore(state => state.organizationId);
 
   return useQuery<Template, Error>({
     ...createQueryHook(
       ['template', templateId],
       () => apiClient.get<Template>(`/bakery/templates/${templateId}`),
+      !!organizationId && !!templateId
     ),
   });
 };
 
 export const useCreateTemplate = () => {
   const queryClient = useQueryClient();
+  const organizationId = useOrgStore(state => state.organizationId);
 
   return useMutation({
-    mutationFn: async (templateData: unknown) =>
-      apiClient.post<Template>(`/bakery/templates`, templateData),
+    mutationFn: async (templateData: unknown) => apiClient.post<Template>(`/bakery/templates`, templateData),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['templates'] });
     },
@@ -305,10 +322,10 @@ export const useCreateTemplate = () => {
 
 export const useUpdateTemplate = () => {
   const queryClient = useQueryClient();
+  const organizationId = useOrgStore(state => state.organizationId);
 
   return useMutation<Template, Error, { templateId: string; data: unknown }>({
-    mutationFn: async ({ templateId, data }) =>
-      apiClient.patch<Template>(`/bakery/templates/${templateId}`, data),
+    mutationFn: async ({ templateId, data }) => apiClient.patch<Template>(`/bakery/templates/${templateId}`, data),
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ['templates'] });
       queryClient.invalidateQueries({ queryKey: ['template', variables.templateId] });
@@ -318,6 +335,7 @@ export const useUpdateTemplate = () => {
 
 export const useDeleteTemplate = () => {
   const queryClient = useQueryClient();
+  const organizationId = useOrgStore(state => state.organizationId);
 
   return useMutation<void, Error, string>({
     mutationFn: async templateId => {
@@ -331,28 +349,35 @@ export const useDeleteTemplate = () => {
 
 // Bakery Categories
 export const useBakeryCategories = () => {
+  const organizationId = useOrgStore(state => state.organizationId);
+
   return useQuery<BakeryCategory[], Error>({
-     queryKey: ['bakeryCategories'],
-      queryFn: () => apiClient.get<BakeryCategory[]>(`/bakery/categories`),
+    ...createQueryHook(
+      ['bakeryCategories'],
+      () => apiClient.get<BakeryCategory[]>(`/bakery/categories`),
+      !!organizationId
+    ),
   });
 };
 
 export const useBakeryCategory = (categoryId: string) => {
+  const organizationId = useOrgStore(state => state.organizationId);
 
   return useQuery<BakeryCategory, Error>({
     ...createQueryHook(
       ['bakeryCategory', categoryId],
       () => apiClient.get<BakeryCategory[]>(`/bakery/categories/${categoryId}`),
+      !!organizationId && !!categoryId
     ),
   });
 };
 
 export const useCreateBakeryCategory = () => {
+  const organizationId = useOrgStore(state => state.organizationId);
   const queryClient = useQueryClient();
 
   return useMutation<BakeryCategory, Error, Partial<BakeryCategory>>({
-    mutationFn: async newCategoryData =>
-      apiClient.post<BakeryCategory>(`/bakery/categories`, newCategoryData),
+    mutationFn: async newCategoryData => apiClient.post<BakeryCategory>(`/bakery/categories`, newCategoryData),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['bakeryCategories'] });
     },
@@ -360,6 +385,7 @@ export const useCreateBakeryCategory = () => {
 };
 
 export const useUpdateBakeryCategory = () => {
+  const organizationId = useOrgStore(state => state.organizationId);
   const queryClient = useQueryClient();
 
   return useMutation<BakeryCategory, Error, { id: string; data: Partial<BakeryCategory> }>({
@@ -373,6 +399,7 @@ export const useUpdateBakeryCategory = () => {
 };
 
 export const useDeleteBakeryCategory = () => {
+  const organizationId = useOrgStore(state => state.organizationId);
   const queryClient = useQueryClient();
 
   return useMutation<void, Error, string>({
@@ -388,17 +415,16 @@ export const useDeleteBakeryCategory = () => {
 
 // Bakery Settings & Bakers
 export const useBakerySettings = () => {
+  const organizationId = useOrgStore(state => state.organizationId);
 
   return useQuery<BakerySettings, Error>({
-    ...createQueryHook(
-      ['bakerySettings'],
-      () => apiClient.get<BakerySettings>(`/bakery/settings`),
-    ),
+    ...createQueryHook(['bakerySettings'], () => apiClient.get<BakerySettings>(`/bakery/settings`), !!organizationId),
   });
 };
 
 export const useUpdateBakerySettings = () => {
   const queryClient = useQueryClient();
+  const organizationId = useOrgStore(state => state.organizationId);
 
   return useMutation<BakerySettings, Error, unknown>({
     mutationFn: async (data: unknown) => {
@@ -412,17 +438,16 @@ export const useUpdateBakerySettings = () => {
 };
 
 export const useBakers = () => {
+  const organizationId = useOrgStore(state => state.organizationId);
 
   return useQuery<BakeryBaker[], Error>({
-    ...createQueryHook(
-      ['bakers'],
-      () => apiClient.get<BakeryBaker[]>(`/bakery/bakers`),
-    ),
+    ...createQueryHook(['bakers'], () => apiClient.get<BakeryBaker[]>(`/bakery/bakers`), !!organizationId),
   });
 };
 
 export const useAddBaker = () => {
   const queryClient = useQueryClient();
+  const organizationId = useOrgStore(state => state.organizationId);
 
   return useMutation<BakeryBaker, Error, { memberId: string; specialties: string[] }>({
     mutationFn: async ({ memberId, specialties }) =>
@@ -436,6 +461,7 @@ export const useAddBaker = () => {
 
 export const useRemoveBaker = () => {
   const queryClient = useQueryClient();
+  const organizationId = useOrgStore(state => state.organizationId);
 
   return useMutation<void, Error, { memberId: string }>({
     mutationFn: async ({ memberId }) => {
@@ -450,19 +476,22 @@ export const useRemoveBaker = () => {
 
 // Ingredients
 export const useListIngredients = () => {
+  const organizationId = useOrgStore(state => state.organizationId);
 
-  const { data, error, isLoading, isFetching, refetch } = useQuery<RecipeIngredient[], Error>({
+  const { data, error, isLoading, isFetching, refetch } = useQuery({
     ...createQueryHook(
       ['raw-materials'],
       () => apiClient.get<RecipeIngredient>(`/bakery/ingredients`),
+      !!organizationId,
+      { staleTime: 1000 * 60 * 5 } // 5 minutes
     ),
   });
 
   return {
     ingredients: data || [],
-    isLoading: isLoading,
+    isLoading: isLoading && !!organizationId,
     isFetching,
-    isError: !!error,
+    isError: !!error && !!organizationId,
     error,
     refetch,
   };
@@ -498,23 +527,27 @@ export function useBakerySettingsManagement() {
 
 // Overview Data
 export const useBakeryData = () => {
+  const organizationId = useOrgStore(state => state.organizationId);
 
   return useQuery({
     ...createQueryHook(
       ['data'],
       () => apiClient.get<OverviewData>(`/bakery`),
+      !!organizationId,
+      { staleTime: 5 * 60 * 1000 } // 5 minutes
     ),
   });
 };
 
 // Inventory Records
 export const useInventoryRecords = () => {
+  const organizationId = useOrgStore(state => state.organizationId);
 
   return useQuery<InventoryRecordsResponse, Error>({
     ...createQueryHook(
       ['inventory-records'],
       () => apiClient.get<InventoryRecordsResponse>(`/bakery/ingredients/records`),
+      !!organizationId
     ),
   });
 };
-

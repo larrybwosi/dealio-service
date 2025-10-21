@@ -84,6 +84,9 @@ export interface RecipeIngredient {
   quantity: number;
   unitId: string;
   unit: SystemUnit;
+  currentStock?: number;
+  unitPrice?: number;
+  ingredientId?: string;
 }
 
 export interface Recipe {
@@ -125,19 +128,11 @@ export interface Template {
   notes?: string;
   isActive: boolean;
   scheduleTime?: string;
-  scheduleDays?: Array<
-    | "monday"
-    | "tuesday"
-    | "wednesday"
-    | "thursday"
-    | "friday"
-    | "saturday"
-    | "sunday"
-    | number
-  >;
+  scheduleDays?: Array<'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday' | number>;
   organizationId: string;
   createdAt: Date;
   updatedAt: Date;
+  producedVariantId: string;
 }
 
 export interface Batch {
@@ -167,6 +162,10 @@ export interface Batch {
   bakerId: string;
   unitId: string;
   producedVariantId: string;
+  productionDate: Date;
+  expiresAt: Date;
+  expirationStatus: ExpirationStatus;
+  shelfLifeDays: number;
 }
 
 export interface BakeryBaker {
