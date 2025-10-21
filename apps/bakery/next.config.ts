@@ -50,6 +50,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  transpilePackages: ['@workspace/ui', '@org/store'],
   typescript: {
     ignoreBuildErrors: true,
   },

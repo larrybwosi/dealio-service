@@ -10,7 +10,10 @@
       {
         "name": "next"
       }
-    ]
+    ],
+    "jsx": "preserve",
+    "allowJs": true,
+    "target": "ES6"
   },
   "include": [
     "next-env.d.ts",

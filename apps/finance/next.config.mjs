@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  transpilePackages: ['@workspace/ui', '@org/store'],
   eslint: {
     ignoreDuringBuilds: true,
   },
