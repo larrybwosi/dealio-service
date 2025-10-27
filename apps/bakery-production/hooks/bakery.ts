@@ -64,9 +64,6 @@ interface InventoryRecordsResponse {
   usageRecords: UsageRecord[];
 }
 
-// Constants
-const API_BASE = '/api';
-
 // Generic API functions with axios and error handling
 const apiClient = {
   get: async <T>(url: string): Promise<T> => {
@@ -500,10 +497,8 @@ export function useBakerySettingsManagement() {
 export const useBakeryData = () => {
 
   return useQuery({
-    ...createQueryHook(
-      ['data'],
-      () => apiClient.get<OverviewData>(`/bakery`),
-    ),
+      queryKey: ['data'],
+      queryFn: () => apiClient.get<OverviewData>(`/bakery`),
   });
 };
 

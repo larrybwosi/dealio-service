@@ -51,7 +51,7 @@ export function BakeryLoginPage() {
     setIsLoading(true);
 
     try {
-      const { data, error } = await signIn.email({ email, password });
+      const { data, error } = await signIn.email({ email, password, callbackURL: '/' });
 
       if (error) {
         setError(error.message || 'Login failed. Please check your credentials.');
