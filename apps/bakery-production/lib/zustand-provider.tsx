@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Skeleton } from '@/components/ui/skeleton';
+import { Skeleton } from '@workspace/ui/components/skeleton';
 import { useOrgStore } from '../tanstack-axios';
 
 const Loader = () => (
