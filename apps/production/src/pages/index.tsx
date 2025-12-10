@@ -1,7 +1,7 @@
 'use client';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@workspace/ui/components/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@workspace/ui/components/card';
-// import { Badge } from '@workspace/ui/components/badge';
+import { Badge } from '@workspace/ui/components/badge';
 import { Progress } from '@workspace/ui/components/progress';
 import { Skeleton } from '@workspace/ui/components/skeleton';
 import RecipeManager from '@/components/RecipeManager';
