@@ -24,7 +24,7 @@ import {
   ProductVariantStock,
   Sale,
   PaymentMethod,
-} from '@/prisma/client';
+} from '@/prisma/browser';
 import { Category, GeneratedCategory } from './api/categories';
 import { SalesSummary } from './api/sales';
 import { InventoryAdjustment, InventoryItem, InventoryMovement } from './types/inventory';
